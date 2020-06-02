@@ -18,5 +18,5 @@ class BinaryThresholding:
         binary_mask = np.expand_dims(binary_mask, 2)
         connectivity = 4
         _, label_img, _, _ = cv2.connectedComponentsWithStats(binary_mask , connectivity , cv2.CV_32S)
-        return label_img
+        return np.expand_dims(label_img, axis=2)
     

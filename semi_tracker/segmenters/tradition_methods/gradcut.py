@@ -29,12 +29,12 @@ class GradCut:
         # Grabcut
         cv2.grabCut(img, mask, rect, bgdModel, fgdModel, self.iteration, cv2.GC_INIT_WITH_RECT)
         binary_mask = np.where((mask == 2) | (mask == 0), 0, obj_idx).astype('uint8')
-        return binary_mask
+        return np.expand_dims(binary_mask, axis=2)
 
 
 def get_grad_label_img():
     pass
-           
+
 
 if __name__ == '__main__':
     def visual(img, label_img):
