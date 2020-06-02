@@ -1,0 +1,187 @@
+from __future__ import absolute_import
+
+import os
+import json
+import csv
+import errno
+import torch
+import shutil
+import os.path as osp
+from torch.nn import Parameter
+
+
+def mkdir(path):
+    """mimic the behavior of mkdir -p in bash"""
+    try:
+        os.makedirs(path)
+    except OSError as exc:  # Python >2.5
+        if exc.errno == errno.EEXIST and os.path.isdir(path):
+            pass
+        else:
+            raise
+
+
+def read_json(fpath):
+    with open(fpath, 'r') as f:
+        obj = json.load(f)
+    return obj
+
+
+def write_json(obj, fpath):
+    mkdir(osp.dirname(fpath))
+    with open(fpath, 'w') as f:
+        json.dump(obj, f, indent=4, separators=(',', ': '))
+
+
+def save_checkpoint(state, is_best, fpath='checkpoint.pth.tar'):
+    mkdir(osp.dirname(fpath))
+    torch.save(state, fpath)
+    if is_best:
+        shutil.copy(fpath, osp.join(osp.dirname(fpath), 'model_best.pth.tar'))
+
+
+
+def load_checkpoint(fpath):
+    if osp.isfile(fpath):
+        checkpoint = torch.load(fpath)
+        print("=> Loaded checkpoint '{}'".format(fpath))
+        return checkpoint
+    else:
+        raise ValueError("=> No checkpoint found at '{}'".format(fpath))
+
+
+def copy_state_dict(state_dict, model, strip=None):
+    tgt_state = model.state_dict()
+    copied_names = set()
+    for name, param in state_dict.items():
+        if strip is not None and name.startswith(strip):
+            name = name[len(strip):]
+        if name not in tgt_state:
+            continue
+        if isinstance(param, Parameter):
+            param = param.data
+        if param.size() != tgt_state[name].size():
+            print('mismatch:', name, param.size(), tgt_state[name].size())
+            continue
+        tgt_state[name].copy_(param)
+        copied_names.add(name)
+
+    missing = set(tgt_state.keys()) - copied_names
+    if len(missing) > 0:
+        print("missing keys in state_dict:", missing)
+
+    return model
+
+
+""" 
+    Export data to csv format. Creates new file if doesn't exist,
+    otherwise update it.
+    Args:
+        header (list): headers of the column
+        value (list): values of correspoding column
+        folder: folder path
+        file_name: file name with path
+"""
+def export_history(header, value, folder, file_name):
+    # If folder does not exists make folder
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
+    file_path = os.path.join(folder, file_name)
+    file_existence = os.path.isfile(file_path)
+
+    # If there is no file make file
+    if file_existence == False:
+        file = open(file_path, 'w', newline='')
+        writer = csv.writer(file)
+        writer.writerow(header)
+        writer.writerow(value)
+    # If there is file overwrite
+    else:
+        file = open(file_path, 'a', newline='')
+        writer = csv.writer(file)
+        writer.writerow(value)
+    # Close file when it is done with writing
+    file.close()
+
+
+def to_numpy(tensor):
+    if torch.is_tensor(tensor):
+        return tensor.cpu().numpy()
+    elif type(tensor).__module__ != 'numpy':
+        raise ValueError("Cannot convert {} to numpy array"
+                         .format(type(tensor)))
+    return tensor
+
+
+def to_torch(ndarray):
+    if type(ndarray).__module__ == 'numpy':
+        return torch.from_numpy(ndarray)
+    elif not torch.is_tensor(ndarray):
+        raise ValueError("Cannot convert {} to torch tensor"
+                         .format(type(ndarray)))
+    return ndarray
+
+'''
+def load_param(model, path='param.pth', device='cpu'):
+    checkpoint = torch.load(path,  map_location=torch.device(device))
+    if 'state_dict' in checkpoint.keys():  # from training result
+        state_dict = checkpoint['state_dict']
+    else:
+        state_dict = checkpoint
+    from collections import OrderedDict
+    new_state_dict = OrderedDict()
+    for k, v in state_dict.items():
+        if 'module' in k:  # train with nn.DataParallel
+            name = k[7:]  # remove `module.`
+            if name in model.state_dict().keys():
+                new_state_dict[name] = v
+        else:
+            if k in model.state_dict().keys():
+              new_state_dict[k] = v
+    model.load_state_dict(new_state_dict)
+    return model
+'''
+
+def check_keys(model, pretrained_state_dict):
+    ckpt_keys = set(pretrained_state_dict.keys())
+    model_keys = set(model.state_dict().keys())
+    used_pretrained_keys = model_keys & ckpt_keys
+    unused_pretrained_keys = ckpt_keys - model_keys
+    missing_keys = model_keys - ckpt_keys
+    # filter 'num_batches_tracked'
+    missing_keys = [x for x in missing_keys
+                    if not x.endswith('num_batches_tracked')]
+    if len(missing_keys) > 0:
+        print('[Warning] missing keys: {}'.format(missing_keys))
+    if len(unused_pretrained_keys) > 0:
+        print('[Warning] unused_pretrained_keys: {}'.format(unused_pretrained_keys))
+    assert len(used_pretrained_keys) > 0, \
+        'load NONE from pretrained checkpoint'
+    return True
+
+
+def remove_prefix(state_dict, prefix):
+    ''' Old style model is stored with all names of parameters
+    share common prefix 'module.' '''
+    print('remove prefix \'{}\''.format(prefix))
+    f = lambda x: x.split(prefix, 1)[-1] if x.startswith(prefix) else x
+    return {f(key): value for key, value in state_dict.items()}
+
+
+def load_params(model, pretrained_path):
+    print('load pretrained model from {}'.format(pretrained_path))
+    if torch.cuda.is_available():
+        device = torch.cuda.current_device()
+        pretrained_dict = torch.load(pretrained_path,
+            map_location=lambda storage, loc: storage.cuda(device))
+    else:
+        pretrained_dict = torch.load(pretrained_path,  map_location=torch.device('cpu'))
+    if "state_dict" in pretrained_dict.keys():
+        pretrained_dict = remove_prefix(pretrained_dict['state_dict'],
+                                        'module.')
+    else:
+        pretrained_dict = remove_prefix(pretrained_dict, 'module.')
+    assert check_keys(model, pretrained_dict), 'load NONE from pretrained checkpoint'
+    model.load_state_dict(pretrained_dict, strict=False)
+    return model

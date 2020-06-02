@@ -1,0 +1,18 @@
+# files
+*.log
+*.pyc
+*.sh
+*.swp
+waiting_list.txt
+
+# folds
+
+# data/
+.idea
+debug_scripts
+log/*
+output/*
+pretrainmodel/*
+checkpoint/*
+*/__pycache__
+__pycache__                                                                                       1,1           All

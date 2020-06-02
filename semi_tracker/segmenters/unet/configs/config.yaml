@@ -1,0 +1,51 @@
+META_ARC: "Cell segmentation using Unet"
+
+BACKBONE:
+    TYPE: "unet"
+    KWARGS:
+        pretrained: False
+        need_grad: True
+        n_channels: 1
+        n_classes: 1
+
+LOSS:
+    # TYPE: "WBCELoss"
+    # TYPE: "DiceLoss"
+    TYPE: "WDiceLoss"
+    # KWARGS:
+        # reduction: "mean"
+
+TRAIN:
+    SEED: 1
+    RESUME: ""
+    EPOCHS: 500
+    START_SAVE_EPOCH: 0
+
+    OPT:
+        TYPE: "Adam"
+        KWARGS:
+            weight_decay: 0.0005
+            lr: 0.001
+
+TEST:
+    CHECKPOINT_PATH: "./dice_logs/model_best.pth.tar"
+    DATA_LOADER:
+        image_folder: "../../../data/original/mother_machine_1/1BF-XY01-light/img"
+        mean: [0.26572]
+        std: [0.20387]
+
+DATASET:
+
+    KWARGS:
+        name: "MM-Light"
+        data_dir: "../../../data"
+        split_id: 0
+        num_val: 0.2
+        batch_size: 1
+        workers: 8
+        combine_trainval: False
+        mean: [0.26572]
+        std: [0.20387]
+
+IO:
+    LOG_DIR: "./dice_logs"

@@ -1,0 +1,266 @@
+# -*- coding: UTF-8 -*-
+
+import os.path as osp
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+import pyqtgraph as pg
+from ..utils import get_icon
+
+
+class CorrectionTools(QWidget):
+
+    def __init__(self):
+        super().__init__()
+
+        self.instance_widget_stylesheet = """
+            QListWidget
+            {
+                background: #323232;
+                border: 0px;
+                color: rgb(245, 245, 245, 250);
+            }
+            QScrollBar:vertical
+                {
+                    width:8px;
+                    background:rgb(0,0,0,0%);
+                    margin:0px,0px,0px,0px;
+                    padding-top:0px;   /*上预留位置*/
+                    padding-bottom:0px;    /*下预留位置*/
+                }
+
+                /*滚动条中滑块的样式*/
+                QScrollBar::handle:vertical
+                {
+                    width:8px;
+                    background:rgb(0,0,0,25%);
+                    border-radius:4px;
+                    min-height:20px;
+                }
+
+                /*鼠标触及滑块样式*/
+                QScrollBar::handle:vertical:hover
+                {
+                    width:9px;
+                    background:rgb(0,0,0,50%);
+                    border-radius:4px;
+                    min-height:20;
+                }
+
+                /*设置下箭头*/
+                QScrollBar::add-line:vertical
+                {
+                    height:12px;
+                    width:10px;
+                    border-image:url(:/selectfile/scroll/3.png);
+                    subcontrol-position:bottom;
+                }
+
+                /*设置上箭头*/
+                QScrollBar::sub-line:vertical
+                {
+                    height:12px;
+                    width:10px;
+                    border-image:url(:/selectfile/scroll/1.png);
+                    subcontrol-position:top;
+                }
+
+                /*设置下箭头:悬浮状态*/
+                QScrollBar::add-line:vertical:hover
+                {
+                    height:12px;
+                    width:10px;
+                    border-image:url(:/selectfile/scroll/4.png);
+                    subcontrol-position:bottom;
+                }
+
+                /*设置上箭头：悬浮状态*/
+                QScrollBar::sub-line:vertical:hover
+                {
+                    height:12px;
+                    width:10px;
+                    border-image:url(:/selectfile/scroll/2.png);
+                    subcontrol-position:top;
+                }
+
+                /*当滚动条滚动的时候，上面的部分和下面的部分*/
+                QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical
+                {
+                    background:rgb(0,0,0,10%);
+                    border-radius:4px;
+                }
+        """
+
+        self.setup_ui()
+
+    def setup_ui(self):
+        ins_label = QLabel()
+        ins_label.setText("Cells")
+        ins_label.setAlignment(Qt.AlignVCenter)
+        ins_label.setStyleSheet("color: white;"
+                                "background: transparent;")
+
+        add_instance_button = QPushButton()
+        add_instance_button.setToolTip("Add a new cell")
+        add_instance_button.setIcon(QIcon((get_icon("square-plus.png"))))
+        add_instance_button.setIconSize(QSize(18, 18))
+        add_instance_button.setFixedSize(QSize(20, 20))
+        add_instance_button.setFlat(True)
+        add_instance_button.setStyleSheet("border: 0px")
+        # add_instance_button.clicked.connect(self.add_instance_fnc)
+
+        instances_widget = QListWidget()
+        instances_widget.setStyleSheet(self.instance_widget_stylesheet)
+        instances_widget.setIconSize(QSize(30, 30))
+        instances_widget.setFont(QFont("Verdana", 10))
+        # instances_widget.clicked.connect(self.instances_widget_fnc)
+        # instances_widget.doubleClicked.connect(self.instances_widget_fnc_double)
+
+        size_editor = QLineEdit()
+        size_editor.setFixedSize(QSize(20, 20))
+        size_editor.setAlignment(Qt.AlignCenter)
+        size_editor.setText(str(3))
+        size_editor.setValidator(QIntValidator())
+        size_editor.setStyleSheet("background: #545454;"
+                                  "border: 0px;"
+                                  "border-radius: 3px;"
+                                  "color: white;")
+        # size_editor.textChanged.connect(self.size_editer_fnc)
+
+        size_left_button = QPushButton()
+        size_left_button.setIcon(QIcon((get_icon("left.png"))))
+        size_left_button.setIconSize(QSize(15, 15))
+        size_left_button.setFixedSize(QSize(15, 15))
+        size_left_button.setFlat(True)
+        size_left_button.setStyleSheet("border: 0px")
+        # size_left_button.clicked.connect(self.size_left_fnc)
+
+        size_right_button = QPushButton()
+        size_right_button.setIcon(QIcon((get_icon("right.png"))))
+        size_right_button.setIconSize(QSize(15, 15))
+        size_right_button.setFixedSize(QSize(15, 15))
+        size_right_button.setFlat(True)
+        size_right_button.setStyleSheet("border: 0px")
+        # size_right_button.clicked.connect(self.size_right_fnc)
+
+        switch_show_button = QPushButton()
+        switch_show_button.setToolTip("Change the showing contents")
+        switch_show_button.setIcon(QIcon((get_icon("switch.png"))))
+        switch_show_button.setIconSize(QSize(18, 18))
+        switch_show_button.setFixedSize(QSize(20, 20))
+        switch_show_button.setFlat(True)
+        switch_show_button.setStyleSheet("border: 0px")
+        # switch_show_button.clicked.connect(self.switch_show_fnc)
+
+        brush_button = QPushButton()
+        brush_button.setToolTip("Brush")
+        brush_button.setIcon(QIcon((get_icon("pen.png"))))
+        brush_button.setIconSize(QSize(18, 18))
+        brush_button.setFixedSize(QSize(25, 25))
+        brush_button.setFlat(True)
+        brush_button.setStyleSheet("border: 0px")
+        # brush_button.clicked.connect(self.draw_mask_fnc)
+
+        eraser_button = QPushButton()
+        eraser_button.setToolTip("Eraser")
+        eraser_button.setIcon(QIcon((get_icon("eraser.png"))))
+        eraser_button.setIconSize(QSize(20, 20))
+        eraser_button.setFixedSize(QSize(25, 25))
+        eraser_button.setFlat(True)
+        eraser_button.setStyleSheet("border: 0px")
+        # eraser_button.clicked.connect(self.mask_eraser_fnc)
+
+        drag_button = QPushButton()
+        drag_button.setToolTip("Drag")
+        drag_button.setIcon(QIcon((get_icon("hand.png"))))
+        drag_button.setIconSize(QSize(25, 25))
+        drag_button.setFixedSize(QSize(25, 25))
+        drag_button.setFlat(True)
+        drag_button.setStyleSheet("border: 0px")
+        # drag_button.clicked.connect(self.mask_drag_fnc)
+
+        confirm_button = QPushButton()
+        confirm_button.setToolTip("Update all changes")
+        confirm_button.setIcon(QIcon((get_icon("check.png"))))
+        confirm_button.setIconSize(QSize(23, 23))
+        confirm_button.setFixedSize(QSize(25, 25))
+        confirm_button.setFlat(True)
+        confirm_button.setStyleSheet("border: 0px")
+        # confirm_button.clicked.connect(self.mask_confirm_fnc)
+
+        delete_button = QPushButton()
+        delete_button.setToolTip("Delete chose cell")
+        delete_button.setIcon(QIcon((get_icon("trash.png"))))
+        delete_button.setIconSize(QSize(20, 20))
+        delete_button.setFixedSize(QSize(25, 25))
+        delete_button.setFlat(True)
+        delete_button.setStyleSheet("border: 0px")
+        # delete_button.clicked.connect(self.instance_delete_fnc)
+
+        assist_frame = pg.ImageView(self)
+        assist_frame.ui.roiBtn.hide()
+        assist_frame.ui.menuBtn.hide()
+        assist_frame.ui.histogram.hide()
+
+        sub_layout_top = QHBoxLayout()
+        sub_layout_top.addWidget(ins_label)
+        sub_layout_top.addWidget(add_instance_button)
+        sub_layout_top.addWidget(delete_button)
+
+        size_layout = QHBoxLayout()
+        size_layout.setSpacing(0)
+        size_layout.addWidget(size_left_button)
+        size_layout.addWidget(size_editor)
+        size_layout.addWidget(size_right_button)
+
+        sub_layout_bottom = QHBoxLayout()
+        sub_layout_bottom.addWidget(brush_button)
+        sub_layout_bottom.addWidget(eraser_button)
+        sub_layout_bottom.addLayout(size_layout)
+        sub_layout_bottom.addWidget(drag_button)
+        sub_layout_bottom.addWidget(confirm_button)
+        sub_layout_bottom.addWidget(switch_show_button)
+
+        annotation_layout = QVBoxLayout()
+        annotation_layout.addLayout(sub_layout_top)
+        annotation_layout.addWidget(instances_widget)
+        annotation_layout.addLayout(sub_layout_bottom)
+        annotation_layout.setSpacing(3)
+        annotation_layout.setContentsMargins(5, 5, 5, 0)
+
+        '''
+        draw_mask_layout = QHBoxLayout()
+        draw_mask_layout.addLayout(sub_mask_layout1)
+        draw_mask_layout.setSpacing(3)
+        draw_mask_layout.setContentsMargins(5, 5, 5, 0)  # 左 上 右 下
+        '''
+
+        assist_layout = QVBoxLayout()
+        assist_layout.addWidget(assist_frame)
+
+        self.right_layout = QVBoxLayout()
+        self.right_layout.setContentsMargins(1, 0, 0, 0)
+        self.right_layout.addLayout(annotation_layout)
+        self.right_layout.addLayout(assist_layout)
+        self.right_layout.setStretch(0, 4)
+        self.right_layout.setStretch(1, 2)
+
+        right_widget = QWidget()  # 创建右侧部件
+        right_widget.setStyleSheet("background-color:#414141;")
+        right_widget.setFixedWidth(250)
+        right_widget.setLayout(self.right_layout)
+
+        self.assist_frame           = assist_frame
+        self.brush_button           = brush_button
+        self.confirm_button         = confirm_button
+        self.eraser_button          = eraser_button
+        self.switch_show_button     = switch_show_button
+        self.add_instance_button    = add_instance_button
+        self.instances_widget       = instances_widget
+        self.delete_button          = delete_button
+        self.ins_label              = ins_label
+        self.right_widget           = right_widget
+        self.size_editor            = size_editor
+        self.size_left_button       = size_left_button
+        self.size_right_button      = size_right_button
+        self.drag_button            = drag_button
