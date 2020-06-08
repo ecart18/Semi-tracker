@@ -8,12 +8,12 @@ import torch
 from torchvision.transforms import Compose
 from torchvision.transforms import Normalize
 from torchvision.transforms import ToTensor
-from skimage import morphology
 from .backbone import get_backbone
 from .utils.osutils import load_params
 from .utils.osutils import mkdir
 from ..utils.processing import bgr_to_gray
 from ..utils.processing import gray_to_bgr
+
 
 class Unet:
     def __init__(self, model_path='./checkpoint/model_best.pth.tar', 
@@ -56,5 +56,5 @@ class Unet:
             binary_mask[binary_mask < self._threshold] = 0
             binary_mask[binary_mask >= self._threshold] = 1
             binary_mask = np.expand_dims(binary_mask, 2)
-            label_img = morphology.label(binary_mask, connectivity=2)        
-        return label_img
+            _, label_img, _, _ = cv2.connectedComponentsWithStats(binary_mask, connectivity=4, ltype=cv2.CV_32S)        
+        return np.expand_dims(label_img, axis=2)
