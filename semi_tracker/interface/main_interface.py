@@ -33,7 +33,7 @@ from ..segmenters import get_segmenter
 from ..trackers import get_tracker
 from ..writer import get_writer
 from .utils import get_icon
-from ..utils.logger import logger
+from ..utils import logger
 
 
 class MainWindow(QMainWindow):
