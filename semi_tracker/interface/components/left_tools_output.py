@@ -45,12 +45,18 @@ class OutputTools(QWidget):
                                                          proj_name='Test_name',
                                                          cell_type='SIM'))
         '''
-        output_layout = QHBoxLayout()
-        output_layout.addWidget(output_label)
-        output_layout.addWidget(output_format_select)
-        output_layout.addWidget(output_button)
+        output_layout1 = QHBoxLayout()
+        output_layout2 = QHBoxLayout()
+        output_layout_main = QVBoxLayout()
+        output_layout1.addWidget(output_label)
+        output_layout1.addWidget(output_format_select)
+        output_layout2.addWidget(output_button)
+        output_layout2.setAlignment(Qt.AlignRight)
+        output_layout_main.addLayout(output_layout1)
+        output_layout_main.addLayout(output_layout2)
+        output_layout_main.setAlignment(Qt.AlignTop)
 
-        self.output_tools.setLayout(output_layout)
+        self.output_tools.setLayout(output_layout_main)
 
         self.output_format_select   = output_format_select
         self.output_button          = output_button

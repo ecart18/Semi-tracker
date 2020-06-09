@@ -29,6 +29,7 @@ from .components import AnnotationTools
 from .utils import color_groups, annotation_colors
 from .utils import load_images
 from .utils import mkdir
+from ..normalizers import get_normalizer
 from ..segmenters import get_segmenter
 from ..trackers import get_tracker
 from ..writer import get_writer
@@ -55,10 +56,12 @@ class MainWindow(QMainWindow):
         self.show_flag          = 1    # 1:raw raw 2.mask raw 3.color+raw raw 4.annotation: raw label_img
         # 0:unload 1.loaded 2. segmented 3.tracked 4.annotation_origin_selected 5.annotation_ready
         # self.status_flag        = 0
-        self.segmenter_dict     = {0: 'binary_thresholding', 1: 'unet', 2: 'WaterShred', 3: 'grad_cut', 4: 'User-defined'}
+        self.segmenter_dict     = {0: 'binary_thresholding', 1: 'unet', 2: 'water_shed', 3: 'grad_cut', 4: 'User-defined'}
         self.segmenter_name     = 'binary_thresholding'
         self.tracker_dict       = {0: 'none', 1: 'bipartite_tracker'}
         self.tracker_name       = 'bipartite_tracker'
+        self.normalizer_dict    = {0: 'equalize_hist', 1: 'min_max', 2: 'retinex_MSRCP', 3: 'retinex_MSRCR'}
+        self.normalizer_name    = 'equalize_hist'
         self.previous_frame     = 0
 
         self.grabcut_pos_begin  = None
@@ -204,6 +207,7 @@ class MainWindow(QMainWindow):
         self.left_navigation = self.navigation.left_navigation
         self.tools = LeftTools()
         self.left_tools = self.tools.left_tools
+        self.tools.main_algorithm.currentChanged.connect(self.main_algorithm_changed_fnc)
 
         self.left_navigation.clicked.connect(self.left_navigation_fnc)
         self.last_item = self.left_navigation.item(self.last_index)
@@ -214,6 +218,8 @@ class MainWindow(QMainWindow):
         # self.tools.file_tree_widget.open_button.clicked.connect(self.open_project_fnc)
 
         self.tools.segment.segment_tools.currentChanged.connect(self.segmenter_changed_fnc)
+        self.tools.normlize.normalize_tools.currentChanged.connect(self.normalizer_changed_fnc)
+
         # seg alg1
         self.tools.segment.thresh_segment_button.clicked.connect(
             lambda: self.segment(self.segmenter_name, threshold=self.tools.segment.thresh_sld1.value()))
@@ -225,13 +231,21 @@ class MainWindow(QMainWindow):
                                  threshold=self.tools.segment.thresh_sld2.value()/10))
 
         # seg alg3
-        self.tools.segment.thresh_segment_button3.clicked.connect(
-            lambda: self.segment(self.segmenter_name, threshold=self.tools.segment.thresh_sld3.value()))
+        self.tools.segment.watershed_segment_button.clicked.connect(
+            lambda: self.segment(self.segmenter_name, noise_amplitude=self.tools.segment.noise_sld.value(),
+                                 dist_thresh=self.tools.segment.dist_thresh_sld.value()/10))
 
         # seg alg4
         self.tools.segment.select_roi_button.clicked.connect(self.select_roi_button_fnc)
         self.tools.segment.grabcut_segment_button.clicked.connect(
             lambda: self.segment(self.segmenter_name, iteration=self.tools.segment.iteration_sld.value()))
+
+        # normalization
+        self.tools.normlize.equalize_hist_button.clicked.connect(lambda: self.normalize(self.normalizer_name))
+        self.tools.normlize.min_max_button.clicked.connect(lambda: self.normalize(self.normalizer_name))
+        self.tools.normlize.retinex_MSRCP_button.clicked.connect(lambda: self.normalize(self.normalizer_name))
+        self.tools.normlize.retinex_MSRCR_button.clicked.connect(lambda: self.normalize(self.normalizer_name))
+
 
         # track
         self.tools.track.run_button.clicked.connect(lambda: self.track(self.tracker_name))
@@ -250,7 +264,10 @@ class MainWindow(QMainWindow):
     def init_visualize_window(self):
         self.visualize = VisualizeWindow()
         self.visualize_window = self.visualize.visualize_window
-
+        self.setMouseTracking(True)
+        self.visualize.setMouseTracking(True)
+        self.visualize.main_frame.setMouseTracking(True)
+        self.visualize.main_frame.mouseMoveEvent = self.my_mousemove_event
         self.visualize.main_left.clicked.connect(self.main_left_fnc)
         self.visualize.main_right.clicked.connect(self.main_right_fnc)
         self.visualize.main_sld.valueChanged.connect(self.main_sld_fnc)
@@ -278,6 +295,10 @@ class MainWindow(QMainWindow):
         self.status = StatusBar()
         self.status_bar = self.status.status_bar
 
+    def my_mousemove_event(self, event):
+        event.accept()
+        print(event.pos())
+
     def select_roi_button_fnc(self):
         self.visualize.main_frame.getImageItem().mouseDragEvent = self.grabcut_drag
 
@@ -296,8 +317,30 @@ class MainWindow(QMainWindow):
             self.grabcut_roi = pg.RectROI(self.grabcut_pos_begin, pos-self.grabcut_pos_begin)
             self.visualize.main_frame.addItem(self.grabcut_roi)
 
+    def main_algorithm_changed_fnc(self):
+        algorithm_key = self.tools.main_algorithm.currentIndex()
+        for i in range(4):
+            if i == algorithm_key:
+                self.tools.main_algorithm.setItemIcon(i, QIcon(get_icon("Arrow_down.png")))
+            else:
+                self.tools.main_algorithm.setItemIcon(i, QIcon(get_icon("Arrow_right.png")))
+
+    def normalizer_changed_fnc(self):
+        normalizer_key = self.tools.normlize.normalize_tools.currentIndex()
+        for i in range(3):
+            if i == normalizer_key:
+                self.tools.normlize.normalize_tools.setItemIcon(i, QIcon(get_icon("Arrow_down.png")))
+            else:
+                self.tools.normlize.normalize_tools.setItemIcon(i, QIcon(get_icon("Arrow_right.png")))
+        self.normalizer_name = self.normalizer_dict[normalizer_key]
+
     def segmenter_changed_fnc(self):
         segmenter_key = self.tools.segment.segment_tools.currentIndex()
+        for i in range(5):
+            if i == segmenter_key:
+                self.tools.segment.segment_tools.setItemIcon(i, QIcon(get_icon("Arrow_down.png")))
+            else:
+                self.tools.segment.segment_tools.setItemIcon(i, QIcon(get_icon("Arrow_right.png")))
         # print(segmenter_key)
         self.segmenter_name = self.segmenter_dict[segmenter_key]
         # print(self.segmenter_name)
@@ -338,21 +381,21 @@ class MainWindow(QMainWindow):
             if not np.shape(len(self.frames)) == 0:
 
                 if self.show_flag == 1:
-                    self.visualize.main_frame.setImage(self.frames[main_sld_val].raw_img[:, :, 0],
+                    self.visualize.main_frame.setImage(self.frames[main_sld_val].norm_img,
                                                        autoHistogramRange=False)
-                    self.correction.assist_frame.setImage(self.frames[main_sld_val].raw_img[:, :, 0],
+                    self.correction.assist_frame.setImage(self.frames[main_sld_val].raw_img,
                                                           autoHistogramRange=False)
 
                 elif self.show_flag == 2:
-                    self.visualize.main_frame.setImage(self.frames[main_sld_val].binary_mask[:, :, 0],
+                    self.visualize.main_frame.setImage(self.frames[main_sld_val].binary_mask,
                                                        autoHistogramRange=False)
-                    self.correction.assist_frame.setImage(self.frames[main_sld_val].raw_img[:, :, 0],
+                    self.correction.assist_frame.setImage(self.frames[main_sld_val].raw_img,
                                                           autoHistogramRange=False)
 
                 elif self.show_flag == 3:
                     self.visualize.main_frame.removeItem(self.bboxroi)
                     self.visualize.main_frame.setImage(self.frames[main_sld_val].raw_color_img)
-                    self.correction.assist_frame.setImage(self.frames[main_sld_val].raw_img[:, :, 0],
+                    self.correction.assist_frame.setImage(self.frames[main_sld_val].raw_img,
                                                           autoHistogramRange=False)
                     self.instance_widget_update_fnc()
                 elif self.show_flag == 4:
@@ -365,7 +408,7 @@ class MainWindow(QMainWindow):
                         for c_roi in self.frames_roi[main_sld_val]:
                             self.visualize.main_frame.addItem(c_roi)
 
-                    self.visualize.main_frame.setImage(self.frames[main_sld_val].raw_img[:, :, 0],
+                    self.visualize.main_frame.setImage(self.frames[main_sld_val].norm_img,
                                                        autoHistogramRange=False)
 
                     if self.frames[main_sld_val].label_img.min == \
@@ -379,9 +422,8 @@ class MainWindow(QMainWindow):
                         colormap = pg.ColorMap(np.linspace(0, 1, 2),
                                                color=[[0, 0, 0, 0], [255, 255, 255, 255]])
                         self.correction.assist_frame.setColorMap(colormap)
-                        self.correction.assist_frame.setImage(self.frames[main_sld_val].raw_img[:, :, 0])
+                        self.correction.assist_frame.setImage(self.frames[main_sld_val].norm_img)
                     self.instance_widget_update_fnc()
-
             else:
                 pass
 
@@ -394,7 +436,6 @@ class MainWindow(QMainWindow):
             show_contents = "Name: " + self.frames[self.visualize.main_sld.value()].instances[key].name + "\n" + \
                             " Centroid: " + str(self.frames[self.visualize.main_sld.value()].instances[key].centroid)
             item = QListWidgetItem(show_contents, self.correction.instances_widget)
-            # item = QListWidgetItem(self.frames[self.main_sld.value()].instances[key].name, self.instances_widget)
             pix = QPixmap(30, 30)
             pix.fill(QColor(self.frames[self.visualize.main_sld.value()].instances[key].color[0],
                             self.frames[self.visualize.main_sld.value()].instances[key].color[1],
@@ -462,11 +503,11 @@ class MainWindow(QMainWindow):
     def reload_fnc(self):
         self.annotation_flag = -1
         self.visualize.main_frame.clear()
-        colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
-        self.visualize.main_frame.setColorMap(colormap)
+        # colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
+        # self.visualize.main_frame.setColorMap(colormap)
 
         self.correction.assist_frame.clear()
-        self.correction.assist_frame.setColorMap(colormap)
+        # self.correction.assist_frame.setColorMap(colormap)
 
         self.correction.instances_widget.clear()
 
@@ -481,11 +522,11 @@ class MainWindow(QMainWindow):
             self.frames = load_images(filenames)
             self.frames_num = len(self.frames)
 
-            colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
-            self.visualize.main_frame.setColorMap(colormap)
+            # colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
+            # self.visualize.main_frame.setColorMap(colormap)
 
             self.visualize.main_frame.setImage(img=self.frames[0].raw_img)
-            self.correction.assist_frame.setImage(self.frames[0].raw_img[:, :, 0])
+            self.correction.assist_frame.setImage(self.frames[0].raw_img)
 
             self.show_flag = 1
             self.visualize.main_sld.setValue(0)
@@ -498,8 +539,8 @@ class MainWindow(QMainWindow):
         self.origin_dir_path = QFileDialog.getExistingDirectory()
         self.tools.annotation.origin_path_show_lineedit.setText(self.origin_dir_path)
 
-        colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
-        self.visualize.main_frame.setColorMap(colormap)
+        # colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
+        # self.visualize.main_frame.setColorMap(colormap)
 
         filenames = []
         if not self.origin_dir_path == "":
@@ -510,7 +551,7 @@ class MainWindow(QMainWindow):
             self.frames = load_images(filenames)
             self.frames_num = len(self.frames)
             self.visualize.main_frame.setImage(self.frames[0].raw_img)
-            self.correction.assist_frame.setImage(self.frames[0].raw_img[:, :, 0])
+            self.correction.assist_frame.setImage(self.frames[0].raw_img)
 
             self.show_flag = 1
             self.visualize.main_sld.setValue(0)
@@ -933,10 +974,7 @@ class MainWindow(QMainWindow):
                 self.correction.assist_frame.setImage(self.frames[self.visualize.main_sld.value()].label_img,
                                                       autoHistogramRange=False)
             else:
-                colormap = pg.ColorMap(np.linspace(0, 1, 2),
-                                       color=[[0, 0, 0, 0], [255, 255, 255, 255]])
-                self.correction.assist_frame.setColorMap(colormap)
-                self.correction.assist_frame.setImage(self.frames[self.visualize.main_sld.value()].raw_img[:, :, 0],
+                self.correction.assist_frame.setImage(self.frames[self.visualize.main_sld.value()].raw_img,
                                                       autoHistogramRange=False)
 
         elif self.annotation_flag == 0 and current_row >= 0:
@@ -999,6 +1037,16 @@ class MainWindow(QMainWindow):
             self.last_index = self.left_navigation.currentRow()
 
     # algorithm API
+    def normalize(self, name):
+        if not len(self.frames) == 0:
+            normalizer = get_normalizer(name=name)
+            for key in self.frames.keys():
+                self.frames[key].norm_img = normalizer(self.frames[key].raw_img)
+            self.visualize.main_frame.setImage(self.frames[self.visualize.main_sld.value()].norm_img)
+        else:
+            self.normalize_message_box = InformationMessageBox("Please load images first!")
+            self.normalize_message_box.show()
+
     def segment(self, name, **kwargs):
         if (not len(self.frames) == 0 and self.frames[0].label_img is None) or \
                 self.tools.segment.segment_tools.currentIndex() == 3:
@@ -1023,7 +1071,7 @@ class MainWindow(QMainWindow):
             segmenter = get_segmenter(name=name, **kwargs)
             self.status.work_info_label.setText("Segmenting...")
             for key in self.frames.keys():
-                label_img = segmenter(self.frames[key].raw_img)
+                label_img = segmenter(self.frames[key].norm_img)
                 self.frames[key].label_img = label_img
 
                 self.status.update_progressbar(t)
@@ -1041,7 +1089,7 @@ class MainWindow(QMainWindow):
             segmenter = get_segmenter(name=name, **kwargs)
             self.status.work_info_label.setText("Segmenting...")
             if self.frames[self.visualize.main_sld.value()].label_img is None:
-                label_img = segmenter(img=self.frames[self.visualize.main_sld.value()].raw_img,
+                label_img = segmenter(img=self.frames[self.visualize.main_sld.value()].norm_img,
                                       rect=[int(self.grabcut_roi.state['pos'][0]),
                                             int(self.grabcut_roi.state['pos'][1]),
                                             int(self.grabcut_roi.state['pos'][0]+self.grabcut_roi.state['size'][0]),

@@ -201,6 +201,9 @@ class CorrectionTools(QWidget):
         assist_frame.ui.roiBtn.hide()
         assist_frame.ui.menuBtn.hide()
         assist_frame.ui.histogram.hide()
+        colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
+        assist_frame.setColorMap(colormap)
+        assist_frame.view.mouseClickEvent = self.my_mouse_click_event
 
         sub_layout_top = QHBoxLayout()
         sub_layout_top.addWidget(ins_label)
@@ -264,3 +267,7 @@ class CorrectionTools(QWidget):
         self.size_left_button       = size_left_button
         self.size_right_button      = size_right_button
         self.drag_button            = drag_button
+
+    def my_mouse_click_event(self, ev):
+        if ev.button() == Qt.RightButton:
+            ev.ignore()

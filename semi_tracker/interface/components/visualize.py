@@ -45,6 +45,8 @@ class VisualizeWindow(QWidget):
         main_frame.ui.menuBtn.hide()
         main_frame.ui.histogram.hide()
         main_frame.view.mouseClickEvent = self.my_mouse_click_event
+        colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
+        main_frame.setColorMap(colormap)
 
         # pg.setConfigOption()
 

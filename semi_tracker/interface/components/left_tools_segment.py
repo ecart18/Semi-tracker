@@ -21,7 +21,8 @@ class SegmentTools(QWidget):
             QToolBox::tab 
             {
                 font-family: Verdana;
-                background: #454545;
+                font-size: 12px;
+                background: #666666;
                 border: 0px;
             }
             QToolBoxButton 
@@ -74,6 +75,11 @@ class SegmentTools(QWidget):
         self.segment_tools.addItem(self.segment_algorithm3, "WaterShred")
         self.segment_tools.addItem(self.segment_algorithm4, "CrabCut")
         self.segment_tools.addItem(self.segment_algorithm5, "User-defined")
+        self.segment_tools.setItemIcon(0, QIcon(get_icon("Arrow_down.png")))
+        self.segment_tools.setItemIcon(1, QIcon(get_icon("Arrow_right.png")))
+        self.segment_tools.setItemIcon(2, QIcon(get_icon("Arrow_right.png")))
+        self.segment_tools.setItemIcon(3, QIcon(get_icon("Arrow_right.png")))
+        self.segment_tools.setItemIcon(0, QIcon(get_icon("Arrow_right.png")))
 
     def init_seg1(self):
         segment_algorithm1 = QWidget()
@@ -160,7 +166,7 @@ class SegmentTools(QWidget):
 
         model_path_label = QLineEdit()
         model_path_label.setText("Select a model")
-        model_path_label.setFixedSize(180, 20)
+        model_path_label.setFixedSize(150, 20)
         model_path_label.setStyleSheet("background: #454545;"
                                        "border: 0px;"
                                        "color: white;"
@@ -253,62 +259,99 @@ class SegmentTools(QWidget):
         segment_algorithm3_layout1 = QHBoxLayout()
         segment_algorithm3_layout2 = QHBoxLayout()
         segment_algorithm3_layout3 = QHBoxLayout()
+        segment_algorithm3_layout4 = QHBoxLayout()
+        segment_algorithm3_layout5 = QHBoxLayout()
 
-        thresh_sld3 = QSlider(Qt.Horizontal)
-        thresh_sld3.setMinimum(0)
-        thresh_sld3.setMaximum(255)
-        thresh_sld3.setValue(129)
-        thresh_sld3.setStyleSheet(self.sld_stylesheet)
-        thresh_sld3.valueChanged.connect(self.sld2text3)
+        noise_sld = QSlider(Qt.Horizontal)
+        noise_sld.setMinimum(0)
+        noise_sld.setMaximum(20)
+        noise_sld.setValue(5)
+        noise_sld.setStyleSheet(self.sld_stylesheet)
+        noise_sld.valueChanged.connect(self.sld2text31)
 
-        thresh_label3 = QLabel()
-        thresh_label3.setText("Threshold(0~255)")
-        thresh_label3.setAlignment(Qt.AlignCenter)
-        thresh_label3.setStyleSheet("font-family: Verdana;"
-                                    "color: white;")
+        noise_label = QLabel()
+        noise_label.setText("Noise Amplitude(0~20)")
+        noise_label.setAlignment(Qt.AlignCenter)
+        noise_label.setStyleSheet("font-family: Verdana;"
+                                  "color: white;")
 
-        thresh_textline3 = QLineEdit()
-        thresh_textline3.setAlignment(Qt.AlignCenter)
-        thresh_textline3.setFixedSize(50, 15)
-        thresh_textline3.setValidator(QIntValidator())
-        thresh_textline3.setText("129")
-        thresh_textline3.setStyleSheet("background: #454545;"
+        noise_textline = QLineEdit()
+        noise_textline.setAlignment(Qt.AlignCenter)
+        noise_textline.setFixedSize(50, 15)
+        noise_textline.setValidator(QIntValidator())
+        noise_textline.setText("5")
+        noise_textline.setStyleSheet("background: #454545;"
                                        "border: 0px;"
                                        "color: white;"
                                        "border-radius: 5px;"
                                        "font-family: Verdana;")
-        thresh_textline3.textEdited.connect(self.text2sld3)
+        noise_textline.textEdited.connect(self.text2sld31)
 
-        thresh_segment_button3 = QPushButton()
-        thresh_segment_button3.setFixedSize(180, 20)
-        thresh_segment_button3.setText("Threshold")
-        thresh_segment_button3.setStyleSheet("background: #454545;"
+        dist_thresh_sld = QSlider(Qt.Horizontal)
+        dist_thresh_sld.setMinimum(0)
+        dist_thresh_sld.setMaximum(20)
+        dist_thresh_sld.setValue(5)
+        dist_thresh_sld.setStyleSheet(self.sld_stylesheet)
+        dist_thresh_sld.valueChanged.connect(self.sld2text32)
+
+        dist_thresh_label = QLabel()
+        dist_thresh_label.setText("Dist thresh(0~1)")
+        dist_thresh_label.setAlignment(Qt.AlignCenter)
+        dist_thresh_label.setStyleSheet("font-family: Verdana;"
+                                  "color: white;")
+
+        dist_thresh_textline = QLineEdit()
+        dist_thresh_textline.setAlignment(Qt.AlignCenter)
+        dist_thresh_textline.setFixedSize(50, 15)
+        # dist_thresh_textline.setValidator(QIntValidator())
+        dist_thresh_textline.setText("0.5")
+        dist_thresh_textline.setStyleSheet("background: #454545;"
+                                     "border: 0px;"
+                                     "color: white;"
+                                     "border-radius: 5px;"
+                                     "font-family: Verdana;")
+        dist_thresh_textline.textEdited.connect(self.text2sld32)
+
+        watershed_segment_button = QPushButton()
+        watershed_segment_button.setFixedSize(180, 20)
+        watershed_segment_button.setText("WaterShred")
+        watershed_segment_button.setStyleSheet("background: #454545;"
                                              "color: white;"
                                              "border-radius: 5px;"
                                              "font-family: Verdana;")
         segmenter_name = 'binary_thresholding'
         # thresh_segment_button.clicked.connect(lambda: self.segment(segmenter_name, threshold=self.thresh_sld.value()))
 
-        segment_algorithm3_layout1.addWidget(thresh_label3)
+        segment_algorithm3_layout1.addWidget(noise_label)
         segment_algorithm3_layout1.setAlignment(Qt.AlignLeft)
-        segment_algorithm3_layout2.addWidget(thresh_sld3)
-        segment_algorithm3_layout2.addWidget(thresh_textline3)
+        segment_algorithm3_layout2.addWidget(noise_sld)
+        segment_algorithm3_layout2.addWidget(noise_textline)
         segment_algorithm3_layout2.setAlignment(Qt.AlignCenter)
-        segment_algorithm3_layout3.addWidget(thresh_segment_button3)
-        segment_algorithm3_layout3.setAlignment(Qt.AlignRight)
+        segment_algorithm3_layout3.addWidget(dist_thresh_label)
+        segment_algorithm3_layout3.setAlignment(Qt.AlignLeft)
+        segment_algorithm3_layout4.addWidget(dist_thresh_sld)
+        segment_algorithm3_layout4.addWidget(dist_thresh_textline)
+        segment_algorithm3_layout4.setAlignment(Qt.AlignCenter)
+        segment_algorithm3_layout5.addWidget(watershed_segment_button)
+        segment_algorithm3_layout5.setAlignment(Qt.AlignRight)
 
         segment_algorithm3_layout.addLayout(segment_algorithm3_layout1)
         segment_algorithm3_layout.addLayout(segment_algorithm3_layout2)
         segment_algorithm3_layout.addLayout(segment_algorithm3_layout3)
+        segment_algorithm3_layout.addLayout(segment_algorithm3_layout4)
+        segment_algorithm3_layout.addLayout(segment_algorithm3_layout5)
         segment_algorithm3_layout.setAlignment(Qt.AlignTop)
         segment_algorithm3_layout.setSpacing(5)
         segment_algorithm3_layout.setContentsMargins(5, 5, 5, 5)
 
         self.segment_algorithm3     = segment_algorithm3
-        self.thresh_sld3            = thresh_sld3
-        self.thresh_label3          = thresh_label3
-        self.thresh_textline3       = thresh_textline3
-        self.thresh_segment_button3 = thresh_segment_button3
+        self.noise_sld            = noise_sld
+        self.noise_label          = noise_label
+        self.noise_textline       = noise_textline
+        self.dist_thresh_sld      = dist_thresh_sld
+        self.dist_thresh_label    = dist_thresh_label
+        self.dist_thresh_textline = dist_thresh_textline
+        self.watershed_segment_button = watershed_segment_button
 
     def init_seg4(self):
         segment_algorithm4 = QWidget()
@@ -488,13 +531,21 @@ class SegmentTools(QWidget):
         t = self.thresh_textline2.text()
         self.thresh_sld2.setValue(int(t)*10)
 
-    def sld2text3(self):
-        f = self.thresh_sld3.value()
-        self.thresh_textline3.setText(str(f))
+    def sld2text31(self):
+        f = self.noise_sld.value()
+        self.noise_textline.setText(str(f))
 
-    def text2sld3(self):
-        t = self.thresh_textline3.text()
-        self.thresh_sld3.setValue(int(t))
+    def text2sld31(self):
+        t = self.noise_textline.text()
+        self.noise_sld.setValue(int(t))
+
+    def sld2text32(self):
+        f = self.dist_thresh_sld.value()/10
+        self.dist_thresh_textline.setText(str(f))
+
+    def text2sld32(self):
+        t = self.dist_thresh_textline.text()
+        self.dist_thresh_sld.setValue(int(t)*10)
 
     def sld2text4(self):
         f = self.iteration_sld.value()

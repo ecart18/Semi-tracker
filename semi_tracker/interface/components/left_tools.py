@@ -9,6 +9,8 @@ from .left_tools_segment import SegmentTools
 from .left_tools_output import OutputTools
 from .left_tools_track import TrackTools
 from .left_tools_annotation import AnnotationTools
+from .left_tools_normalization import NormalizeTools
+from ..utils import get_icon
 
 
 class LeftTools(QWidget):
@@ -45,15 +47,51 @@ class LeftTools(QWidget):
         self.left_tools.addWidget(QLabel("Image preprocess"))
 
     def init_algorithms(self):
+        self.normlize  = NormalizeTools()
         self.segment   = SegmentTools()
         self.track     = TrackTools()
         self.output    = OutputTools()
 
-        self.main_algorithm = QWidget()
-        main_algorithm_layout = QVBoxLayout(self.main_algorithm)
-        main_algorithm_layout.addWidget(self.segment.segment_tools)
-        main_algorithm_layout.addWidget(self.track.track_tools)
-        main_algorithm_layout.addWidget(self.output.output_tools)
+        left_tools_stylesheet = """
+                    QToolBox 
+                    {
+                        background: #282828;
+                        padding-bottom: 0px;
+                        text-align: center;
+                    }
+                    QToolBox::tab 
+                    {
+                        font-family: Verdana;
+                        font-size: 15px;
+                        background: #454545;
+                        border: 0px;
+                        text-align: center;
+                    }
+                    QToolBoxButton 
+                    {
+                        min-height: 25px;
+                    }
+                    QToolBox::tab:selected 
+                    { 
+                        color: white;
+                    }
+                """
+
+        self.main_algorithm = QToolBox()
+        self.main_algorithm.setStyleSheet(left_tools_stylesheet)
+        self.main_algorithm.addItem(self.normlize.normalize_tools, "Normalization")
+        self.main_algorithm.addItem(self.segment.segment_tools, "Segmentation")
+        self.main_algorithm.addItem(self.track.track_tools, "Track")
+        self.main_algorithm.addItem(self.output.output_tools, "Output")
+        self.main_algorithm.setItemIcon(0, QIcon(get_icon("Arrow_down.png")))
+        self.main_algorithm.setItemIcon(1, QIcon(get_icon("Arrow_right.png")))
+        self.main_algorithm.setItemIcon(2, QIcon(get_icon("Arrow_right.png")))
+        self.main_algorithm.setItemIcon(3, QIcon(get_icon("Arrow_right.png")))
+        self.main_algorithm.layout().setSpacing(3)
+        # main_algorithm_layout = QVBoxLayout(self.main_algorithm)
+        # main_algorithm_layout.addWidget(self.segment.segment_tools)
+        # main_algorithm_layout.addWidget(self.track.track_tools)
+        # main_algorithm_layout.addWidget(self.output.output_tools)
         self.left_tools.addWidget(self.main_algorithm)
 
     def init_annotation(self):

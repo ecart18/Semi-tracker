@@ -35,6 +35,7 @@ def load_images(file_names):
     if extentions in ['png', 'jpg', 'jpeg']:
         for idx, file_name in enumerate(file_names):
             img = cv2.imread(file_name)
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             img = img_standardization(img)
             frame = Frame(file_name=file_name, 
                             frame_id=idx, 

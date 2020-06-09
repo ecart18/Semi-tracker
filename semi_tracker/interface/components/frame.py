@@ -22,7 +22,7 @@ class Instance(object):
         self._frame_id      = frame_id
         self._label_id      = label_id
         self._raw_img       = raw_img
-        self._norm_img      = raw_img
+
         
         self._coords        = None
         self._bbox          = None
@@ -148,6 +148,7 @@ class Frame(object):
         self._file_name     = file_name
         self._raw_img       = raw_img
         self._img_size      = np.shape(raw_img)[0:-1]
+        self._norm_img      = raw_img
 
         self._binary_mask   = None   # binary mask (height, width, 1)
         self._label_img     = None   # label (height, width, 1)
@@ -169,6 +170,14 @@ class Frame(object):
     @property
     def label_max(self):
         return self._label_max
+
+    @property
+    def norm_img(self):
+        return self._norm_img
+
+    @norm_img.setter
+    def norm_img(self, norm_img):
+        self._norm_img = norm_img
 
     @property
     def label_n(self):
@@ -193,6 +202,10 @@ class Frame(object):
     @property
     def raw_img(self):
         return self._raw_img
+
+    @raw_img.setter
+    def raw_img(self, raw_img):
+        self._raw_img = raw_img
 
     @property
     def binary_mask(self):

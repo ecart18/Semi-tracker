@@ -22,6 +22,15 @@ class TrackTools(QWidget):
         tracker_select_label.setStyleSheet("font-family: Verdana;"
                                            "color: white;")
 
+        tracker_select = QComboBox()
+        tracker_select.setFixedSize(80, 20)
+        tracker_select.setStyleSheet("border: 0px;"
+                                           "color: white;"
+                                           "font-family: Verdana;"
+                                           "background: transparent;")
+        tracker_select.addItem("Bipartite")
+        tracker_select.addItem("None")
+
         none_tracker_button = QPushButton()
         none_tracker_button.setText("None")
         none_tracker_button.setFixedSize(70, 15)
@@ -55,19 +64,21 @@ class TrackTools(QWidget):
         track_layout3 = QHBoxLayout()
 
         track_layout1.addWidget(tracker_select_label)
-        track_layout1.setAlignment(Qt.AlignLeft)
-        track_layout2.addWidget(none_tracker_button)
-        track_layout2.addWidget(bipartite_tracker_button)
+        track_layout1.addWidget(tracker_select)
+        # track_layout2.addWidget(none_tracker_button)
+        # track_layout2.addWidget(bipartite_tracker_button)
         # track_layout2.setAlignment(Qt.AlignCenter)
         track_layout3.addWidget(run_button)
         track_layout3.setAlignment(Qt.AlignRight)
 
         track_layout.addLayout(track_layout1)
-        track_layout.addLayout(track_layout2)
+        # track_layout.addLayout(track_layout2)
         track_layout.addLayout(track_layout3)
+        track_layout.setAlignment(Qt.AlignTop)
         track_layout.setSpacing(5)
         self.track_tools.setLayout(track_layout)
 
         self.none_tracker_button        = none_tracker_button
         self.bipartite_tracker_button   = bipartite_tracker_button
+        self.tracker_select             = tracker_select
         self.run_button                 = run_button
