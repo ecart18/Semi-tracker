@@ -11,6 +11,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from .utils import mkdir
+from .visualize import Visualization
 
 
 class Writer:
@@ -23,9 +24,11 @@ class Writer:
         else:
             self._fps = fps
         self._label_txt = label_txt
+        self._visualization = Visualization(write_folder=write_folder)
 
     def __call__(self, frames):
-        self._visual(frames)
+        # self._visual(frames)
+        self._visualization(frames)
         self._generate_html(frames)
 
     def _plot(self, frame_index, area, intensity, save_name, cell_id):
@@ -98,28 +101,3 @@ class Writer:
                                             img_area=img_area, cell_type=self._cell_type,
                                             infos=infos)
             html_file.write(html_content)
-      
-    def _visual(self, frames):
-        for frame_index, frame in frames.items():
-            save_name = osp.join(self._write_folder, 'visual', osp.basename(frame.file_name))
-            raw_img = frame.raw_img
-            height, width = raw_img.shape[0:2]
-            visual_img = np.copy(raw_img).astype(np.float32)
-            for _, ins in frame.instances.items():
-                coords = ins.coords
-                color = np.ones_like(visual_img) * np.array(ins.color)
-                visual_img[coords[0], coords[1], :] = 0.5 * visual_img[coords[0], coords[1], :] + \
-                    0.5 * color[coords[0], coords[1], :]
-                if self._label_txt:
-                    bbox = ins.bbox
-                    txt = '({})'.format(int(ins.label_id))
-                    visual_img = cv2.putText(visual_img, txt, (int(0.5*(bbox[0] + bbox[2])), int(0.5*(bbox[1] + bbox[3]))), 
-                                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 2)
-                    visual_img = cv2.rectangle(visual_img, (int(bbox[0]), int((bbox[1]))), (int(bbox[2]), int(bbox[3])), tuple(ins.color), 2)
-                    txt = 'Frame: {}'.format(frame_index)
-                    txt_coor_x = max(int(width / 10), 30)
-                    txt_coor_y = max(int(height / 10), 30)
-                    visual_img = cv2.putText(visual_img, txt, (txt_coor_x, txt_coor_y), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255), 2)
-            # TODO
-            mkdir(osp.dirname(save_name))
-            cv2.imwrite(save_name, visual_img)

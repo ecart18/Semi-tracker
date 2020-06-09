@@ -56,7 +56,7 @@ class MainWindow(QMainWindow):
         self.show_flag          = 1    # 1:raw raw 2.mask raw 3.color+raw raw 4.annotation: raw label_img
         # 0:unload 1.loaded 2. segmented 3.tracked 4.annotation_origin_selected 5.annotation_ready
         # self.status_flag        = 0
-        self.segmenter_dict     = {0: 'binary_thresholding', 1: 'unet', 2: 'water_shed', 3: 'grad_cut', 4: 'User-defined'}
+        self.segmenter_dict     = {0: 'binary_thresholding', 1: 'unet', 2: 'water_shed', 3: 'grab_cut', 4: 'User-defined'}
         self.segmenter_name     = 'binary_thresholding'
         self.tracker_dict       = {0: 'none', 1: 'bipartite_tracker'}
         self.tracker_name       = 'bipartite_tracker'

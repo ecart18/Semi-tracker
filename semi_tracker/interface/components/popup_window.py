@@ -2,6 +2,7 @@
 
 import os.path as osp
 import random
+import cv2
 import numpy as np
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -11,7 +12,7 @@ from PyQt5 import QtGui
 import pyqtgraph as pg
 from .frame import Instance
 from ..utils import get_icon
-import cv2
+from semi_tracker.utils import format_out
 
 
 class InstanceSettings(QWidget):
@@ -430,7 +431,7 @@ class CellAttributeWindow(QWidget):
         cell_intensity_label.setText("Intensity")
 
         cell_intensity = QLabel()
-        cell_intensity.setText(str(self.ins_intensity)+"  (A.U.)")
+        cell_intensity.setText(format_out(self.ins_intensity) + "  (A.U.)")
 
         attributes_layout = QGridLayout()
         attributes_layout.addWidget(frame_id_label, 0, 0, 1, 2)

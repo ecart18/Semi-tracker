@@ -2,13 +2,13 @@ from __future__ import absolute_import
 from .customized.customized import CustomizedSegmentor
 from .tradition_methods.threshold import BinaryThresholding
 from .tradition_methods.watershed import WaterShed
-from .tradition_methods.gradcut import GradCut
+from .tradition_methods.grabcut import GrabCut
 from .unet.unet import Unet
 
 __all__ = [
     'BinaryThresholding',
     'WaterShed',
-    'GradCut',
+    'GrabCut',
     'Unet',
     'CustomizedSegmentor',
     'get_segmenter'
@@ -17,7 +17,7 @@ __all__ = [
 __SEGMENTER = {
     'binary_thresholding': BinaryThresholding,
     'water_shed': WaterShed,
-    'grad_cut': GradCut,
+    'grab_cut': GrabCut,
     'unet': Unet,
     'customized_segmentor': CustomizedSegmentor
 }
