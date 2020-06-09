@@ -15,3 +15,14 @@ def mkdir(path):
             pass
         else:
             raise
+
+
+def format_out(target):
+    if isinstance(target, str):
+        return '%s' % target
+    elif isinstance(target, float):
+        return '%.2f' % target
+    elif isinstance(target, int):
+        return '%d' % target
+    else:
+        return target
