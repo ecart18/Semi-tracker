@@ -20,7 +20,7 @@ class GradCut:
         ymax = min(rect[3], height)
         return (xmin, ymin, ymax - ymin, xmax - xmin)
 
-    def _single_seg(self, img, rect, obj_idx):
+    def __call__(self, img, rect, obj_idx):
         img_sz = img.shape[0:2]
         rect = self.bbox_verify(rect, img_sz)
         mask = np.zeros(img.shape[:2], np.uint8)
@@ -31,7 +31,8 @@ class GradCut:
         binary_mask = np.where((mask == 2) | (mask == 0), 0, obj_idx).astype('uint8')
         binary_mask = np.expand_dims(binary_mask, axis=2)  # 0 and obj_idx
         return binary_mask
-    
+
+    '''
     def __call__(self, img, rect):
         if not self.label_img:
             obj_idx = 1
@@ -40,6 +41,7 @@ class GradCut:
             obj_idx = np.max(self.label_img) + 1
             self.label_img += self._single_seg(img, rect, obj_idx)
         return self.label_img 
+    '''
 
 
 if __name__ == '__main__':

@@ -320,48 +320,75 @@ class SegmentTools(QWidget):
         segment_algorithm4_layout2 = QHBoxLayout()
         segment_algorithm4_layout3 = QHBoxLayout()
 
-        thresh_sld4 = QSlider(Qt.Horizontal)
-        thresh_sld4.setMinimum(0)
-        thresh_sld4.setMaximum(255)
-        thresh_sld4.setValue(129)
-        thresh_sld4.setStyleSheet(self.sld_stylesheet)
-        thresh_sld4.valueChanged.connect(self.sld2text4)
+        select_roi_label = QLabel()
+        select_roi_label.setText("Select a Rectangle: ")
+        select_roi_label.setAlignment(Qt.AlignLeft)
+        select_roi_label.setStyleSheet("font-family: Verdana;"
+                                       "color: white;")
 
-        thresh_label4 = QLabel()
-        thresh_label4.setText("Threshold(0~255)")
-        thresh_label4.setAlignment(Qt.AlignCenter)
-        thresh_label4.setStyleSheet("font-family: Verdana;"
+        select_roi_button = QPushButton()
+        select_roi_button.setFixedSize(60, 20)
+        select_roi_button.setText("Select")
+        select_roi_button.setStyleSheet("background: #454545;"
+                                        "color: white;"
+                                        "border-radius: 5px;"
+                                        "font-family: Verdana;")
+
+        iteration_sld = QSlider(Qt.Horizontal)
+        iteration_sld.setMinimum(1)
+        iteration_sld.setMaximum(20)
+        iteration_sld.setValue(3)
+        iteration_sld.setStyleSheet(self.sld_stylesheet)
+        iteration_sld.valueChanged.connect(self.sld2text4)
+
+        iteration_label = QLabel()
+        iteration_label.setText("Iteration")
+        iteration_label.setAlignment(Qt.AlignCenter)
+        iteration_label.setStyleSheet("font-family: Verdana;"
                                     "color: white;")
 
-        thresh_textline4 = QLineEdit()
-        thresh_textline4.setAlignment(Qt.AlignCenter)
-        thresh_textline4.setFixedSize(50, 15)
-        thresh_textline4.setValidator(QIntValidator())
-        thresh_textline4.setText("129")
-        thresh_textline4.setStyleSheet("background: #454545;"
+        iteration_textline = QLineEdit()
+        iteration_textline.setAlignment(Qt.AlignCenter)
+        iteration_textline.setFixedSize(50, 15)
+        iteration_textline.setEnabled(False)
+        iteration_textline.setValidator(QIntValidator())
+        iteration_textline.setText("3")
+        iteration_textline.setStyleSheet("background: #454545;"
                                        "border: 0px;"
                                        "color: white;"
                                        "border-radius: 5px;"
                                        "font-family: Verdana;")
-        thresh_textline4.textEdited.connect(self.text2sld4)
+        iteration_textline.textEdited.connect(self.text2sld4)
 
-        thresh_segment_button4 = QPushButton()
-        thresh_segment_button4.setFixedSize(180, 20)
-        thresh_segment_button4.setText("Threshold")
-        segmenter_name = 'binary_thresholding'
-        thresh_segment_button4.setStyleSheet("background: #454545;"
+        grabcut_segment_label = QLabel()
+        grabcut_segment_label.setText("Do grabcut: ")
+        grabcut_segment_label.setAlignment(Qt.AlignLeft)
+        grabcut_segment_label.setStyleSheet("font-family: Verdana;"
+                                            "color: white;")
+
+        grabcut_segment_button = QPushButton()
+        grabcut_segment_button.setFixedSize(60, 20)
+        grabcut_segment_button.setText("Run")
+        # segmenter_name = 'binary_thresholding'
+        grabcut_segment_button.setStyleSheet("background: #454545;"
                                              "color: white;"
                                              "border-radius: 5px;"
                                              "font-family: Verdana;")
         # thresh_segment_button.clicked.connect(lambda: self.segment(segmenter_name, threshold=self.thresh_sld.value()))
 
-        segment_algorithm4_layout1.addWidget(thresh_label4)
-        segment_algorithm4_layout1.setAlignment(Qt.AlignLeft)
-        segment_algorithm4_layout2.addWidget(thresh_sld4)
-        segment_algorithm4_layout2.addWidget(thresh_textline4)
-        segment_algorithm4_layout2.setAlignment(Qt.AlignCenter)
-        segment_algorithm4_layout3.addWidget(thresh_segment_button4)
-        segment_algorithm4_layout3.setAlignment(Qt.AlignRight)
+        segment_algorithm4_layout1.addWidget(select_roi_label)
+        segment_algorithm4_layout1.addWidget(select_roi_button)
+        # segment_algorithm4_layout1.setAlignment(Qt.AlignBaseline)
+        # segment_algorithm4_layout1.setAlignment(Qt.AlignLeft)
+        # segment_algorithm4_layout2.addWidget(thresh_sld4)
+
+        segment_algorithm4_layout2.addWidget(iteration_label)
+        segment_algorithm4_layout2.setAlignment(Qt.AlignLeft)
+        segment_algorithm4_layout2.addWidget(iteration_sld)
+        segment_algorithm4_layout2.addWidget(iteration_textline)
+        segment_algorithm4_layout3.addWidget(grabcut_segment_label)
+        segment_algorithm4_layout3.addWidget(grabcut_segment_button)
+        # segment_algorithm4_layout3.setAlignment(Qt.AlignRight)
 
         segment_algorithm4_layout.addLayout(segment_algorithm4_layout1)
         segment_algorithm4_layout.addLayout(segment_algorithm4_layout2)
@@ -370,11 +397,13 @@ class SegmentTools(QWidget):
         segment_algorithm4_layout.setSpacing(5)
         segment_algorithm4_layout.setContentsMargins(5, 5, 5, 5)
 
-        self.segment_algorithm4     = segment_algorithm4
-        self.thresh_sld4            = thresh_sld4
-        self.thresh_label4          = thresh_label4
-        self.thresh_textline4       = thresh_textline4
-        self.thresh_segment_butto4  = thresh_segment_button4
+        self.segment_algorithm4 = segment_algorithm4
+        self.select_roi_label = select_roi_label
+        self.select_roi_button = select_roi_button
+        self.grabcut_segment_label = grabcut_segment_label
+        self.grabcut_segment_button = grabcut_segment_button
+        self.iteration_sld = iteration_sld
+        self.iteration_textline = iteration_textline
 
     def init_user_defined(self):
         segment_algorithm5 = QWidget()
@@ -468,12 +497,12 @@ class SegmentTools(QWidget):
         self.thresh_sld3.setValue(int(t))
 
     def sld2text4(self):
-        f = self.thresh_sld4.value()
-        self.thresh_textline4.setText(str(f))
+        f = self.iteration_sld.value()
+        self.iteration_textline.setText(str(f))
 
     def text2sld4(self):
-        t = self.thresh_textline4.text()
-        self.thresh_sld4.setValue(int(t))
+        t = self.iteration_textline.text()
+        self.iteration_sld.setValue(int(t))
 
     def sld2text5(self):
         f = self.thresh_sld5.value()

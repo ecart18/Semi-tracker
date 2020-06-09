@@ -55,11 +55,16 @@ class MainWindow(QMainWindow):
         self.show_flag          = 1    # 1:raw raw 2.mask raw 3.color+raw raw 4.annotation: raw label_img
         # 0:unload 1.loaded 2. segmented 3.tracked 4.annotation_origin_selected 5.annotation_ready
         # self.status_flag        = 0
-        self.segmenter_dict     = {0: 'binary_thresholding', 1: 'unet', 2: 'WaterShred', 3: 'Crabcut', 4: 'User-defined'}
+        self.segmenter_dict     = {0: 'binary_thresholding', 1: 'unet', 2: 'WaterShred', 3: 'grad_cut', 4: 'User-defined'}
         self.segmenter_name     = 'binary_thresholding'
         self.tracker_dict       = {0: 'none', 1: 'bipartite_tracker'}
         self.tracker_name       = 'bipartite_tracker'
         self.previous_frame     = 0
+
+        self.grabcut_pos_begin  = None
+        self.grabcut_pos_finish = None
+        self.grabcut_roi        = None
+        self.grabcut_rect       = None
 
         # annotation
         self.annotation_flag    = -1        # -1 none 0 modify 1 modify annotation 2 annotation
@@ -224,8 +229,9 @@ class MainWindow(QMainWindow):
             lambda: self.segment(self.segmenter_name, threshold=self.tools.segment.thresh_sld3.value()))
 
         # seg alg4
-        self.tools.segment.thresh_segment_butto4.clicked.connect(
-            lambda: self.segment(self.segmenter_name, threshold=self.tools.segment.thresh_sld4.value()))
+        self.tools.segment.select_roi_button.clicked.connect(self.select_roi_button_fnc)
+        self.tools.segment.grabcut_segment_button.clicked.connect(
+            lambda: self.segment(self.segmenter_name, iteration=self.tools.segment.iteration_sld.value()))
 
         # track
         self.tools.track.run_button.clicked.connect(lambda: self.track(self.tracker_name))
@@ -272,9 +278,29 @@ class MainWindow(QMainWindow):
         self.status = StatusBar()
         self.status_bar = self.status.status_bar
 
+    def select_roi_button_fnc(self):
+        self.visualize.main_frame.getImageItem().mouseDragEvent = self.grabcut_drag
+
+    def grabcut_drag(self, event):
+        event.accept()
+        pos = event.pos()
+        if event.isStart():
+            self.grabcut_pos_begin = pos
+            # self.grabcut_rect[0] = int(pos[0])
+        elif event.isFinish():
+            self.grabcut_pos_finish = pos
+            event.ignore()
+        else:
+            if self.grabcut_roi is not None:
+                self.visualize.main_frame.removeItem(self.grabcut_roi)
+            self.grabcut_roi = pg.RectROI(self.grabcut_pos_begin, pos-self.grabcut_pos_begin)
+            self.visualize.main_frame.addItem(self.grabcut_roi)
+
     def segmenter_changed_fnc(self):
         segmenter_key = self.tools.segment.segment_tools.currentIndex()
+        # print(segmenter_key)
         self.segmenter_name = self.segmenter_dict[segmenter_key]
+        # print(self.segmenter_name)
 
     def model_select_fnc(self):
         model_path = QFileDialog.getOpenFileName(None, "Select a model file..",
@@ -842,10 +868,21 @@ class MainWindow(QMainWindow):
                                                                   self.instances_setting.ins)
         self.correction.instances_widget.setCurrentRow(len(self.widget_list) - 1)
 
+        if self.tools.segment.segment_tools.currentIndex() == 3:
+            self.frames[self.visualize.main_sld.value()].update_labling([self.correction.instances_widget.currentRow()],
+                                                                        [self.instances_setting.ins.label_id],
+                                                                        [self.instances_setting.ins.name],
+                                                                        [self.instances_setting.ins.color])
+
+            self.instance_widget_update_fnc()
+            self.instances_widget_fnc()
+            self.visualize.main_frame.removeItem(self.grabcut_roi)
+
+            # self.visualize.main_frame.setImage(self.frames[self.visualize.main_sld.value()].raw_color_img)
         current_frame = self.frames[self.visualize.main_sld.value()]
-        colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
-        self.visualize.main_frame.setColorMap(colormap)
-        self.visualize.main_frame.setImage(current_frame.raw_img[:, :, 0])
+        # colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
+        # self.visualize.main_frame.setColorMap(colormap)
+        self.visualize.main_frame.setImage(current_frame.raw_color_img)
 
     def instances_widget_fnc(self):
         self.visualize_window.setCursor(Qt.ArrowCursor)
@@ -963,7 +1000,8 @@ class MainWindow(QMainWindow):
 
     # algorithm API
     def segment(self, name, **kwargs):
-        if not len(self.frames) == 0 and self.frames[0].label_img is None:
+        if (not len(self.frames) == 0 and self.frames[0].label_img is None) or \
+                self.tools.segment.segment_tools.currentIndex() == 3:
             self.segment_message_box1_fnc(name, **kwargs)
         elif not len(self.frames) == 0 and self.frames[0].label_img is not None:
             self.segment_message_box1 = QuestionMessageBox("Are you sure to re-segment the images?")
@@ -975,28 +1013,68 @@ class MainWindow(QMainWindow):
             self.segment_message_box2.show()
 
     def segment_message_box1_fnc(self, name, **kwargs):
-        self.status.progressbar.setMaximum(self.frames_num)
-        self.status.progressbar.setVisible(True)
-        if name == 'unet':
-            self.status.work_info_label.setText("Loading selected model...")
-        t = 1
-        segmenter = get_segmenter(name=name, **kwargs)
-        self.status.work_info_label.setText("Segmenting...")
-        for key in self.frames.keys():
-            label_img = segmenter(self.frames[key].raw_img)
-            self.frames[key].label_img = label_img
 
-            self.status.update_progressbar(t)
-            t = t + 1
-        self.status.progressbar.setVisible(False)
-        self.status.work_info_label.setText("")
-        sv = self.visualize.main_sld.value()
+        if not self.tools.segment.segment_tools.currentIndex() == 3:
+            self.status.progressbar.setMaximum(self.frames_num)
+            self.status.progressbar.setVisible(True)
+            if name == 'unet':
+                self.status.work_info_label.setText("Loading selected model...")
+            t = 1
+            segmenter = get_segmenter(name=name, **kwargs)
+            self.status.work_info_label.setText("Segmenting...")
+            for key in self.frames.keys():
+                label_img = segmenter(self.frames[key].raw_img)
+                self.frames[key].label_img = label_img
 
-        self.visualize.main_frame.setImage(np.sign(self.frames[sv].binary_mask[:, :, 0]))
-        self.show_flag = 2
-        self.annotation_flag = 0
+                self.status.update_progressbar(t)
+                t = t + 1
+            self.status.progressbar.setVisible(False)
+            self.status.work_info_label.setText("")
+            sv = self.visualize.main_sld.value()
 
-        self.get_label_fnc()
+            self.visualize.main_frame.setImage(np.sign(self.frames[sv].binary_mask[:, :, 0]))
+            self.show_flag = 2
+            self.annotation_flag = 0
+
+            self.get_label_fnc()
+        else:
+            segmenter = get_segmenter(name=name, **kwargs)
+            self.status.work_info_label.setText("Segmenting...")
+            if self.frames[self.visualize.main_sld.value()].label_img is None:
+                label_img = segmenter(img=self.frames[self.visualize.main_sld.value()].raw_img,
+                                      rect=[int(self.grabcut_roi.state['pos'][0]),
+                                            int(self.grabcut_roi.state['pos'][1]),
+                                            int(self.grabcut_roi.state['pos'][0]+self.grabcut_roi.state['size'][0]),
+                                            int(self.grabcut_roi.state['pos'][1]+self.grabcut_roi.state['size'][1])],
+                                      obj_idx=1)
+            else:
+                label_img = segmenter(img=self.frames[self.visualize.main_sld.value()].raw_img,
+                                      rect=[int(self.grabcut_roi.state['pos'][0]),
+                                            int(self.grabcut_roi.state['pos'][1]),
+                                            int(self.grabcut_roi.state['pos'][0] + self.grabcut_roi.state['size'][0]),
+                                            int(self.grabcut_roi.state['pos'][1] + self.grabcut_roi.state['size'][1])],
+                                      obj_idx=np.max(self.frames[self.visualize.main_sld.value()].label_img) + 1)
+
+            if label_img.max() == 0:
+                self.segment_message_box3 = InformationMessageBox("Segmentation failed!")
+                self.segment_message_box3.show()
+            else:
+                if self.frames[self.visualize.main_sld.value()].label_img is None:
+                    self.frames[self.visualize.main_sld.value()].label_img = label_img
+                else:
+                    self.frames[self.visualize.main_sld.value()].label_img += label_img
+
+                self.instances_setting = InstanceSettings(self.my_colors,
+                                                          self.frames[self.visualize.main_sld.value()].raw_img,
+                                                          self.frames[self.visualize.main_sld.value()].label_max,
+                                                          self.frames[self.visualize.main_sld.value()].frame_id)
+                self.instances_setting.confirm_button.clicked.connect(self.add_instance_main)
+                self.instances_setting.show()
+
+
+
+
+            # self.visualize.main_frame.setImage(np.sign(label_img[:, :, 0]))
 
     def track(self, name, **kwargs):
         if not len(self.frames) == 0 and self.frames[0].label_img is None:
