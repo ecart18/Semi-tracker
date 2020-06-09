@@ -151,7 +151,7 @@ class Frame(object):
 
         self._binary_mask   = None   # binary mask (height, width, 1)
         self._label_img     = None   # label (height, width, 1)
-        self._raw_color_img = None   # color and raw img
+        self._raw_color_img = raw_img   # color and raw img
         
         self._label_n       = 0
         self._label_max     = 0
@@ -229,6 +229,7 @@ class Frame(object):
         self._binary_mask = 255 * self._binary_mask
         self._binary_mask = self._binary_mask.astype(np.uint8)
         self._labels = np.delete(np.unique(self._label_img), 0)
+        self._label_max = label_img.max()
         
 
     @property
@@ -317,7 +318,7 @@ class Frame(object):
         add, delete and modify instances
         """
         # print(update_ins_label)
-        if not len(update_ins_label) == 0:
+        if update_ins_label is not None:
             for ins_id, ins_label, ins_name, ins_color in \
                     zip(update_ins_id, update_ins_label, update_ins_name, update_ins_color):
                 instance = Instance(frame_id=self.frame_id, label_id=ins_label, name=ins_name, raw_img=self.raw_img)
@@ -328,10 +329,12 @@ class Frame(object):
 
                 color = np.ones_like(self._raw_color_img) * np.array(instance.color)
                 coords = instance.coords
+                # print(np.shape(self.raw_img))
+                # print(np.shape(color))
                 self._raw_color_img[coords[0], coords[1], :] = (0.5 * self.raw_img[coords[0], coords[1], :] +
                                                                 0.5 * color[coords[0], coords[1], :])
                 self._instances[ins_label] = instance
-        if not len(delete_ins_label) == 0:
+        if delete_ins_label is not None:
             for ins_id, ins_label in zip(delete_ins_id, delete_ins_label):
                 self._color_map.remove(self._color_map[ins_id+1])
                 ins = self.instances[ins_label]
