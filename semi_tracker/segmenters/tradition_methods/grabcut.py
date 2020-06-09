@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 
 
-class GradCut:
+class GrabCut:
     def __init__(self, iteration=3):
         self.iteration = iteration
         self.label_img = None
@@ -57,7 +57,7 @@ if __name__ == '__main__':
         return img.astype(np.uint8), visual_img.astype(np.uint8)
 
     img = cv2.imread('../../../debug_scripts/test_imgs/min_max.jpg')
-    seg = GradCut()
+    seg = GrabCut()
     label_img = seg(img, rect=[85,85,85+55,85+55], obj_idx=1)
     img, visual_img = visual(img, label_img)
     cv2.imwrite('./img.png', img)

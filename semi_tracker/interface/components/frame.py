@@ -4,6 +4,7 @@ from __future__ import absolute_import
 import collections
 import random
 import numpy as np
+import cv2
 from semi_tracker.utils.logger import logger
 
 
@@ -93,6 +94,18 @@ class Instance(object):
     def coords(self):
         return self._coords
 
+    @property
+    def edge(self):
+        return self._edge  # array of [y, x]
+
+    @staticmethod
+    def _find_edge_coordinates(x_max, y_max, coords):
+        binary_mask = np.zeros((y_max + 1, x_max + 1), dtype=np.uint8)
+        binary_mask[coords[0], coords[1]] = 255
+        contours, _ = cv2.findContours(binary_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+        edge = np.vstack((x.reshape(-1,2) for x in contours))  # array of [y, x]
+        return edge
+
     @coords.setter
     def coords(self, coords):
         self._coords = coords
@@ -102,10 +115,9 @@ class Instance(object):
         self._bbox = np.array([x1, y1, x2, y2])
         self._centroid = [int((x1+x2)/2), int((y1+y2)/2)]
         self._area = np.shape(self._coords)[1]
-
-        self._intensity = sum(sum(self._raw_img[coords[0], coords[1], :]))/self._area
-
-
+        self._intensity = np.sum(self._raw_img[coords[0], coords[1], :]) / self._area
+        self._edge = self._find_edge_coordinates(x_max=x2, y_max=y2, coords=coords)
+        
 
     @property
     def color(self):

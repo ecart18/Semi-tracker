@@ -72,7 +72,7 @@ class SegmentTools(QWidget):
 
         self.segment_tools.addItem(self.segment_algorithm1, "Threshold")
         self.segment_tools.addItem(self.segment_algorithm2, "U-net")
-        self.segment_tools.addItem(self.segment_algorithm3, "WaterShred")
+        self.segment_tools.addItem(self.segment_algorithm3, "WaterShed")
         self.segment_tools.addItem(self.segment_algorithm4, "CrabCut")
         self.segment_tools.addItem(self.segment_algorithm5, "User-defined")
         self.segment_tools.setItemIcon(0, QIcon(get_icon("Arrow_down.png")))
@@ -314,7 +314,7 @@ class SegmentTools(QWidget):
 
         watershed_segment_button = QPushButton()
         watershed_segment_button.setFixedSize(180, 20)
-        watershed_segment_button.setText("WaterShred")
+        watershed_segment_button.setText("WaterShed")
         watershed_segment_button.setStyleSheet("background: #454545;"
                                              "color: white;"
                                              "border-radius: 5px;"
