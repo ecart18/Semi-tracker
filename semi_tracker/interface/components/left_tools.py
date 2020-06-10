@@ -10,7 +10,7 @@ from .left_tools_output import OutputTools
 from .left_tools_track import TrackTools
 from .left_tools_annotation import AnnotationTools
 from .left_tools_normalization import NormalizeTools
-from ..utils import get_icon
+from ..utils import get_icon, left_tools_stylesheet
 
 
 class LeftTools(QWidget):
@@ -19,6 +19,7 @@ class LeftTools(QWidget):
         self.left_tools = QStackedWidget()
         self.left_tools.setStyleSheet("background: #323232;"
                                       "border: 0px;")
+        self.left_tools.setFixedWidth(280)
 
         self.project_path = "./output/untitled"
 
@@ -52,33 +53,10 @@ class LeftTools(QWidget):
         self.track     = TrackTools()
         self.output    = OutputTools()
 
-        left_tools_stylesheet = """
-                    QToolBox 
-                    {
-                        background: #282828;
-                        padding-bottom: 0px;
-                        text-align: center;
-                    }
-                    QToolBox::tab 
-                    {
-                        font-family: Verdana;
-                        font-size: 15px;
-                        background: #454545;
-                        border: 0px;
-                        text-align: center;
-                    }
-                    QToolBoxButton 
-                    {
-                        min-height: 25px;
-                    }
-                    QToolBox::tab:selected 
-                    { 
-                        color: white;
-                    }
-                """
+        self.left_tools_stylesheet = left_tools_stylesheet
 
         self.main_algorithm = QToolBox()
-        self.main_algorithm.setStyleSheet(left_tools_stylesheet)
+        self.main_algorithm.setStyleSheet(self.left_tools_stylesheet)
         self.main_algorithm.addItem(self.normlize.normalize_tools, "Normalization")
         self.main_algorithm.addItem(self.segment.segment_tools, "Segmentation")
         self.main_algorithm.addItem(self.track.track_tools, "Track")
@@ -87,7 +65,7 @@ class LeftTools(QWidget):
         self.main_algorithm.setItemIcon(1, QIcon(get_icon("Arrow_right.png")))
         self.main_algorithm.setItemIcon(2, QIcon(get_icon("Arrow_right.png")))
         self.main_algorithm.setItemIcon(3, QIcon(get_icon("Arrow_right.png")))
-        self.main_algorithm.layout().setSpacing(3)
+        self.main_algorithm.layout().setSpacing(2)
         # main_algorithm_layout = QVBoxLayout(self.main_algorithm)
         # main_algorithm_layout.addWidget(self.segment.segment_tools)
         # main_algorithm_layout.addWidget(self.track.track_tools)

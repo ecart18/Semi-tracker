@@ -11,7 +11,7 @@ class TrackTools(QWidget):
         super().__init__()
 
         self.track_tools = QWidget()
-        self.track_tools.setStyleSheet("background: #282828;"
+        self.track_tools.setStyleSheet("background: #323232;"
                                        "border-radius: 10px;")
         self.setup_ui()
 

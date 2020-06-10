@@ -2,61 +2,19 @@ import os.path as osp
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from ..utils import get_icon
+from ..utils import get_icon, normalize_tools_stylesheet, slide_stylesheet
 
 
 class NormalizeTools(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.normalize_tools_stylesheet = """
-            QToolBox 
-            {
-                background: #282828;
-                padding-bottom: 0px;
-            }
-            QToolBox::tab 
-            {
-                font-family: Verdana;
-                font-size: 12px;
-                background: #666666;
-                border: 0px;
-            }
-            QToolBoxButton 
-            {
-                min-height: 20px;
-            }
-            QToolBox::tab:selected 
-            { 
-                color: white;
-            }
-        """
-        self.sld_stylesheet = """
-            QSlider:horizontal 
-            {
-                min-height: 20px;
-            }
-            QSlider::groove:horizontal 
-            {
-                height: 1px;
-                background: white; 
-            }
-            QSlider::handle:horizontal 
-            {
-                width: 12px;
-                margin-top: -6px;
-                margin-bottom: -6px;
-                border-radius: 6px;
-                background: qradialgradient(spread:reflect, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.7 rgba(210, 210, 210, 255), stop:0.7 rgba(210, 210, 210, 255));
-            }
-            QSlider::handle:horizontal:hover 
-            {
-                background: qradialgradient(spread:reflect, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.7 rgba(255, 255, 255, 255), stop:0.7 rgba(255, 255, 255, 255));
-            }
-        """
+        self.normalize_tools_stylesheet = normalize_tools_stylesheet
+        self.sld_stylesheet = slide_stylesheet
         self.normalize_tools = QToolBox()
         # self.normalize_tools.clearFocus()
         self.normalize_tools.setStyleSheet(self.normalize_tools_stylesheet)
+        self.normalize_tools.setContentsMargins(20, 0, 0, 0)
         self.normalize_tools.layout().setSpacing(1)
 
         self.setup_ui()
@@ -121,7 +79,7 @@ class NormalizeTools(QWidget):
                                           "color: white;")
 
         min_max_button = QPushButton()
-        min_max_button.setFixedSize(60, 20)
+        min_max_button.setFixedSize(50, 20)
         min_max_button.setText("Run")
         min_max_button.setStyleSheet("background: #454545;"
                                            "color: white;"
@@ -141,7 +99,7 @@ class NormalizeTools(QWidget):
     def init_retinex_MSRCP(self):
         retinex_MSRCP = QWidget()
         retinex_MSRCP.setStyleSheet("border: 0px;"
-                              "background: #323232;")
+                                    "background: #323232;")
         retinex_MSRCP_layout_main = QVBoxLayout()
         retinex_MSRCP_layout = QHBoxLayout()
 
@@ -149,10 +107,10 @@ class NormalizeTools(QWidget):
         retinex_MSRCP_label.setText("Retinex-MSRCP: ")
         retinex_MSRCP_label.setAlignment(Qt.AlignLeft)
         retinex_MSRCP_label.setStyleSheet("font-family: Verdana;"
-                                    "color: white;")
+                                            "color: white;")
 
         retinex_MSRCP_button = QPushButton()
-        retinex_MSRCP_button.setFixedSize(60, 20)
+        retinex_MSRCP_button.setFixedSize(50, 20)
         retinex_MSRCP_button.setText("Run")
         retinex_MSRCP_button.setStyleSheet("background: #454545;"
                                      "color: white;"

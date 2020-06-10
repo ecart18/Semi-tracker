@@ -10,7 +10,7 @@ class OutputTools(QWidget):
     def __init__(self):
         super().__init__()
         self.output_tools = QWidget()
-        self.output_tools.setStyleSheet("background: #282828;"
+        self.output_tools.setStyleSheet("background: #323232;"
                                         "border-radius: 10px;")
 
         self.setup_ui()

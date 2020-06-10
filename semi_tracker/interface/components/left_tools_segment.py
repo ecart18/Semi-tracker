@@ -4,7 +4,7 @@ import os.path as osp
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from ..utils import get_icon
+from ..utils import get_icon, slide_stylesheet, segment_tools_stylesheet
 
 
 class SegmentTools(QWidget):
@@ -12,53 +12,11 @@ class SegmentTools(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.segment_tools_stylesheet = """
-            QToolBox 
-            {
-                background: #282828;
-                padding-bottom: 0px;
-            }
-            QToolBox::tab 
-            {
-                font-family: Verdana;
-                font-size: 12px;
-                background: #666666;
-                border: 0px;
-            }
-            QToolBoxButton 
-            {
-                min-height: 20px;
-            }
-            QToolBox::tab:selected 
-            { 
-                color: white;
-            }
-        """
-        self.sld_stylesheet = """
-            QSlider:horizontal 
-            {
-                min-height: 20px;
-            }
-            QSlider::groove:horizontal 
-            {
-                height: 1px;
-                background: white; 
-            }
-            QSlider::handle:horizontal 
-            {
-                width: 12px;
-                margin-top: -6px;
-                margin-bottom: -6px;
-                border-radius: 6px;
-                background: qradialgradient(spread:reflect, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.7 rgba(210, 210, 210, 255), stop:0.7 rgba(210, 210, 210, 255));
-            }
-            QSlider::handle:horizontal:hover 
-            {
-                background: qradialgradient(spread:reflect, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.7 rgba(255, 255, 255, 255), stop:0.7 rgba(255, 255, 255, 255));
-            }
-        """
+        self.segment_tools_stylesheet = segment_tools_stylesheet
+        self.sld_stylesheet = slide_stylesheet
         self.segment_tools = QToolBox()
         self.segment_tools.setStyleSheet(self.segment_tools_stylesheet)
+        self.segment_tools.setContentsMargins(0, 0, 0, 0)
         self.segment_tools.layout().setSpacing(1)
 
         self.setup_ui()
@@ -79,7 +37,7 @@ class SegmentTools(QWidget):
         self.segment_tools.setItemIcon(1, QIcon(get_icon("Arrow_right.png")))
         self.segment_tools.setItemIcon(2, QIcon(get_icon("Arrow_right.png")))
         self.segment_tools.setItemIcon(3, QIcon(get_icon("Arrow_right.png")))
-        self.segment_tools.setItemIcon(0, QIcon(get_icon("Arrow_right.png")))
+        self.segment_tools.setItemIcon(4, QIcon(get_icon("Arrow_right.png")))
 
     def init_seg1(self):
         segment_algorithm1 = QWidget()
@@ -138,8 +96,8 @@ class SegmentTools(QWidget):
         segment_algorithm1_layout.addLayout(segment_algorithm1_layout2)
         segment_algorithm1_layout.addLayout(segment_algorithm1_layout3)
         segment_algorithm1_layout.setAlignment(Qt.AlignTop)
-        segment_algorithm1_layout.setSpacing(5)
-        segment_algorithm1_layout.setContentsMargins(5, 5, 5, 5)
+        # segment_algorithm1_layout.setSpacing(5)
+        # segment_algorithm1_layout.setContentsMargins(5, 5, 5, 5)
 
         self.segment_algorithm1     = segment_algorithm1
         self.thresh_sld1            = thresh_sld1

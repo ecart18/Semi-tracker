@@ -9,6 +9,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import QSize, Qt
 from PyQt5 import QtCore, QtWidgets
 from PyQt5 import QtGui
+from PIL import Image
 import pyqtgraph as pg
 from .frame import Instance
 from ..utils import get_icon
@@ -348,8 +349,8 @@ class CellAttributeWindow(QWidget):
 
         cell_show = QLabel()
         cell_show.setFixedSize(170, 170)
-        self.get_cell_icon()
-        cell_show_pix = QPixmap(get_icon("cell_show.png"))
+        # q_sub_img = self.get_cell_icon()
+        cell_show_pix = self.get_cell_icon()
         cell_show_pix = cell_show_pix.scaled(QSize(170, 170), Qt.KeepAspectRatio)
         cell_show.setPixmap(cell_show_pix)
 
@@ -434,41 +435,42 @@ class CellAttributeWindow(QWidget):
         cell_intensity.setText(format_out(self.ins_intensity) + "  (A.U.)")
 
         attributes_layout = QGridLayout()
-        attributes_layout.addWidget(frame_id_label, 0, 0, 1, 2)
+        attributes_layout.addWidget(frame_id_label, 0, 0, 1, 3)
         attributes_layout.addWidget(colon_label, 0, 2, 1, 1)
-        attributes_layout.addWidget(frame_id, 0, 3, 1, 2)
+        attributes_layout.addWidget(frame_id, 0, 3, 1, 3)
 
-        attributes_layout.addWidget(cell_label_label, 1, 0, 1, 2)
+        attributes_layout.addWidget(cell_label_label, 1, 0, 1, 3)
         attributes_layout.addWidget(colon_label1, 1, 2, 1, 1)
-        attributes_layout.addWidget(cell_label, 1, 3, 1, 2)
+        attributes_layout.addWidget(cell_label, 1, 3, 1, 3)
 
-        attributes_layout.addWidget(cell_name_label, 2, 0, 1, 2)
+        attributes_layout.addWidget(cell_name_label, 2, 0, 1, 3)
         attributes_layout.addWidget(colon_label2, 2, 2, 1, 1)
-        attributes_layout.addWidget(cell_name, 2, 3, 1, 2)
+        attributes_layout.addWidget(cell_name, 2, 3, 1, 3)
 
-        attributes_layout.addWidget(cell_color_label, 3, 0, 1, 2)
+        attributes_layout.addWidget(cell_color_label, 3, 0, 1, 3)
         attributes_layout.addWidget(colon_label3, 3, 2, 1, 1)
-        attributes_layout.addWidget(cell_color_show, 3, 3, 1, 2)
+        attributes_layout.addWidget(cell_color_show, 3, 3, 1, 3)
 
-        attributes_layout.addWidget(cell_bbox_label, 4, 0, 1, 2)
+        attributes_layout.addWidget(cell_bbox_label, 4, 0, 1, 3)
         attributes_layout.addWidget(colon_label4, 4, 2, 1, 1)
-        attributes_layout.addWidget(cell_bbox, 4, 3, 1, 2)
+        attributes_layout.addWidget(cell_bbox, 4, 3, 1, 3)
 
-        attributes_layout.addWidget(cell_centroid_label, 5, 0, 1, 2)
+        attributes_layout.addWidget(cell_centroid_label, 5, 0, 1, 3)
         attributes_layout.addWidget(colon_label5, 5, 2, 1, 1)
-        attributes_layout.addWidget(cell_centroid, 5, 3, 1, 2)
+        attributes_layout.addWidget(cell_centroid, 5, 3, 1, 3)
 
-        attributes_layout.addWidget(cell_area_label, 6, 0, 1, 2)
+        attributes_layout.addWidget(cell_area_label, 6, 0, 1, 3)
         attributes_layout.addWidget(colon_label6, 6, 2, 1, 1)
-        attributes_layout.addWidget(cell_area, 6, 3, 1, 2)
+        attributes_layout.addWidget(cell_area, 6, 3, 1, 3)
 
-        attributes_layout.addWidget(cell_intensity_label, 7, 0, 1, 2)
+        attributes_layout.addWidget(cell_intensity_label, 7, 0, 1, 3)
         attributes_layout.addWidget(colon_label7, 7, 2, 1, 1)
-        attributes_layout.addWidget(cell_intensity, 7, 3, 1, 2)
+        attributes_layout.addWidget(cell_intensity, 7, 3, 1, 3)
 
         main_layout = QHBoxLayout()
         main_layout.addWidget(cell_show)
         main_layout.addLayout(attributes_layout)
+        main_layout.setSpacing(15)
 
         self.setFixedSize(450, 220)
         self.setWindowIcon(QIcon(get_icon("cell.png")))
@@ -483,8 +485,11 @@ class CellAttributeWindow(QWidget):
         y = coords[0]-[self.ins_bbox[1]]*length
 
         sub_img = np.zeros((self.ins_bbox[3]-self.ins_bbox[1]+1, self.ins_bbox[2]-self.ins_bbox[0]+1, 3))
-        sub_img[y, x, 0] = self.ins_color[2]
+        sub_img[y, x, 0] = self.ins_color[0]
         sub_img[y, x, 1] = self.ins_color[1]
-        sub_img[y, x, 2] = self.ins_color[0]
+        sub_img[y, x, 2] = self.ins_color[2]
 
-        cv2.imwrite('./semi_tracker/interface/icon/cell_show.png', sub_img)
+        sub_img1 = Image.fromarray(np.uint8(sub_img))
+        img_pix = sub_img1.toqpixmap()
+
+        return img_pix

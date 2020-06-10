@@ -33,7 +33,7 @@ from ..normalizers import get_normalizer
 from ..segmenters import get_segmenter
 from ..trackers import get_tracker
 from ..writer import get_writer
-from .utils import get_icon
+from .utils import get_icon, slide_stylesheet, general_qss
 from ..utils import logger
 
 
@@ -83,78 +83,8 @@ class MainWindow(QMainWindow):
         self.result_dir_path    = ""
         self.origin_dir_path    = ""
 
-        self.sld_stylesheet = """
-            QWidget {
-                background: #212121;
-            }
-            /*横向*/
-            QSlider:horizontal {
-                min-height: 20px;
-            }
-            QSlider::groove:horizontal {
-                height: 1px;
-                background: white; 
-            }
-            QSlider::handle:horizontal {
-                width: 12px;
-                margin-top: -6px;
-                margin-bottom: -6px;
-                border-radius: 6px;
-                background: qradialgradient(spread:reflect, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.7 rgba(210, 210, 210, 255), stop:0.7 rgba(210, 210, 210, 255));
-            }
-            QSlider::handle:horizontal:hover {
-                background: qradialgradient(spread:reflect, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.7 rgba(255, 255, 255, 255), stop:0.7 rgba(255, 255, 255, 255));
-            }
-            """
-        self.general_qss = """
-            QSlider
-            {
-                background: #212121;
-            }
-            QSlider:horizontal 
-            {
-                min-height: 20px;
-            }
-            QSlider::groove:horizontal 
-            {
-                height: 1px;
-                background: white; 
-            }
-            QSlider::handle:horizontal 
-            {
-                width: 12px;
-                margin-top: -6px;
-                margin-bottom: -6px;
-                border-radius: 6px;
-                background: qradialgradient(spread:reflect, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.7 rgba(210, 210, 210, 255), stop:0.7 rgba(210, 210, 210, 255));
-            }
-            QSlider::handle:horizontal:hover 
-            {
-                background: qradialgradient(spread:reflect, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.7 rgba(255, 255, 255, 255), stop:0.7 rgba(255, 255, 255, 255));
-            }
-            QToolTip
-            {
-                font-family: Verdana;
-                color: rgb(245, 245, 245, 255);
-                background: #323232;
-            }
-            QLabel
-            {
-                font-family: Verdana;
-                font-size: 12px;
-                color: rgb(245, 245, 245, 255);
-            }
-            QLineEdit
-            {
-                font-family: Verdana;
-                font-size: 12px;
-            }
-            QPushButton
-            {
-                font-family: Verdana;
-                font-size: 12px;
-            }
-        """
+        self.sld_stylesheet = slide_stylesheet
+        self.general_qss = general_qss
         self.setStyleSheet(self.general_qss)
 
         self.setup_ui()
@@ -162,14 +92,18 @@ class MainWindow(QMainWindow):
     def setup_ui(self):
 
         # Initialize five parts of the main window
+        main_widget = QWidget()
+        main_layout = QHBoxLayout(main_widget)
+
+        self.main_widget = main_widget
+
         self.init_menu()
         self.init_left_part()
         self.init_visualize_window()
         self.init_correction_tools()
         self.init_status_bar()
 
-        main_widget = QWidget()
-        main_layout = QHBoxLayout(main_widget)
+
         main_layout.setSpacing(0)
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.addWidget(self.left_navigation)
@@ -183,7 +117,7 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(main_widget)
 
-        self.main_widget = main_widget
+
         self.setGeometry(300, 300, 1500, 800)
         self.setWindowTitle("SemiTracker")
         self.setWindowIcon(QIcon(get_icon("cell.png")))
@@ -264,10 +198,12 @@ class MainWindow(QMainWindow):
     def init_visualize_window(self):
         self.visualize = VisualizeWindow()
         self.visualize_window = self.visualize.visualize_window
-        self.setMouseTracking(True)
+        # self.main_widget.setMouseTracking(True)
+        self.visualize_window.setMouseTracking(True)
+        # self.setMouseTracking(True)
         self.visualize.setMouseTracking(True)
-        self.visualize.main_frame.setMouseTracking(True)
-        self.visualize.main_frame.mouseMoveEvent = self.my_mousemove_event
+        # self.visualize.main_frame.setMouseTracking(True)
+        self.visualize.main_frame.view.mouseMoveEvent = self.mouseMoveEvent
         self.visualize.main_left.clicked.connect(self.main_left_fnc)
         self.visualize.main_right.clicked.connect(self.main_right_fnc)
         self.visualize.main_sld.valueChanged.connect(self.main_sld_fnc)
@@ -295,9 +231,12 @@ class MainWindow(QMainWindow):
         self.status = StatusBar()
         self.status_bar = self.status.status_bar
 
-    def my_mousemove_event(self, event):
-        event.accept()
-        print(event.pos())
+    def mouseMoveEvent(self, event):
+        self.setMouseTracking(True)
+        # event.accept()
+        s = event.windowPos()
+        self.status.work_info_label.setText(str(s.x()))
+        print(s)
 
     def select_roi_button_fnc(self):
         self.visualize.main_frame.getImageItem().mouseDragEvent = self.grabcut_drag
@@ -327,7 +266,7 @@ class MainWindow(QMainWindow):
 
     def normalizer_changed_fnc(self):
         normalizer_key = self.tools.normlize.normalize_tools.currentIndex()
-        for i in range(3):
+        for i in range(4):
             if i == normalizer_key:
                 self.tools.normlize.normalize_tools.setItemIcon(i, QIcon(get_icon("Arrow_down.png")))
             else:
@@ -918,6 +857,8 @@ class MainWindow(QMainWindow):
             self.instance_widget_update_fnc()
             self.instances_widget_fnc()
             self.visualize.main_frame.removeItem(self.grabcut_roi)
+            if self.bboxroi is not None:
+                self.visualize.main_frame.removeItem(self.bboxroi)
 
             # self.visualize.main_frame.setImage(self.frames[self.visualize.main_sld.value()].raw_color_img)
         current_frame = self.frames[self.visualize.main_sld.value()]
