@@ -13,7 +13,7 @@ from .utils import mkdir
 
 class PlotFormat():
     fonttype = 'Times New Roman'
-    markersize = 10
+    markersize = 8
     linewidth = 3
     label_size = 10
 
