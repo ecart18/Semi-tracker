@@ -49,18 +49,15 @@
     <a name="Data information"></a>
     <h2>Data information:</h2>   
     <div style="text-align: left;">
-        <p>Project Name : {{proj_name}} </p>
         <p>Frames Number : {{frame_num}} </p>
-        <p>Frames per seconds (FPS): {{fps}} </p>
-        <p>Image area : {{img_area}} </p>
-        <p>Cell Types : {{cell_type}} </p>
+        <p>Image Size : {{img_size}} </p>
     </div>
     <a name="Details information of cells"></a>
     <h2>Details information of cells: </h2>  
     <div style="text-align: left;">
         <table class="table-class">
         <tr>
-            <th>Cell ID</th>
+            <th>Instance ID</th>
             <th>Start Frame</th>
             <th>End Frame</th>
             <th>Mean Area</th>
@@ -70,12 +67,12 @@
     
         {% for item in infos %}
         <tr align='center'>
-            <td>{{ item.cell_id }}</td>
+            <td>{{ item.instance_id }}</td>
             <td>{{ item.start_frame }}</td>
             <td>{{ item.end_frame }}</td>
             <td>{{ item.mean_area |round(2, 'floor') }}</td>
             <td>{{ item.mean_intensity |round(2, 'floor') }}</td>
-            <td><a href="#{{ item.cell_id }}">Cell ID:{{ item.cell_id }}</a></td>
+            <td><a href="#{{ item.instance_id }}">Instance ID:{{ item.instance_id }}</a></td>
         </tr>
         {% endfor%}
         </table>
@@ -84,8 +81,8 @@
     <h2>Results visualization </h2>
     <div style="text-align: center;">
         {% for item in infos %}
-            <p>Cell ID: &nbsp; {{ item.cell_id }}</p> 
-            <a name="{{ item.cell_id }}"> <img src="{{ item.image_path }}" width="70%"></a>
+            <p>Instance ID: &nbsp; {{ item.instance_id }}</p> 
+            <a name="{{ item.instance_id }}"> <img src="{{ item.statis_img_path }}" width="70%"></a>
             <br>
         {% endfor%}
     </div>

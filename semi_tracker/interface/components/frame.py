@@ -115,7 +115,7 @@ class Instance(object):
         self._bbox = np.array([x1, y1, x2, y2])
         self._centroid = [int((x1+x2)/2), int((y1+y2)/2)]
         self._area = np.shape(self._coords)[1]
-        self._intensity = np.sum(self._raw_img[coords[0], coords[1], :]) / self._area
+        self._intensity = np.sum(self._raw_img[coords[0], coords[1], :]) / (self._raw_img.shape[-1] * self._area)
         self._edge = self._find_edge_coordinates(x_max=x2, y_max=y2, coords=coords)
         
 
