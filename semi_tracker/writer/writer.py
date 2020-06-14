@@ -21,7 +21,7 @@ from semi_tracker import PACKAGEPATH
 class Writer(Visualization):
     def __init__(self, write_folder, add_color=True, add_box=True, add_edge=True, 
                         add_trajectory=True, add_label=True, trajectory_length=None, video_fps=1):
-        super(Writer,self).__init__(write_folder, add_color, add_box, add_edge, add_trajectory, 
+        super(Writer, self).__init__(write_folder, add_color, add_box, add_edge, add_trajectory,
                                 add_label, trajectory_length, video_fps)
         self._write_folder = write_folder
         mkdir(osp.join(self._write_folder, 'statis'))
@@ -118,7 +118,8 @@ class Writer(Visualization):
 
     def _generate_html(self, instance_info_label_id):
         env = Environment(loader=FileSystemLoader('./'))
-        template_file_path = str(Path(osp.join(PACKAGEPATH, 'writer/templates/results.html')).relative_to(os.getcwd()))
+        # template_file_path = str(Path(osp.join(PACKAGEPATH, 'writer/templates/results.html')).relative_to(os.getcwd()))
+        template_file_path = './semi_tracker/writer/templates/results.html'
         template = env.get_template(template_file_path)
         img_size = '%s * %s ' % (self.img_size[0], self.img_size[1])
         infos = [info for info in instance_info_label_id.values()]         

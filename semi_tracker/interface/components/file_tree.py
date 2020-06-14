@@ -24,42 +24,32 @@ class FileTree(QWidget):
             create_button = QPushButton()
             create_button.setText("Create")
             create_button.setStyleSheet("color: rgb(30, 144, 255, 255);"
-                                        "font-size: 20px;"
+                                        "font-size: 12px;"
                                         "font-family: Verdana;")
-
-            or_label = QLabel()
-            or_label.setText("/")
-            or_label.setStyleSheet("color: rgb(245, 245, 245, 255);"
-                                   "font-size: 15px;"
-                                   "font-family: Verdana;")
-
-            open_button = QPushButton()
-            open_button.setText("Open")
-            open_button.setStyleSheet("color: rgb(30, 144, 255, 255);"
-                                      "font-size: 20px;"
-                                      "font-family: Verdana;")
+            create_button.setContentsMargins(0, 0, 0, 0)
 
             label = QLabel()
             label.setText("a new project.")
             # label.setAlignment(QtCore.Qt.AlignRight)
             label.setStyleSheet("color: rgb(245, 245, 245, 255);"
-                                "font-size: 15px;"
+                                "font-size: 12px;"
                                 "font-family: Verdana;")
+            label.setContentsMargins(0, 0, 0, 0)
 
             layout1 = QHBoxLayout()
-            layout1.setAlignment(QtCore.Qt.AlignLeft)
             layout1.addWidget(create_button)
+            layout1.addWidget(label)
+            layout1.setSpacing(0)
             # layout1.addWidget(or_label)
             # layout1.addWidget(open_button)
 
             layout2 = QVBoxLayout()
             layout2.addLayout(layout1)
-            layout2.addWidget(label)
+            # layout2.addWidget(label)
             layout2.setAlignment(QtCore.Qt.AlignTop)
 
             self.setLayout(layout2)
             self.create_button = create_button
-            self.open_button = open_button
 
         else:
             # 格式检查

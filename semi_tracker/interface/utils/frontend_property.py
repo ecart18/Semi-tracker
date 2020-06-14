@@ -110,7 +110,7 @@ segment_tools_stylesheet = """
                 font-family: Verdana;
                 font-size: 12px;
                 background: #353535;
-                border: 0px;
+                
             }
             QToolBoxButton 
             {
@@ -126,16 +126,14 @@ left_tools_stylesheet = """
                     QToolBox 
                     {
                         background: #323232;
-                        padding-bottom: 0px;
-                        text-align: center;
+                        
                     }
                     QToolBox::tab 
                     {
                         font-family: Verdana;
                         font-size: 15px;
+                        border-style: solid;
                         background: #454545;
-                        border: 0px;
-                        text-align: center;
                     }
                     QToolBoxButton 
                     {
@@ -144,6 +142,7 @@ left_tools_stylesheet = """
                     QToolBox::tab:selected 
                     { 
                         color: white;
+                        background: #323232;
                     }
                 """
 
@@ -158,7 +157,7 @@ normalize_tools_stylesheet = """
                 font-family: Verdana;
                 font-size: 12px;
                 background: #353535;
-                border: 0px;
+                
             }
             QToolBoxButton 
             {

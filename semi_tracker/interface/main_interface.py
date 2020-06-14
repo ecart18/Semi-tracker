@@ -62,9 +62,10 @@ class MainWindow(QMainWindow):
         self.segmenter_name     = 'binary_thresholding'
         self.tracker_dict       = {0: 'none', 1: 'bipartite_tracker'}
         self.tracker_name       = 'bipartite_tracker'
-        self.normalizer_dict    = {0: 'equalize_hist', 1: 'min_max', 2: 'retinex_MSRCP', 3: 'retinex_MSRCR'}
+        self.normalizer_dict    = {0: 'equalize_hist', 1: 'min_max', 2: 'retinex_MSRCP', 3: 'retinex_MSRCR', 4: 'reset'}
         self.normalizer_name    = 'equalize_hist'
         self.previous_frame     = 0
+        self.previous_algorithm = 4
 
         self.grabcut_pos_begin  = None
         self.grabcut_pos_finish = None
@@ -119,7 +120,6 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(main_widget)
 
-
         self.setGeometry(300, 300, 1500, 800)
         self.setWindowTitle("SemiTracker")
         self.setWindowIcon(QIcon(get_icon("cell.png")))
@@ -143,7 +143,10 @@ class MainWindow(QMainWindow):
         self.left_navigation = self.navigation.left_navigation
         self.tools = LeftTools()
         self.left_tools = self.tools.left_tools
-        self.tools.main_algorithm.currentChanged.connect(self.main_algorithm_changed_fnc)
+        # self.tools.left_tools.setVisible(False)
+        # self.tools.main_algorithm.itemInserted(4).clicked.connect(self.warp_fnc)
+
+        # self.tools.main_algorithm.currentChanged.connect(self.main_algorithm_changed_fnc)
 
         self.left_navigation.clicked.connect(self.left_navigation_fnc)
         self.last_item = self.left_navigation.item(self.last_index)
@@ -153,45 +156,54 @@ class MainWindow(QMainWindow):
         self.tools.file_tree_widget.create_button.clicked.connect(self.new_project_fnc)
         # self.tools.file_tree_widget.open_button.clicked.connect(self.open_project_fnc)
 
-        self.tools.segment.segment_tools.currentChanged.connect(self.segmenter_changed_fnc)
-        self.tools.normlize.normalize_tools.currentChanged.connect(self.normalizer_changed_fnc)
+        # self.tools.segment.segment_tools.currentChanged.connect(self.segmenter_changed_fnc)
+        # self.tools.normlize.normalize_tools.currentChanged.connect(self.normalizer_changed_fnc)
 
         # seg alg1
         self.tools.segment.thresh_segment_button.clicked.connect(
-            lambda: self.segment(self.segmenter_name, threshold=self.tools.segment.thresh_sld1.value()))
+            lambda: self.segment('binary_thresholding', threshold=self.tools.segment.thresh_sld1.value()))
 
         # seg alg2
         self.tools.segment.model_browse_button.clicked.connect(self.model_select_fnc)
         self.tools.segment.unet_segment_button.clicked.connect(
-            lambda: self.segment(self.segmenter_name, model_path=self.unet_model_path,
+            lambda: self.segment('unet', model_path=self.unet_model_path,
                                  threshold=self.tools.segment.thresh_sld2.value()/10))
 
         # seg alg3
         self.tools.segment.watershed_segment_button.clicked.connect(
-            lambda: self.segment(self.segmenter_name, noise_amplitude=self.tools.segment.noise_sld.value(),
+            lambda: self.segment('water_shed', noise_amplitude=self.tools.segment.noise_sld.value(),
                                  dist_thresh=self.tools.segment.dist_thresh_sld.value()/10))
 
         # seg alg4
         self.tools.segment.select_roi_button.clicked.connect(self.select_roi_button_fnc)
         self.tools.segment.grabcut_segment_button.clicked.connect(
-            lambda: self.segment(self.segmenter_name, iteration=self.tools.segment.iteration_sld.value()))
+            lambda: self.segment('grab_cut', iteration=self.tools.segment.iteration_sld.value()))
 
         # normalization
-        self.tools.normlize.equalize_hist_button.clicked.connect(lambda: self.normalize(self.normalizer_name))
-        self.tools.normlize.min_max_button.clicked.connect(lambda: self.normalize(self.normalizer_name))
-        self.tools.normlize.retinex_MSRCP_button.clicked.connect(lambda: self.normalize(self.normalizer_name))
-        self.tools.normlize.retinex_MSRCR_button.clicked.connect(lambda: self.normalize(self.normalizer_name))
-
+        self.tools.normlize.equalize_hist_button.clicked.connect(lambda: self.normalize('equalize_hist'))
+        self.tools.normlize.min_max_button.clicked.connect(lambda: self.normalize('min_max'))
+        self.tools.normlize.retinex_MSRCP_button.clicked.connect(lambda: self.normalize('retinex_MSRCP'))
+        self.tools.normlize.retinex_MSRCR_button.clicked.connect(lambda: self.normalize('reset'))
+        self.tools.normlize.reset_raw_button.clicked.connect(self.reset_raw_button_fnc)
 
         # track
         self.tools.track.run_button.clicked.connect(lambda: self.track(self.tracker_name))
 
         # output
-        self.tools.output.output_button.clicked.connect(lambda: self.write(write_folder=self.project_path))
+
+        self.tools.output.output_button.clicked.connect(
+            lambda: self.write(write_folder=self.project_path,
+                               add_color=self.tools.output.visualization_color_checkbox.isChecked(),
+                               add_box=self.tools.output.visualization_box_checkbox.isChecked(),
+                               add_edge=self.tools.output.visualization_edge_checkbox.isChecked(),
+                               add_trajectory=self.tools.output.visualization_trajectory_checkbox.isChecked(),
+                               add_label=self.tools.output.visualization_label_checkbox.isChecked(),
+                               trajectory_length=int(self.tools.output.visualization_trajectory_length.text()),
+                               video_fps=int(self.tools.output.visualization_video_fps.text())))
 
         # annotation
-        self.tools.annotation.origin_path_browse_button.clicked.connect(self.dir_loader)
-        self.tools.annotation.result_path_browse_button.clicked.connect(self.result_path_fnc)
+        self.tools.annotation.load_button.clicked.connect(self.load_fnc)
+        self.tools.annotation.set_button.clicked.connect(self.result_path_fnc)
         self.tools.annotation.save_annotation_button.clicked.connect(self.save_annotation_fnc)
         self.tools.annotation.finish_annotation_button.clicked.connect(self.finish_annotation_fnc)
 
@@ -219,6 +231,7 @@ class MainWindow(QMainWindow):
         self.correction.size_editor.textChanged.connect(self.size_editor_fnc)
         self.correction.size_left_button.clicked.connect(self.size_left_fnc)
         self.correction.size_right_button.clicked.connect(self.size_right_fnc)
+        # self.correction.size_right_button.clicked.connect(self.hide_fnc)
         # self.correction.switch_show_button.clicked.connect(self.switch_show_fnc)
         self.correction.brush_button.clicked.connect(self.brush_fnc)
         self.correction.eraser_button.clicked.connect(self.eraser_fnc)
@@ -231,12 +244,12 @@ class MainWindow(QMainWindow):
         self.status = StatusBar()
         self.status_bar = self.status.status_bar
 
-    def mouseMoveEvent(self, event):
-        self.setMouseTracking(True)
-        # event.accept()
-        s = event.windowPos()
-        self.status.work_info_label.setText(str(s.x()))
-        print(s)
+    def reset_raw_button_fnc(self):
+        if not len(self.frames) == 0:
+            for key in self.frames.keys():
+                self.frames[key].norm_img = self.frames[key].norm_img.raw_img
+
+            self.visualize.main_frame.setImage(self.frames[self.visualize.main_sld.value()].norm_img)
 
     def select_roi_button_fnc(self):
         self.visualize.main_frame.getImageItem().mouseDragEvent = self.grabcut_drag
@@ -256,8 +269,17 @@ class MainWindow(QMainWindow):
             self.grabcut_roi = pg.RectROI(self.grabcut_pos_begin, pos-self.grabcut_pos_begin)
             self.visualize.main_frame.addItem(self.grabcut_roi)
 
+    def warp_fnc(self):
+        algorithm_key = self.tools.main_algorithm.currentIndex()
+        if algorithm_key == self.previous_algorithm:
+            self.tools.main_algorithm.setCurrentIndex(4)
+            self.previous_algorithm = 4
+        else:
+            self.previous_algorithm = algorithm_key
+
     def main_algorithm_changed_fnc(self):
         algorithm_key = self.tools.main_algorithm.currentIndex()
+
         for i in range(4):
             if i == algorithm_key:
                 self.tools.main_algorithm.setItemIcon(i, QIcon(get_icon("Arrow_down.png")))
@@ -266,7 +288,7 @@ class MainWindow(QMainWindow):
 
     def normalizer_changed_fnc(self):
         normalizer_key = self.tools.normlize.normalize_tools.currentIndex()
-        for i in range(4):
+        for i in range(5):
             if i == normalizer_key:
                 self.tools.normlize.normalize_tools.setItemIcon(i, QIcon(get_icon("Arrow_down.png")))
             else:
@@ -489,7 +511,7 @@ class MainWindow(QMainWindow):
         if not filenames == []:
             self.frames = load_images(filenames)
             self.frames_num = len(self.frames)
-            self.visualize.main_frame.setImage(self.frames[0].raw_img)
+            self.visualize.main_frame.setImage(self.frames[0].annotation_color_img)
             self.correction.assist_frame.setImage(self.frames[0].raw_img)
 
             self.show_flag = 1
@@ -571,9 +593,9 @@ class MainWindow(QMainWindow):
             current_frame = self.frames[self.visualize.main_sld.value()]
             current_id = self.correction.instances_widget.currentRow()
             if current_id >= 0:
-                colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
-                self.visualize.main_frame.setColorMap(colormap)
-                self.visualize.main_frame.setImage(current_frame.raw_img[:, :, 0])
+                # colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
+                # self.visualize.main_frame.setColorMap(colormap)
+                self.visualize.main_frame.setImage(current_frame.norm_img)
                 self.visualize.main_frame.getImageItem().mouseDragEvent = self.brush_drag1
             else:
                 self.brush_message_box = InformationMessageBox("Please add a cell first!")
@@ -665,19 +687,24 @@ class MainWindow(QMainWindow):
         current_color = current_frame.instances[self.widget_list[current_id]].color
         self.changed_instances.add_update_ins(current_id, current_label, current_name, current_color)
 
-        temp = self.frames[self.visualize.main_sld.value()].label_img
+        temp = current_frame.label_img
+        temp_color_img = current_frame.annotation_color_img
         if self.annotation_flag == 2:
             temp[int(pos[1] - ssv + 1): int(pos[1]) + ssv, int(pos[0]) - ssv + 1: int(pos[0]) + ssv] = current_label
+            temp_color_img[int(pos[1] - ssv + 1): int(pos[1]) + ssv, int(pos[0]) - ssv + 1: int(pos[0]) + ssv, :] = \
+                current_color
+            self.frames[self.visualize.main_sld.value()].label_img = temp
+            self.frames[self.visualize.main_sld.value()].annotation_color_img = temp_color_img
+            self.visualize.main_frame.imageItem.updateImage(
+                self.frames[self.visualize.main_sld.value()].annotation_color_img)
         else:
             temp[int(pos[1] - ssv + 1): int(pos[1]) + ssv, int(pos[0]) - ssv + 1: int(pos[0]) + ssv, 0] = current_label
-        roi_my = pg.ROI(pos=(int(pos[0])-0.5, int(pos[1])-0.5), size=(ssv, ssv),
-                        pen=QPen(QColor(current_color[0], current_color[1], current_color[2])),
-                        movable=False)
-        if self.annotation_flag == 2:
-            self.frames_roi[self.visualize.main_sld.value()].append(roi_my)
-        self.color_roi.append(roi_my)
-        self.visualize.main_frame.addItem(roi_my)
-        self.frames[self.visualize.main_sld.value()].label_img = temp
+            self.frames[self.visualize.main_sld.value()].label_img = temp
+            self.frames[self.visualize.main_sld.value()].annotation_color_img = temp_color_img
+            self.visualize.main_frame.imageItem.updateImage(
+                self.frames[self.visualize.main_sld.value()].annotation_color_img)
+
+
         # self.visualize.main_frame.imageItem.updateImage(self.frames[self.visualize.main_sld.value()].label_img[:, :, 0].T)
 
     def eraser_drag1(self, event):
@@ -693,14 +720,27 @@ class MainWindow(QMainWindow):
 
         self.changed_instances.add_update_ins(current_id, current_label, current_name, current_color)
 
-        temp = self.frames[self.visualize.main_sld.value()].label_img
+        temp_raw_img = current_frame.raw_img
+        # print(np.shape(temp_raw_img))
+        temp = current_frame.label_img
+        temp_color_img = current_frame.annotation_color_img
         if self.annotation_flag == 2:
             temp[int(pos[1] - ssv + 1): int(pos[1]) + ssv, int(pos[0]) - ssv + 1: int(pos[0]) + ssv] = 0
+            temp_color_img[int(pos[1] - ssv + 1): int(pos[1]) + ssv, int(pos[0]) - ssv + 1: int(pos[0]) + ssv, :] = [0, 0, 0]
+                # temp_raw_img[int(pos[1] - ssv + 1): int(pos[1]) + ssv, int(pos[0]) - ssv + 1: int(pos[0]) + ssv, :]
+            self.frames[self.visualize.main_sld.value()].label_img = temp
+            self.frames[self.visualize.main_sld.value()].annotation_color_img = temp_color_img
+            self.visualize.main_frame.imageItem.updateImage(
+                self.frames[self.visualize.main_sld.value()].annotation_color_img)
         else:
             temp[int(pos[1] - ssv + 1): int(pos[1]) + ssv, int(pos[0]) - ssv + 1: int(pos[0]) + ssv, 0] = 0
+            self.frames[self.visualize.main_sld.value()].label_img = temp
+            self.frames[self.visualize.main_sld.value()].annotation_color_img = temp_color_img
+            self.visualize.main_frame.imageItem.updateImage(
+                self.frames[self.visualize.main_sld.value()].annotation_color_img)
         # temp[int(pos[1]) - ssv + 1: int(pos[1]) + ssv, int(pos[0]) - ssv + 1: int(pos[0]) + ssv, 0] = 0
-        self.frames[self.visualize.main_sld.value()].label_img = temp
 
+        '''
         del_c_roi = []
         if self.annotation_flag == 2:
             for c_roi1 in self.frames_roi[self.visualize.main_sld.value()]:
@@ -721,7 +761,7 @@ class MainWindow(QMainWindow):
                     del_c_roi.append(c_roi)
             for c_roi in del_c_roi:
                 self.visualize.main_frame.removeItem(c_roi)
-
+        '''
 
         if self.show_flag == 3:
             pass
@@ -754,11 +794,6 @@ class MainWindow(QMainWindow):
             self.instance_widget_update_fnc()
             self.instances_widget_fnc()
         elif self.annotation_flag == 2:
-            current_frame = self.frames[self.visualize.main_sld.value()]
-            colormap = pg.ColorMap(np.linspace(0, 1, current_frame.label_n + 1),
-                                   color=current_frame.color_map)
-            self.correction.assist_frame.setColorMap(colormap)
-            self.correction.assist_frame.setImage(current_frame.label_img)
             self.frames[self.visualize.main_sld.value()].add_labeling(self.changed_instances.update_ins_id,
                                                                       self.changed_instances.update_ins_label,
                                                                       self.changed_instances.update_ins_name,
@@ -1003,7 +1038,7 @@ class MainWindow(QMainWindow):
 
     def segment_message_box1_fnc(self, name, **kwargs):
 
-        if not self.tools.segment.segment_tools.currentIndex() == 3:
+        if not name == 'grab_cut':
             self.status.progressbar.setMaximum(self.frames_num)
             self.status.progressbar.setVisible(True)
             if name == 'unet':
@@ -1092,7 +1127,10 @@ class MainWindow(QMainWindow):
             QApplication.processEvents()
             # self.status.progressbar.setVisible(True)
             writer = get_writer(**kwargs)
-            writer(self.frames)
+            writer(self.frames,
+                   output_csv=self.tools.output.csv_checkbox.isChecked(),
+                   output_html=self.tools.output.html_checkbox.isChecked(),
+                   output_img=self.tools.output.visualization_checkbox.isChecked())
             # self.status.progressbar.setVisible(True)
             self.status.work_info_label.setText("")
         else:

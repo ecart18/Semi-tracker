@@ -21,7 +21,7 @@ class VisualizeWindow(QWidget):
         self.setup_ui()
 
     def setup_ui(self):
-        main_frame = pg.ImageView()
+        main_frame = pg.ImageView(view=pg.PlotItem())
         main_frame.ui.roiBtn.hide()
         main_frame.ui.menuBtn.hide()
         main_frame.ui.histogram.hide()

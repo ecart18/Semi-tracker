@@ -165,6 +165,8 @@ class Frame(object):
         self._binary_mask   = None   # binary mask (height, width, 1)
         self._label_img     = None   # label (height, width, 1)
         self._raw_color_img = raw_img   # color and raw img
+        self._annotation_color_img = raw_img
+        self._label2color   = []
         
         self._label_n       = 0
         self._label_max     = 0
@@ -182,6 +184,14 @@ class Frame(object):
     @property
     def label_max(self):
         return self._label_max
+
+    @property
+    def annotation_color_img(self):
+        return self._annotation_color_img
+
+    @annotation_color_img.setter
+    def annotation_color_img(self, annotation_color_img):
+        self._annotation_color_img = annotation_color_img
 
     @property
     def norm_img(self):
