@@ -35,6 +35,7 @@ from ..trackers import get_tracker
 from ..writer import get_writer
 from .utils import get_icon, slide_stylesheet, general_qss
 from ..utils import logger
+from semi_tracker import PACKAGEPATH
 
 
 class MainWindow(QMainWindow):
@@ -47,9 +48,10 @@ class MainWindow(QMainWindow):
 
         pg.setConfigOption('imageAxisOrder', 'row-major')
 
-        mkdir("./output")
-        self.project_path       = "./output/untitled"
-        self.unet_model_path    = "./checkpoint/model_best.pth.tar"
+        mkdir(os.path.join(PACKAGEPATH, "../output"))
+        mkdir(os.path.join(PACKAGEPATH, "../checkpoint"))
+        self.project_path       = os.path.join(PACKAGEPATH, "../output/untitled")
+        self.unet_model_path    = os.path.join(PACKAGEPATH, "../checkpoint/model_best.pth.tar")
         self.last_index         = 0             # left navigation update
         self.frames_num         = 0             # num of frames
         self.frames             = collections.OrderedDict()
@@ -454,7 +456,7 @@ class MainWindow(QMainWindow):
 
     def files_loader(self):
         filenames = QFileDialog.getOpenFileNames(None, "Select lsm data files to concatenate...",
-                                                 filter="*.lsm *.czi *.tif *.png *.jpg *.JPEG")[0]
+                                                 filter="*bmp *.tif *.png *.jpg *.JPEG *avi *mp4 *mpg")[0]
         if not filenames == []:
             self.frames = load_images(filenames)
             self.frames_num = len(self.frames)

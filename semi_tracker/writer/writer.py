@@ -4,8 +4,9 @@ from __future__ import absolute_import
 
 
 from collections import OrderedDict
+import os
 import os.path as osp
-
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import cv2
@@ -14,6 +15,7 @@ from jinja2 import Environment, FileSystemLoader
 from ..utils import format_out
 from .utils import mkdir
 from .visualize import Visualization, plot_double_line
+from semi_tracker import PACKAGEPATH
 
 
 class Writer(Visualization):
@@ -116,7 +118,7 @@ class Writer(Visualization):
 
     def _generate_html(self, instance_info_label_id):
         env = Environment(loader=FileSystemLoader('./'))
-        template_file_path = './semi_tracker/writer/templates/results.html'
+        template_file_path = str(Path(osp.join(PACKAGEPATH, 'writer/templates/results.html')).relative_to(os.getcwd()))
         template = env.get_template(template_file_path)
         img_size = '%s * %s ' % (self.img_size[0], self.img_size[1])
         infos = [info for info in instance_info_label_id.values()]         

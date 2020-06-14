@@ -4,8 +4,10 @@ import os
 import logging
 from logging import handlers
 from .utils import mkdir 
+import os.path as osp
+from semi_tracker import PACKAGEPATH
 
-LOG_PATH = os.path.join('.', 'log')
+LOG_PATH = osp.join(PACKAGEPATH, '../log')
 mkdir(LOG_PATH)
 
 def _logging(**kwargs):
@@ -37,4 +39,4 @@ def _logging(**kwargs):
     log.setLevel(level)
     return log
 
-logger = _logging(filename=os.path.join(LOG_PATH, 'default.log'))
+logger = _logging(filename=osp.join(LOG_PATH, 'default.log'))
