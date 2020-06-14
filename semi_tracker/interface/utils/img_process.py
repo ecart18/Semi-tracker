@@ -4,6 +4,7 @@ from __future__ import absolute_import
 
 import cv2
 import numpy as np
+import os.path as osp
 from ..components.frame import Frame
 
 
@@ -14,10 +15,9 @@ def unit16b2uint8(img):
         img = img.astype(np.float32) / 65535.0 * 255.0
         return img.astype(np.uint8)
     else:
-        raise TypeError('No such of img transfer type: {} for img'.format(img.dtype))
+        raise TypeError('No such of image transfer type: {} for image/'.format(img.dtype))
 
 def img_standardization(img):
-    # img = unit16b2uint8(img)
     img = cv2.convertScaleAbs(img)
     if len(img.shape) == 2:
         img = np.expand_dims(img, 2)
@@ -26,26 +26,48 @@ def img_standardization(img):
     elif len(img.shape) == 3:
         return img
     else:
-        raise TypeError('The Depth of image large than 3 \n')
+        raise TypeError('The Depth of image large than 3.')
 
 
 def load_images(file_names):
     extentions = file_names[0].split('.')[-1].lower()
     frames = {}
-    if extentions in ['png', 'jpg', 'jpeg']:
+
+    if extentions in ['png', 'jpg', 'jpeg', 'tif']:
         for idx, file_name in enumerate(file_names):
-            img = cv2.imread(file_name)
+            img = cv2.imread(file_name, -1)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             img = img_standardization(img)
-            frame = Frame(file_name=file_name, 
-                            frame_id=idx, 
-                            raw_img=img)
+            frame = Frame(file_name=file_name, frame_id=idx, raw_img=img)
             frames[idx] = frame
 
-     # TODO       
-    if extentions in ['mp4', 'avi', 'tif']:
+    elif extentions in ['mp4', 'avi', 'mpg']:
+        if len(file_names) > 1:
+            raise ValueError('The number of selected video ({}) file larger than one.'.format(';'.join(file_names)))
+        capture = cv2.VideoCapture(file_names[0])
+        dirname = osp.dirname(file_names[0])
+        idx = 0
+        while True:
+            ret, img = capture.read()
+            if ret:
+                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                img = img_standardization(img)
+                file_name = osp.join(dirname, '{:0>6d}.jpg'.format(idx))
+                try:
+                    cv2.imwrite(file_name, img)
+                except:
+                    pass
+                frame = Frame(file_name=file_name, frame_id=idx, raw_img=img)
+                frames[idx] = frame
+                idx += 1
+            else:
+                break
+        capture.release()
+
+    else:
         raise TypeError('No supported images format with extentions: {}.'.format(extentions))
     
     if not len(frames) >= 1:
-        raise ValueError('load images failure \n')
+        raise ValueError('Load images failure, image number less than 1.')
+    
     return frames
