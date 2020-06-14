@@ -185,9 +185,7 @@ class MainWindow(QMainWindow):
         self.tools.track.run_button.clicked.connect(lambda: self.track(self.tracker_name))
 
         # output
-        self.tools.output.output_button.clicked.connect(lambda: self.write(write_folder=self.project_path,
-                                                        proj_name='Test_name',
-                                                        cell_type='SIM'))
+        self.tools.output.output_button.clicked.connect(lambda: self.write(write_folder=self.project_path))
 
         # annotation
         self.tools.annotation.origin_path_browse_button.clicked.connect(self.dir_loader)
