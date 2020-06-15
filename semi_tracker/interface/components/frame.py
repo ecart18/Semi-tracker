@@ -158,14 +158,14 @@ class Frame(object):
     def __init__(self, file_name, frame_id, raw_img):
         self._frame_id      = frame_id
         self._file_name     = file_name
-        self._raw_img       = raw_img
+        self._raw_img       = raw_img.copy()
         self._img_size      = np.shape(raw_img)[0:-1]
-        self._norm_img      = raw_img
+        self._norm_img      = raw_img.copy()
 
         self._binary_mask   = None   # binary mask (height, width, 1)
         self._label_img     = None   # label (height, width, 1)
-        self._raw_color_img = raw_img   # color and raw img
-        self._annotation_color_img = raw_img
+        self._raw_color_img = raw_img.copy()   # color and raw img
+        self._annotation_color_img = raw_img.copy()
         self._label2color   = []
         
         self._label_n       = 0
@@ -378,6 +378,8 @@ class Frame(object):
                 if ins.coords is not None:
                     if annotation_flag == 2:
                         self._label_img[ins.coords[0], ins.coords[1]] = 0
+                        self.annotation_color_img[ins.coords[0], ins.coords[1], :] = \
+                            self.raw_img[ins.coords[0], ins.coords[1], :]
                     else:
                         self._label_img[ins.coords[0], ins.coords[1], ins.coords[2]] = 0
                 self._label_n -= 1

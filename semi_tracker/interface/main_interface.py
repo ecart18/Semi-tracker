@@ -6,6 +6,7 @@ import sys
 import numpy as np
 import cv2
 import imageio
+import pandas as pd
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import QSize, Qt
@@ -215,7 +216,7 @@ class MainWindow(QMainWindow):
         # self.setMouseTracking(True)
         self.visualize.setMouseTracking(True)
         # self.visualize.main_frame.setMouseTracking(True)
-        self.visualize.main_frame.view.mouseMoveEvent = self.mouseMoveEvent
+        # self.visualize.main_frame.view.mouseMoveEvent = self.mouseMoveEvent
         self.visualize.main_left.clicked.connect(self.main_left_fnc)
         self.visualize.main_right.clicked.connect(self.main_right_fnc)
         self.visualize.main_sld.valueChanged.connect(self.main_sld_fnc)
@@ -247,7 +248,7 @@ class MainWindow(QMainWindow):
     def reset_raw_button_fnc(self):
         if not len(self.frames) == 0:
             for key in self.frames.keys():
-                self.frames[key].norm_img = self.frames[key].norm_img.raw_img
+                self.frames[key].norm_img = self.frames[key].raw_img
 
             self.visualize.main_frame.setImage(self.frames[self.visualize.main_sld.value()].norm_img)
 
@@ -342,22 +343,17 @@ class MainWindow(QMainWindow):
             if not np.shape(len(self.frames)) == 0:
 
                 if self.show_flag == 1:
-                    self.visualize.main_frame.setImage(self.frames[main_sld_val].norm_img,
-                                                       autoHistogramRange=False)
-                    self.correction.assist_frame.setImage(self.frames[main_sld_val].raw_img,
-                                                          autoHistogramRange=False)
+                    self.visualize.main_frame.setImage(self.frames[main_sld_val].norm_img)
+                    self.correction.assist_frame.setImage(self.frames[main_sld_val].raw_img)
 
                 elif self.show_flag == 2:
-                    self.visualize.main_frame.setImage(self.frames[main_sld_val].binary_mask,
-                                                       autoHistogramRange=False)
-                    self.correction.assist_frame.setImage(self.frames[main_sld_val].raw_img,
-                                                          autoHistogramRange=False)
+                    self.visualize.main_frame.setImage(self.frames[main_sld_val].binary_mask)
+                    self.correction.assist_frame.setImage(self.frames[main_sld_val].raw_img)
 
                 elif self.show_flag == 3:
                     self.visualize.main_frame.removeItem(self.bboxroi)
                     self.visualize.main_frame.setImage(self.frames[main_sld_val].raw_color_img)
-                    self.correction.assist_frame.setImage(self.frames[main_sld_val].raw_img,
-                                                          autoHistogramRange=False)
+                    self.correction.assist_frame.setImage(self.frames[main_sld_val].raw_img)
                     self.instance_widget_update_fnc()
                 elif self.show_flag == 4:
                     self.visualize.main_frame.removeItem(self.bboxroi)
@@ -369,21 +365,8 @@ class MainWindow(QMainWindow):
                         for c_roi in self.frames_roi[main_sld_val]:
                             self.visualize.main_frame.addItem(c_roi)
 
-                    self.visualize.main_frame.setImage(self.frames[main_sld_val].norm_img,
-                                                       autoHistogramRange=False)
-
-                    if self.frames[main_sld_val].label_img.min == \
-                            self.frames[main_sld_val].label_img.max:
-                        colormap = pg.ColorMap(np.linspace(0, 1, self.frames[main_sld_val].label_n + 1),
-                                               color=self.frames[main_sld_val].color_map)
-                        self.correction.assist_frame.setColorMap(colormap)
-                        self.correction.assist_frame.setImage(self.frames[main_sld_val].label_img,
-                                                              autoHistogramRange=False)
-                    else:
-                        colormap = pg.ColorMap(np.linspace(0, 1, 2),
-                                               color=[[0, 0, 0, 0], [255, 255, 255, 255]])
-                        self.correction.assist_frame.setColorMap(colormap)
-                        self.correction.assist_frame.setImage(self.frames[main_sld_val].norm_img)
+                    self.visualize.main_frame.setImage(self.frames[main_sld_val].norm_img)
+                    self.correction.assist_frame.setImage(self.frames[main_sld_val].raw_img)
                     self.instance_widget_update_fnc()
             else:
                 pass
@@ -408,16 +391,55 @@ class MainWindow(QMainWindow):
             self.correction.instances_widget.addItem(item)
 
     def new_project_fnc(self):
-        self.new_project_window = ProjectWindow(self.project_path)
-        self.new_project_window.create1.clicked.connect(self.set_project_path_fnc)
-        self.new_project_window.show()
+        dir_path = QFileDialog.getExistingDirectory()
+        if self.has_chinese(dir_path):
+            self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese words.")
+            self.chinese_path_message_box.show()
+        else:
+            self.project_path = dir_path
+            self.tools.update_file_tree(self.project_path)
 
     def result_path_fnc(self):
-        if self.origin_dir_path == "":
+        if len(self.frames) == 0:
             self.origin_first_message_box = InformationMessageBox("Please select the origin images path first!")
             self.origin_first_message_box.show()
         else:
             self.result_dir_path = QFileDialog.getExistingDirectory()
+            if os.path.exists(self.result_dir_path+"color_map.csv"):
+                self.continue_annotation_message_box = QuestionMessageBox("Do you want to continue the last annotation?")
+                self.continue_annotation_message_box.yes_button.clicked.connect(self.continue_annotation_message_box_yes)
+                self.continue_annotation_message_box.cancel_button.clicked.connect(
+                    self.continue_annotation_message_box_cancel)
+            else:
+                self.continue_annotation_message_box_cancel()
+
+    def continue_annotation_message_box_yes(self):
+        annotation_dir_list = os.listdir(os.path.join(self.result_dir_path, "annotation"))
+        color_dir_list = os.listdir(os.path.join(self.result_dir_path, "color"))
+        for annotation_x in annotation_dir_list:
+            x = annotation_x.split("_")[1]
+            key = int(x.split(".")[0])
+            annotation_x_img = cv2.imread(annotation_x)
+            annotation_x_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            self.frames[key].label_img = annotation_x_img
+
+        for color_x in color_dir_list:
+            x = color_x.split("_")[1]
+            key = int(x.split(".")[0])
+            color_x_img = cv2.imread(color_x)
+            color_x_img = cv2.cvtColor(color_x, cv2.COLOR_BGR2RGB)
+            self.frames[key].annotation_color_img = color_x_img
+
+        self.annotation_flag = 2
+        self.show_flag = 4
+        self.visualize.main_frame.setImage(self.frames[self.visualize.main_sld.value()].annotation_color_img)
+        self.correction.assist_frame.setImage(self.frames[self.visualize.main_sld.value()].raw_img)
+
+    def continue_annotation_message_box_cancel(self):
+        if self.has_chinese(self.result_dir_path):
+            self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese words.")
+            self.chinese_path_message_box.show()
+        else:
             self.tools.annotation.result_path_show_lineedit.setText(self.result_dir_path)
             for key in self.frames.keys():
                 self.frames[key].label_img = np.zeros(np.shape(self.frames[key].raw_img[:, :, 0]))
@@ -426,14 +448,6 @@ class MainWindow(QMainWindow):
                 self.frames_roi[key] = []
             self.annotation_flag = 2
             self.show_flag = 4
-
-
-    # TODO
-    def set_project_path_fnc(self):
-        mkdir(self.new_project_window.path)
-        self.project_path = self.new_project_window.path
-
-        self.tools.update_file_tree(self.project_path)
 
     def load_fnc(self):
         if len(self.frames) == 0:
@@ -479,7 +493,10 @@ class MainWindow(QMainWindow):
     def files_loader(self):
         filenames = QFileDialog.getOpenFileNames(None, "Select lsm data files to concatenate...",
                                                  filter="*bmp *.tif *.png *.jpg *.JPEG *avi *mp4 *mpg")[0]
-        if not filenames == []:
+        if self.has_chinese(filenames[0]):
+            self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese words.")
+            self.chinese_path_message_box.show()
+        elif not filenames == []:
             self.frames = load_images(filenames)
             self.frames_num = len(self.frames)
 
@@ -530,18 +547,23 @@ class MainWindow(QMainWindow):
         qApp.quit()
 
     def save_annotation_fnc(self):
-        # print(self.annotation_flag)
         if not self.annotation_flag == 2:
             self.annotation_first_message_box = InformationMessageBox("Please do annotation first!")
             self.annotation_first_message_box.show()
         elif self.annotation_flag == 2:
             for key in self.frames.keys():
+                annotation_result = os.path.join(self.result_dir_path, "annotation")
+                annotation_color_result = os.path.join(self.result_dir_path, "color")
                 name = "annotation_" + str(key) + ".tif"
-                annotation_path = os.path.join(self.result_dir_path, name)
-                # print(self.frames[key].label_img.dtype)
+                name1 = "annotation_color_" + str(key) + ".tif"
+                annotation_path = os.path.join(annotation_result, name)
+                annotation_path1 = os.path.join(annotation_color_result, name1)
+                annotation_csv = os.path.join(self.result_dir_path, "color_map.csv")
                 imageio.imwrite(annotation_path, self.frames[key].label_img.astype(np.uint16))
-                # print(self.frames[key].label_img.max())
-                # cv2.imwrite(annotation_path, self.frames[key].label_img)
+                imageio.imwrite(annotation_path1, self.frames[key].annotation_color_img.astype(np.uint16))
+                df = pd.DataFrame(self.frames[key].color_map)
+                df.to_csv(annotation_csv, index=False)
+        else:
             self.annotation_save_message_box = InformationMessageBox("The result has been successfully saved.")
             self.annotation_save_message_box.show()
 
@@ -605,27 +627,14 @@ class MainWindow(QMainWindow):
             cursor = QCursor(pix)
             self.visualize_window.setCursor(cursor)
             self.show_flag = 4
-            current_frame = self.frames[self.visualize.main_sld.value()]
-            current_id = self.correction.instances_widget.currentRow()
-            if current_id >= 0:
-                current_color = current_frame.instances[self.widget_list[current_id]].color
-                current_coords = current_frame.instances[self.widget_list[current_id]].coords
-                x = current_coords[0]
-                y = current_coords[1]
-                for i in range(len(x)):
-                    my_roi = pg.ROI(pos=(y[i]-0.5, x[i]-0.5),
-                                    pen=QPen(QColor(current_color[0], current_color[1], current_color[2])),
-                                    movable=False)
-                    self.color_roi.append(my_roi)
-                    self.visualize.main_frame.addItem(my_roi)
 
-                colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
-                self.visualize.main_frame.setColorMap(colormap)
-                self.visualize.main_frame.imageItem.updateImage(current_frame.raw_img[:, :, 0])
-                self.visualize.main_frame.getImageItem().mouseDragEvent = self.brush_drag1
-            else:
-                self.brush_message_box = InformationMessageBox("Please add a cell first!")
-                self.brush_message_box.show()
+            colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
+            self.visualize.main_frame.setColorMap(colormap)
+            # self.visualize.main_frame.imageItem.updateImage(self.frames[self.visualize.main_sld.value()].raw_color_img)
+            self.visualize.main_frame.getImageItem().mouseDragEvent = self.brush_drag1
+        else:
+            self.brush_message_box = InformationMessageBox("Please add a cell first!")
+            self.brush_message_box.show()
 
     def eraser_fnc(self):
         if len(self.frames) == 0:
@@ -641,9 +650,7 @@ class MainWindow(QMainWindow):
             current_frame = self.frames[self.visualize.main_sld.value()]
             current_id = self.correction.instances_widget.currentRow()
             if current_id >= 0:
-                colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
-                self.visualize.main_frame.setColorMap(colormap)
-                self.visualize.main_frame.setImage(current_frame.raw_img[:, :, 0])
+                self.visualize.main_frame.imageItem.updateImage(current_frame.annotation_color_img)
                 self.visualize.main_frame.getImageItem().mouseDragEvent = self.eraser_drag1
             else:
                 self.eraser_message_box = InformationMessageBox("Please add a cell first!")
@@ -653,27 +660,10 @@ class MainWindow(QMainWindow):
             cursor = QCursor(pix)
             self.visualize_window.setCursor(cursor)
             self.show_flag = 4
-            current_frame = self.frames[self.visualize.main_sld.value()]
-            current_id = self.correction.instances_widget.currentRow()
-            if current_id >= 0:
-                current_color = current_frame.instances[self.widget_list[current_id]].color
-                current_coords = current_frame.instances[self.widget_list[current_id]].coords
-                x = current_coords[0]
-                y = current_coords[1]
-                for i in range(len(x)):
-                    my_roi = pg.ROI(pos=(y[i] - 0.5, x[i] - 0.5),
-                                    pen=QPen(QColor(current_color[0], current_color[1], current_color[2])),
-                                    movable=False)
-                    self.color_roi.append(my_roi)
-                    self.visualize.main_frame.addItem(my_roi)
-
-                colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
-                self.visualize.main_frame.setColorMap(colormap)
-                self.visualize.main_frame.setImage(current_frame.raw_img[:, :, 0])
-                self.visualize.main_frame.getImageItem().mouseDragEvent = self.eraser_drag1
-            else:
-                self.eraser_message_box = InformationMessageBox("Please add a cell first!")
-                self.eraser_message_box.show()
+            self.visualize.main_frame.getImageItem().mouseDragEvent = self.eraser_drag1
+        else:
+            self.eraser_message_box = InformationMessageBox("Please add a cell first!")
+            self.eraser_message_box.show()
 
     def brush_drag1(self, event):
         event.accept()
@@ -689,23 +679,25 @@ class MainWindow(QMainWindow):
 
         temp = current_frame.label_img
         temp_color_img = current_frame.annotation_color_img
+        x0 = int(pos[1]) - ssv + 1
+        x1 = int(pos[1]) + ssv
+        y0 = int(pos[0]) - ssv + 1
+        y1 = int(pos[0]) + ssv
         if self.annotation_flag == 2:
-            temp[int(pos[1] - ssv + 1): int(pos[1]) + ssv, int(pos[0]) - ssv + 1: int(pos[0]) + ssv] = current_label
-            temp_color_img[int(pos[1] - ssv + 1): int(pos[1]) + ssv, int(pos[0]) - ssv + 1: int(pos[0]) + ssv, :] = \
-                current_color
-            self.frames[self.visualize.main_sld.value()].label_img = temp
-            self.frames[self.visualize.main_sld.value()].annotation_color_img = temp_color_img
+
+            self.frames[self.visualize.main_sld.value()].label_img[x0: x1, y0: y1] = current_label
+            self.frames[self.visualize.main_sld.value()].annotation_color_img[x0: x1, y0: y1, :] = current_color
             self.visualize.main_frame.imageItem.updateImage(
                 self.frames[self.visualize.main_sld.value()].annotation_color_img)
         else:
-            temp[int(pos[1] - ssv + 1): int(pos[1]) + ssv, int(pos[0]) - ssv + 1: int(pos[0]) + ssv, 0] = current_label
-            self.frames[self.visualize.main_sld.value()].label_img = temp
-            self.frames[self.visualize.main_sld.value()].annotation_color_img = temp_color_img
+            self.frames[self.visualize.main_sld.value()].label_img[x0: x1, y0: y1] = current_label
+            temp = np.zeros_like(self.frames[self.visualize.main_sld.value()].raw_color_img)
+            temp[x0: x1, y0: y1, :] = current_color
+            self.frames[self.visualize.main_sld.value()].raw_color_img[x0: x1, y0: y1, :] = \
+                0.5*self.frames[self.visualize.main_sld.value()].raw_color_img[x0: x1, y0: y1, :] + \
+                0.5*temp[x0: x1, y0: y1, :]
             self.visualize.main_frame.imageItem.updateImage(
-                self.frames[self.visualize.main_sld.value()].annotation_color_img)
-
-
-        # self.visualize.main_frame.imageItem.updateImage(self.frames[self.visualize.main_sld.value()].label_img[:, :, 0].T)
+                self.frames[self.visualize.main_sld.value()].raw_color_img)
 
     def eraser_drag1(self, event):
         event.accept()
@@ -724,21 +716,22 @@ class MainWindow(QMainWindow):
         # print(np.shape(temp_raw_img))
         temp = current_frame.label_img
         temp_color_img = current_frame.annotation_color_img
+        x0 = int(pos[1]) - ssv + 1
+        x1 = int(pos[1]) + ssv
+        y0 = int(pos[0]) - ssv + 1
+        y1 = int(pos[0]) + ssv
         if self.annotation_flag == 2:
-            temp[int(pos[1] - ssv + 1): int(pos[1]) + ssv, int(pos[0]) - ssv + 1: int(pos[0]) + ssv] = 0
-            temp_color_img[int(pos[1] - ssv + 1): int(pos[1]) + ssv, int(pos[0]) - ssv + 1: int(pos[0]) + ssv, :] = [0, 0, 0]
-                # temp_raw_img[int(pos[1] - ssv + 1): int(pos[1]) + ssv, int(pos[0]) - ssv + 1: int(pos[0]) + ssv, :]
-            self.frames[self.visualize.main_sld.value()].label_img = temp
-            self.frames[self.visualize.main_sld.value()].annotation_color_img = temp_color_img
+            self.frames[self.visualize.main_sld.value()].label_img[x0:x1, y0:y1] = 0
+            self.frames[self.visualize.main_sld.value()].annotation_color_img[x0: x1, y0: y1, :] =\
+                self.frames[self.visualize.main_sld.value()].raw_img[x0: x1, y0: y1, :]
             self.visualize.main_frame.imageItem.updateImage(
                 self.frames[self.visualize.main_sld.value()].annotation_color_img)
         else:
-            temp[int(pos[1] - ssv + 1): int(pos[1]) + ssv, int(pos[0]) - ssv + 1: int(pos[0]) + ssv, 0] = 0
-            self.frames[self.visualize.main_sld.value()].label_img = temp
-            self.frames[self.visualize.main_sld.value()].annotation_color_img = temp_color_img
+            self.frames[self.visualize.main_sld.value()].label_img[x0:x1, y0:y1] = 0
+            self.frames[self.visualize.main_sld.value()].raw_color_img[x0:x1, y0:y1, :] = \
+                self.frames[self.visualize.main_sld.value()].raw_img[x0:x1, y0:y1, :]
             self.visualize.main_frame.imageItem.updateImage(
-                self.frames[self.visualize.main_sld.value()].annotation_color_img)
-        # temp[int(pos[1]) - ssv + 1: int(pos[1]) + ssv, int(pos[0]) - ssv + 1: int(pos[0]) + ssv, 0] = 0
+                self.frames[self.visualize.main_sld.value()].raw_color_img)
 
         '''
         del_c_roi = []
@@ -883,7 +876,7 @@ class MainWindow(QMainWindow):
                                                                   self.instances_setting.ins)
         self.correction.instances_widget.setCurrentRow(len(self.widget_list) - 1)
 
-        if self.tools.segment.segment_tools.currentIndex() == 3:
+        if self.segmenter_name == "grab_cut":
             self.frames[self.visualize.main_sld.value()].update_labling([self.correction.instances_widget.currentRow()],
                                                                         [self.instances_setting.ins.label_id],
                                                                         [self.instances_setting.ins.name],
@@ -924,13 +917,6 @@ class MainWindow(QMainWindow):
         if self.annotation_flag == 2 and current_row >= 0:
             current_frame = self.frames[self.visualize.main_sld.value()]
             current_color = current_frame.instances[self.widget_list[current_row]].color
-            for c_roi in self.frames_roi[self.visualize.main_sld.value()]:
-                c_roi_color = c_roi.pen.color()
-                c_roi_color1 = c_roi_color.getRgb()
-                if c_roi_color1[0] == current_color[0] and c_roi_color1[1] == current_color[1] and \
-                        c_roi_color1[2] == current_color[2]:
-                    self.visualize.main_frame.removeItem(c_roi)
-
             ins_id = self.widget_list[current_row]
             self.widget_list.remove(ins_id)
 
@@ -938,20 +924,13 @@ class MainWindow(QMainWindow):
             delete_ins_id = []
             delete_ins_id.append(current_row)
             delete_ins_label.append(ins_id)
-            self.frames[self.visualize.main_sld.value()].update_labling([], [], [], delete_ins_id=delete_ins_id,
+            self.frames[self.visualize.main_sld.value()].update_labling([], [], [], [], delete_ins_id=delete_ins_id,
                                                                         delete_ins_label=delete_ins_label,
                                                                         annotation_flag=2)
+            self.visualize.main_frame.imageItem.updateImage(
+                self.frames[self.visualize.main_sld.value()].annotation_color_img)
             self.correction.instances_widget.takeItem(current_row)
-            if not np.max(self.frames[self.visualize.main_sld.value()].label_img) == \
-                    np.min(self.frames[self.visualize.main_sld.value()].label_img):
-                colormap = pg.ColorMap(np.linspace(0, 1, self.frames[self.visualize.main_sld.value()].label_n + 1),
-                                       color=self.frames[self.visualize.main_sld.value()].color_map)
-                self.correction.assist_frame.setColorMap(colormap)
-                self.correction.assist_frame.setImage(self.frames[self.visualize.main_sld.value()].label_img,
-                                                      autoHistogramRange=False)
-            else:
-                self.correction.assist_frame.setImage(self.frames[self.visualize.main_sld.value()].raw_img,
-                                                      autoHistogramRange=False)
+            self.correction.assist_frame.setImage(self.frames[self.visualize.main_sld.value()].raw_img)
 
         elif self.annotation_flag == 0 and current_row >= 0:
             current_frame = self.frames[self.visualize.main_sld.value()]
@@ -963,12 +942,15 @@ class MainWindow(QMainWindow):
             delete_ins_id    = []
             delete_ins_id.append(current_row)
             delete_ins_label.append(ins_id)
-            self.frames[self.visualize.main_sld.value()].update_labling([], [], [], delete_ins_id=delete_ins_id,
+            self.frames[self.visualize.main_sld.value()].update_labling([], [], [], [], delete_ins_id=delete_ins_id,
                                                                         delete_ins_label=delete_ins_label)
             self.correction.instances_widget.takeItem(current_row)
 
             current_frame = self.frames[self.visualize.main_sld.value()]
-            self.visualize.main_frame.imageItem.updateImage(current_frame.raw_color_img)
+            if self.annotation_flag == 2:
+                self.visualize.main_frame.imageItem.updateImage(current_frame.annotation_color_img)
+            else:
+                self.visualize.main_frame.imageItem.updateImage(current_frame.raw_color_img)
         else:
             self.delete_instance_message_box = InformationMessageBox("Please select a cell first!")
             self.delete_instance_message_box.show()
@@ -1014,18 +996,24 @@ class MainWindow(QMainWindow):
 
     # algorithm API
     def normalize(self, name):
+        self.normalizer_name = name
         if not len(self.frames) == 0:
+            QApplication.processEvents()
+            self.status.work_info_label.setText("Normalizing...")
             normalizer = get_normalizer(name=name)
             for key in self.frames.keys():
                 self.frames[key].norm_img = normalizer(self.frames[key].raw_img)
             self.visualize.main_frame.setImage(self.frames[self.visualize.main_sld.value()].norm_img)
+            QApplication.processEvents()
+            self.status.work_info_label.setText("")
         else:
             self.normalize_message_box = InformationMessageBox("Please load images first!")
             self.normalize_message_box.show()
 
     def segment(self, name, **kwargs):
+        self.segmenter_name = name
         if (not len(self.frames) == 0 and self.frames[0].label_img is None) or \
-                self.tools.segment.segment_tools.currentIndex() == 3:
+                self.segmenter_name == 'grab_cut':
             self.segment_message_box1_fnc(name, **kwargs)
         elif not len(self.frames) == 0 and self.frames[0].label_img is not None:
             self.segment_message_box1 = QuestionMessageBox("Are you sure to re-segment the images?")
@@ -1040,19 +1028,23 @@ class MainWindow(QMainWindow):
 
         if not name == 'grab_cut':
             self.status.progressbar.setMaximum(self.frames_num)
-            self.status.progressbar.setVisible(True)
+
             if name == 'unet':
+                QApplication.processEvents()
                 self.status.work_info_label.setText("Loading selected model...")
             t = 1
             segmenter = get_segmenter(name=name, **kwargs)
+            QApplication.processEvents()
             self.status.work_info_label.setText("Segmenting...")
+            self.status.progressbar.setVisible(True)
             for key in self.frames.keys():
                 label_img = segmenter(self.frames[key].norm_img)
                 self.frames[key].label_img = label_img
-
+                QApplication.processEvents()
                 self.status.update_progressbar(t)
                 t = t + 1
             self.status.progressbar.setVisible(False)
+            QApplication.processEvents()
             self.status.work_info_label.setText("")
             sv = self.visualize.main_sld.value()
 
@@ -1109,6 +1101,7 @@ class MainWindow(QMainWindow):
             tracker = get_tracker(name=name, **kwargs)
             self.frames = tracker(self.frames)
             self.get_label_fnc1()
+            QApplication.processEvents()
             self.status.work_info_label.setText("")
         else:
             self.track_message_box2 = InformationMessageBox("Please load images first!")
@@ -1133,6 +1126,7 @@ class MainWindow(QMainWindow):
                    output_img=self.tools.output.visualization_checkbox.isChecked())
             # self.status.progressbar.setVisible(True)
             self.status.work_info_label.setText("")
+            self.tools.update_file_tree(self.project_path)
         else:
             self.write_message_box2 = InformationMessageBox("Please load images first!")
             self.write_message_box2.show()
@@ -1229,6 +1223,12 @@ class MainWindow(QMainWindow):
             self.correction.instances_widget.addItem(item)
         self.show_flag = 3
         # self.status_signal[1] = 1
+
+    def has_chinese(self, path):
+        for ch in path:
+            if '\u4e00' <= ch <= '\u9fff':
+                return True
+        return False
 
     '''
     def load_data_first_message(self):

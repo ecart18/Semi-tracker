@@ -22,24 +22,45 @@ class FileTree(QWidget):
     def setup_ui(self):
         if self.dir_path is None:
             create_button = QPushButton()
-            create_button.setText("Create")
-            create_button.setStyleSheet("color: rgb(30, 144, 255, 255);"
+            create_button.setText("Open folder")
+            create_button.setStyleSheet("background: #454545;"
+                                        "color: rgb(245, 245, 245, 255);"
                                         "font-size: 12px;"
                                         "font-family: Verdana;")
             create_button.setContentsMargins(0, 0, 0, 0)
+            create_button.setFixedHeight(25)
 
             label = QLabel()
-            label.setText("a new project.")
+            label.setText("You have not yet set project folder.")
             # label.setAlignment(QtCore.Qt.AlignRight)
             label.setStyleSheet("color: rgb(245, 245, 245, 255);"
                                 "font-size: 12px;"
                                 "font-family: Verdana;")
             label.setContentsMargins(0, 0, 0, 0)
 
-            layout1 = QHBoxLayout()
-            layout1.addWidget(create_button)
+            label1 = QLabel()
+            label1.setText("Otherwise the default folder is:")
+            # label.setAlignment(QtCore.Qt.AlignRight)
+            label1.setStyleSheet("color: rgb(245, 245, 245, 255);"
+                                "font-size: 12px;"
+                                "font-family: Verdana;")
+            label1.setContentsMargins(0, 0, 0, 0)
+
+            default_button = QPushButton()
+            default_button.setText("Use .output/untitled")
+            default_button.setStyleSheet("background: #454545;"
+                                        "color: rgb(245, 245, 245, 255);"
+                                        "font-size: 12px;"
+                                        "font-family: Verdana;")
+            default_button.setContentsMargins(0, 0, 0, 0)
+            default_button.setFixedHeight(25)
+
+            layout1 = QVBoxLayout()
             layout1.addWidget(label)
-            layout1.setSpacing(0)
+            layout1.addWidget(create_button)
+            layout1.addWidget(label1)
+            layout1.addWidget(default_button)
+            layout1.setSpacing(10)
             # layout1.addWidget(or_label)
             # layout1.addWidget(open_button)
 
@@ -50,6 +71,7 @@ class FileTree(QWidget):
 
             self.setLayout(layout2)
             self.create_button = create_button
+            self.default_button = default_button
 
         else:
             # 格式检查

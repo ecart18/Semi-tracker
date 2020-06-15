@@ -82,7 +82,7 @@ class NormalizeTools(QWidget):
                                                  "border: 0px;"
                                                  "text-align:left;")
         self.reset_raw_tool_button.setFixedHeight(20)
-        self.reset_raw_tool_button.setText("Reset Origin Image")
+        self.reset_raw_tool_button.setText("Remove Norm")
         self.reset_raw_tool_button.clicked.connect(self.reset_raw_tool_button_fnc)
         self.reset_raw_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
         # self.reset_raw_tool_button.setFlat(True)
@@ -252,7 +252,7 @@ class NormalizeTools(QWidget):
         reset_raw_layout = QHBoxLayout()
 
         reset_raw_label = QLabel()
-        reset_raw_label.setText("Reset image: ")
+        reset_raw_label.setText("Remove normalization: ")
         reset_raw_label.setAlignment(Qt.AlignLeft)
         reset_raw_label.setStyleSheet("font-family: Verdana;"
                                     "color: white;")

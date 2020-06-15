@@ -26,37 +26,39 @@ class AnnotationTools(QWidget):
 
     def setup_ui(self):
 
-        load_layout = QHBoxLayout()
+        load_layout = QVBoxLayout()
 
         load_button = QPushButton()
-        load_button.setText("Load the images")
-        load_button.setStyleSheet("background: transparent;"
-                                  "color: rgb(30, 144, 255, 255);")
+        load_button.setText("Load images")
+        load_button.setStyleSheet("background: #454545;"
+                                  "color: rgb(245, 245, 245, 255);")
         load_button.setContentsMargins(0, 0, 0, 0)
+        load_button.setFixedHeight(25)
 
         origin_img_label = QLabel()
-        origin_img_label.setText("to be annotated.")
+        origin_img_label.setText("Load the images to be annotated.")
         origin_img_label.setContentsMargins(0, 0, 0, 0)
 
-        load_layout.addWidget(load_button)
         load_layout.addWidget(origin_img_label)
-        load_layout.setSpacing(0)
+        load_layout.addWidget(load_button)
+        load_layout.setSpacing(10)
 
-        set_layout = QHBoxLayout()
+        set_layout = QVBoxLayout()
 
         set_button = QPushButton()
-        set_button.setText("Set the path")
-        set_button.setStyleSheet("background: transparent;"
-                                  "color: rgb(30, 144, 255, 255);")
+        set_button.setText("Set path")
+        set_button.setStyleSheet("background: #454545;"
+                                 "color: rgb(245, 245, 245, 255);")
         set_button.setContentsMargins(0, 0, 0, 0)
+        set_button.setFixedHeight(25)
 
         set_path_label = QLabel()
-        set_path_label.setText("to save results.")
+        set_path_label.setText("Set the path to save results.")
         set_path_label.setContentsMargins(0, 0, 0, 0)
 
-        set_layout.addWidget(set_button)
         set_layout.addWidget(set_path_label)
-        set_layout.setSpacing(0)
+        set_layout.addWidget(set_button)
+        set_layout.setSpacing(10)
 
         result_path_show_lineedit = QLineEdit()
         result_path_show_lineedit.setPlaceholderText("Result path")
@@ -96,6 +98,7 @@ class AnnotationTools(QWidget):
         buttons_layout.addWidget(finish_annotation_button)
         main_layout.addLayout(buttons_layout)
         main_layout.setAlignment(Qt.AlignTop)
+        main_layout.setSpacing(15)
 
         # self.origin_path_label = origin_path_label
         self.load_button = load_button

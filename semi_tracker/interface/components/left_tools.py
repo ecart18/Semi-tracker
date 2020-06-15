@@ -11,7 +11,7 @@ from .left_tools_track import TrackTools
 from .left_tools_annotation import AnnotationTools
 from .left_tools_normalization import NormalizeTools
 from ..utils import get_icon, left_tools_stylesheet
-from .tool_box import ToolBox
+# from .tool_box import ToolBox
 
 
 class LeftTools(QWidget):
@@ -168,6 +168,7 @@ class LeftTools(QWidget):
             self.normlize_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.normlize_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
+                                               "font-size: 15px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #000000")
@@ -176,6 +177,7 @@ class LeftTools(QWidget):
             self.normlize_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.normlize_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
+                                               "font-size: 15px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #FFFFFF")
@@ -186,6 +188,7 @@ class LeftTools(QWidget):
             self.segment_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.segment_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
+                                              "font-size: 15px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #000000")
@@ -194,6 +197,7 @@ class LeftTools(QWidget):
             self.segment_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.segment_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
+                                              "font-size: 15px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #FFFFFF")
@@ -203,6 +207,7 @@ class LeftTools(QWidget):
             self.track.track_tools.setVisible(False)
             self.track_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.track_button.setStyleSheet("background: #454545;"
+                                            "font-size: 15px;"
                                                          "font-family: Verdana;"
                                                          "border: 0px;"
                                                          "text-align:left;"
@@ -211,6 +216,7 @@ class LeftTools(QWidget):
             self.track.track_tools.setVisible(True)
             self.track_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.track_button.setStyleSheet("background: #454545;"
+                                            "font-size: 15px;"
                                                          "font-family: Verdana;"
                                                          "border: 0px;"
                                                          "text-align:left;"
@@ -221,6 +227,7 @@ class LeftTools(QWidget):
             self.output.output_tools.setVisible(False)
             self.output_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.output_button.setStyleSheet("background: #454545;"
+                                             "font-size: 15px;"
                                                          "font-family: Verdana;"
                                                          "border: 0px;"
                                                          "text-align:left;"
@@ -230,6 +237,7 @@ class LeftTools(QWidget):
             self.output_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.output_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
+                                             "font-size: 15px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #FFFFFF")

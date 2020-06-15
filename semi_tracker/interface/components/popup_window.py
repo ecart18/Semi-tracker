@@ -381,21 +381,26 @@ class CellAttributeWindow(QWidget):
         frame_id_label = QLabel()
         # frame_id_display = "Frame id: " + str(self.frame_id)
         frame_id_label.setText("Frame id")
+        frame_id_label.adjustSize()
 
         frame_id = QLabel()
         frame_id.setText(str(self.frame_id))
+        frame_id.adjustSize()
 
         cell_label_label = QLabel()
         # cell_label_display = "Cell label: " + str(self.ins_label)
         cell_label_label.setText("Label")
+        cell_label_label.adjustSize()
 
         cell_label = QLabel()
         cell_label.setText(str(self.ins_label))
+        cell_label.adjustSize()
 
         cell_name_label = QLabel()
         cell_name_label.setText("Name")
         cell_name = QLabel()
         cell_name.setText(str(self.ins_name))
+        cell_name.adjustSize()
         # cell_name_editor.setFixedSize(40, 20)
 
         cell_color_label = QLabel()
@@ -405,34 +410,43 @@ class CellAttributeWindow(QWidget):
         cell_color_show = QLabel()
         cell_color_show.setStyleSheet(stylesheet)
         cell_color_show.setFixedSize(40, 20)
+        cell_color_show.adjustSize()
 
         cell_bbox_label = QLabel()
         # cell_bbox_display = "Cell bbox: " + str(self.ins_bbox)
         cell_bbox_label.setText("Box")
+        cell_bbox_label.adjustSize()
 
         cell_bbox = QLabel()
         cell_bbox.setText(str(self.ins_bbox))
+        cell_bbox.adjustSize()
 
         cell_centroid_label = QLabel()
         # cell_centroid_display = "Cell centroid: " + str(self.ins_centroid)
         cell_centroid_label.setText("Centroid")
+        cell_centroid_label.adjustSize()
 
         cell_centroid = QLabel()
         cell_centroid.setText("("+str(self.ins_centroid[0])+", "+str(self.ins_centroid[1])+")")
+        cell_centroid.adjustSize()
 
         cell_area_label = QLabel()
         # cell_area_display = "Cell area: " + str(self.ins_area)
         cell_area_label.setText("Area")
+        cell_area_label.adjustSize()
 
         cell_area = QLabel()
         cell_area.setText(str(self.ins_area)+"  (pixel)")
+        cell_area.adjustSize()
 
         cell_intensity_label = QLabel()
         # cell_intensity_display = "Cell intensity: " + str(self.ins_intensity)
         cell_intensity_label.setText("Intensity")
+        cell_intensity_label.adjustSize()
 
         cell_intensity = QLabel()
         cell_intensity.setText(format_out(self.ins_intensity) + "  (A.U.)")
+        cell_intensity.adjustSize()
 
         attributes_layout = QGridLayout()
         attributes_layout.addWidget(frame_id_label, 0, 0, 1, 3)
@@ -472,7 +486,7 @@ class CellAttributeWindow(QWidget):
         main_layout.addLayout(attributes_layout)
         main_layout.setSpacing(15)
 
-        self.setFixedSize(450, 220)
+        self.setFixedSize(450, 250)
         self.setWindowIcon(QIcon(get_icon("cell.png")))
         self.setWindowTitle("Cell attribute")
         self.setStyleSheet(main_stylesheet)
