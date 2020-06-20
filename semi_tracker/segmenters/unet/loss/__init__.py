@@ -11,7 +11,7 @@ __all__ = [
     'WBCELoss',
     'MSELoss',
     'MAELoss',
-    'bulid_loss'
+    'build_loss'
 ]
 
 

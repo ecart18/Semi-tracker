@@ -13,18 +13,13 @@ from .weighted_label import make_balance_weight_map, make_weight_map_instance
 
 
 class Preprocessor(Augmentation):
-    def __init__(self, dataset, mode, source_img_root, label_img_root, sample_balance, edge_weighted):
-        super(Preprocessor, self).__init__()
+    def __init__(self, dataset, mode, source_img_root, label_img_root, weighted_type, aug_list):
+        super(Preprocessor, self).__init__(aug_list=aug_list)
         self.dataset = dataset
         self.mode = mode
         self.source_img_root = source_img_root
         self.label_img_root = label_img_root
-        self.sample_balance = sample_balance
-        self.edge_weighted = edge_weighted
-        try:
-            assert self.sample_balance + self.edge_weighted <= 1
-        except AssertionError:
-            raise ValueError('Both sample_balance and edge_weighted are set to True') 
+        self.weighted_type = weighted_type
 
     def __len__(self):
         return len(self.dataset)
@@ -83,12 +78,12 @@ class Preprocessor(Augmentation):
         image = self._img_reader(image_path)
         label = self._label_reader(label_path)
 
-        weight = None
+        weight = 0
         # enlarge edges and added weight map
-        if self.edge_weighted:
+        if self.weighted_type == 'edge_weighted':
             weight = make_weight_map_instance(label, w0=10, sigma=5)
         # balance class
-        if self.sample_balance:
+        if self.weighted_type == 'sample_balance':
             weight = make_balance_weight_map(label)
 
         # binary label
@@ -111,7 +106,7 @@ class Preprocessor(Augmentation):
 
 
 def build_dataloader(name, source_img_root, label_img_root, log_root, validation_ratio, 
-                        sample_balance, edge_weighted, batch_size, workers, **kwargs):
+                        weighted_type, aug_list, batch_size, workers, **kwargs):
 
     dataset = create(name=name, source_img_root=source_img_root, label_img_root=label_img_root, 
                         log_root=log_root, validation_ratio=validation_ratio)
@@ -123,8 +118,8 @@ def build_dataloader(name, source_img_root, label_img_root, log_root, validation
         Preprocessor(dataset=train_set, mode='train', 
                         source_img_root=source_img_root,
                         label_img_root=label_img_root,
-                        sample_balance=sample_balance,
-                        edge_weighted=edge_weighted),
+                        weighted_type=weighted_type,
+                        aug_list=aug_list),
         batch_size=batch_size, 
         num_workers=workers, 
         shuffle=True,
@@ -135,8 +130,8 @@ def build_dataloader(name, source_img_root, label_img_root, log_root, validation
         Preprocessor(dataset=val_set, mode='val', 
                         source_img_root=source_img_root,
                         label_img_root=label_img_root,
-                        sample_balance=sample_balance,
-                        edge_weighted=edge_weighted),
+                        weighted_type=weighted_type,
+                        aug_list=None),
         batch_size=batch_size, 
         num_workers=workers,
         shuffle=False, 

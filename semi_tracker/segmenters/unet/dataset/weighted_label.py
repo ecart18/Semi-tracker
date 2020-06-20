@@ -6,16 +6,16 @@ import numpy as np
 
 
 def find_edge(masks):
-    edge = np.zeros_like(masks).astype(np.float32)
+    edge = np.zeros_like(masks)
     unique_label = np.delete(np.unique(masks), 0)
     for label in unique_label:
-        coords = np.where(masks=label)
+        coords = np.where(masks==label)
         mask = np.zeros_like(masks)
-        mask[coords[:, 0], coords[:, 1]] = 1
-        temp_edge = cv2.Canny(mask.astype(np.uint8), 2, 5) / 255
-        temp_edge = cv2.dilate(img,kernel=3,iterations = 1)
+        mask[coords[0], coords[1]] = 1
+        temp_edge = cv2.Canny(mask.astype(np.uint8), 2, 5)
+        temp_edge = cv2.dilate(temp_edge, kernel=np.ones((3, 3), np.uint8), iterations = 1)
         edge += temp_edge
-    return np.clip(edge, a_min=0, a_max=1).astype(np.float32)
+    return edge
 
 
 def make_balance_weight_map(masks):
@@ -25,15 +25,15 @@ def make_balance_weight_map(masks):
     masks = (masks > 0).astype(int)
     # class weight map
     w_map = np.zeros((nrows, ncols))
-    w_1 = w_map.size - masks.sum()
     w_0 = masks.sum()
-    w_map[masks.sum(0) == 1] = w_1
-    w_map[masks.sum(0) == 0] = 1.0*w_0
+    w_1 = w_map.size - w_0
+    w_map[masks.sum(0) == 1] = w_1 / w_map.size
+    w_map[masks.sum(0) == 0] = w_0 / w_map.size
     w_map = np.expand_dims(w_map, axis=0)
     return w_map.astype(np.float32)
 
 
-def make_weight_map_instance(masks, w0 = 10, sigma = 5):
+def make_weight_map_instance(masks, w0 = 10, sigma = 20):
     """
     Generate the weight maps as specified in the UNet paper
     Parameters
@@ -74,56 +74,55 @@ def make_weight_map_instance(masks, w0 = 10, sigma = 5):
     clsw_map = np.where(masks==0, c_weights[0], c_weights[1])
     w_map = clsw_map + dw_map
     w_map = np.expand_dims(w_map, axis=0)
-    w_map = cv2.resize(w_map, (1024, 356))
     return w_map.astype(np.float32)
 
 
 if __name__ == "__main__":
-    # gt_path = "/home/taohu/celltracking/KalmanSeg/data/DIC-C2DH-HeLa/images/01_GT/SEG/man_seg002.tif"
-    # gt = cv2.imread(gt_path, -1)
-    # if len(gt.shape) == 3:
-    #     gt = cv2.cvtColor(gt, cv2.COLOR_RGB2GRAY)
-    # # if gt.max() == 1:
-    #     # gt = gt * 255
-    # # gt[gt > 0] = 255
-    # gt = gt.astype(np.uint8)
-    # cv2.imwrite('gt002.jpg', gt*255)
-    # weight = make_weight_map_ins(gt, w0=10, sigma=5)
-    # # weight = (weight * (255/ weight.max())).astype(np.uint8)
-    # # cv2.imwrite('weight002.jpg', (weight.squeeze(0)* (255/ weight.max())).astype(np.uint8))
-    # cv2.imwrite('weight002.jpg', weight * (255/ weight.max()))
-    # print(weight.min())
-    # print(weight.max())
-    # import matplotlib.pyplot as plt
-    # plt.figure(figsize = (10,10))
-    # plt.imshow(weight, cmap = 'jet')
-    # plt.colorbar()
-    # plt.savefig('./weight_color002.jpg')
+
+    def _label_reader(label_path):
+        def label_standardization(img):
+            if len(img.shape) == 3:
+                img = np.squeeze(img, 2)
+                return img
+            elif len(img.shape) == 2:
+                return img
+            else:
+                raise TypeError('The label image shape dimension is not equal to 2 or 3.')
+
+        extentions = label_path.split('.')[-1].lower()
+        if extentions in ['png', 'tif']:
+            label = cv2.imread(label_path, -1)
+            label = label_standardization(label)
+            return label
+        else:
+            raise TypeError('The label image type of {} is not supported in training yet.'.format(extentions))
 
     import cv2
-    gt_path = "/home/taohu/celltracking/KalmanSeg/data/Ecoli-Exp/images/gt/Project.lif_Series002_Crop005_t00.png"
-    gt = cv2.imread(gt_path, -1)
-    if len(gt.shape) == 3:
-        gt = cv2.cvtColor(gt, cv2.COLOR_RGB2GRAY)
-    gt = gt.astype(np.uint8)
-    edges = find_edge(gt)
-    gt[edges > 0] = 0
-    if gt.max() == 1:
-        gt = gt * 255
-    gt[gt > 0] = 255
-    gt = gt.astype(np.uint8)
-
-    gt_tmp = np.copy(gt)
-    gt_tmp[gt_tmp >0] = 255
-    cv2.imwrite('gt002.jpg', gt_tmp)
-    weight = make_weight_map_ins(gt, w0=10, sigma=5)
-    # weight = (weight * (255/ weight.max())).astype(np.uint8)
-    # cv2.imwrite('weight002.jpg', (weight.squeeze(0)* (255/ weight.max())).astype(np.uint8))
-    cv2.imwrite('weight002.jpg', weight * (255/ weight.max()))
+    label_path = "/Users/hutaobetter/Projects/semi-tracker/debug_scripts/test_imgs/DIC/man_seg002.tif"
+    label = _label_reader(label_path)
+    weight = make_weight_map_instance(label, w0=10, sigma=20)
+    weight = np.squeeze(weight)
+    cv2.imwrite('/Users/hutaobetter/Projects/semi-tracker/debug_scripts/test_imgs/DIC/weight_seg002.jpg', weight * (255 / weight.max()))
     print(weight.min())
     print(weight.max())
     import matplotlib.pyplot as plt
     plt.figure(figsize = (10,10))
     plt.imshow(weight, cmap = 'jet')
     plt.colorbar()
-    plt.savefig('./weight_color002.jpg')
+    plt.savefig('/Users/hutaobetter/Projects/semi-tracker/debug_scripts/test_imgs/DIC/weight_color_seg002.png')
+
+
+    import cv2
+    label_path = "/Users/hutaobetter/Projects/semi-tracker/debug_scripts/test_imgs/SIM/man_seg000.tif"
+    label = _label_reader(label_path)
+    weight = make_weight_map_instance(label, w0=10, sigma=20)
+    # weight = make_balance_weight_map(label)
+    weight = np.squeeze(weight)
+    cv2.imwrite('/Users/hutaobetter/Projects/semi-tracker/debug_scripts/test_imgs/SIM/weight_seg000.jpg', weight * (255 / weight.max()))
+    print(weight.min())
+    print(weight.max())
+    import matplotlib.pyplot as plt
+    plt.figure(figsize = (10,10))
+    plt.imshow(weight, cmap = 'jet')
+    plt.colorbar()
+    plt.savefig('/Users/hutaobetter/Projects/semi-tracker/debug_scripts/test_imgs/SIM/weight_color_seg000.png')

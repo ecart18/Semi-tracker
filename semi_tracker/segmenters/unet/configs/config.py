@@ -10,8 +10,8 @@ from ..utils import mkdir
 class TrainParameters:
 
     def __init__(self, source_img_root, label_img_root, log_root, 
-                    validation_ratio, sample_balance, edge_weighted,
-                    batch_size, workers, gpu_num, resume, epochs,
+                    validation_ratio, weighted_type,
+                    aug_list, batch_size, workers, gpu_num, resume, epochs,
                     lr, weight_decay, loss_type, **kwargs):
 
         # train
@@ -23,19 +23,15 @@ class TrainParameters:
         self.source_img_root, self.label_img_root, self.log_root = self._check_io(source_img_root, label_img_root, log_root)
 
         # dataloader
-        if sample_balance is None:
-            sample_balance = True
-        if edge_weighted is None:
-            edge_weighted = False
+        self.weighted_type, self.loss_type = self._check_weighted_type(weighted_type, loss_type)
         batch_size, validation_ratio, workers= self._check_dataloader(batch_size, validation_ratio, workers)
-
         self.dataloader_params = {
             'source_img_root': self.source_img_root,
             'label_img_root': self.label_img_root,
             'log_root': self.log_root,
             'validation_ratio': validation_ratio,
-            'sample_balance': sample_balance,
-            'edge_weighted': edge_weighted,
+            'weighted_type': self.weighted_type,
+            'aug_list': aug_list,
             'batch_size': batch_size,
             'workers': workers
         }
@@ -48,9 +44,22 @@ class TrainParameters:
         }
 
         # loss
-        self.loss_type = self._check_loss(loss_type)
+        self.loss_type = self._check_loss(self.loss_type)
 
-       
+
+    def _check_weighted_type(self, weighted_type, loss_type):
+        if loss_type in ['WeightedSoftDiceLoss', 'WBCELoss']:
+            try:
+                assert weighted_type in ['edge_weighted', 'sample_balance']
+            except:
+                raise ValueError('weighted type should be selected for loss type WeightedSoftDiceLoss or WCELoss')
+        if loss_type in ['DiceLoss', 'BCELoss', 'MSELoss', 'MAELoss']:
+            try:
+                assert weighted_type is None
+            except:
+                raise ValueError('weighted type should not be selected for Non-weighted loss')
+        return weighted_type, loss_type
+
     
     def _check_dataloader(self, batch_size, validation_ratio, workers):
         if batch_size:

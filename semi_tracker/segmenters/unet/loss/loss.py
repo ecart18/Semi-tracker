@@ -33,6 +33,10 @@ class WeightedSoftDiceLoss(nn.Module):
         super(WeightedSoftDiceLoss, self).__init__()
 
     def forward(self, y_pred, y_true, weights, **kwargs):
+        try:
+            assert weights is not None
+        except:
+            raise ValueError('weight option should be selected for WeightedSoftDiceLoss.')
         probs = F.sigmoid(y_pred)
         num = y_true.size(0)
         w = weights.view(num, -1)
@@ -71,10 +75,14 @@ class WBCELoss(nn.Module):
         super(WBCELoss, self).__init__()
         self.bce = nn.BCEWithLogitsLoss(reduction='none')
 
-    def forward(self, y_pred, y_true, weight, **kwargs):
+    def forward(self, y_pred, y_true, weights, **kwargs):
+        try:
+            assert weights is not None
+        except:
+            raise ValueError('weight option should be selected for WBCELoss.')
         batch_size = y_pred.size(0)
         loss = self.bce(y_pred.view(batch_size, -1), y_true.view(batch_size, -1))
-        return torch.mean(loss * weight.view(batch_size, -1))
+        return torch.mean(loss * weights.view(batch_size, -1))
 
 
 

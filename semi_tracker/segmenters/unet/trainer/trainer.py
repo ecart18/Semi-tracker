@@ -88,20 +88,17 @@ class BaseTrainer(object):
 class UnetTrainer(BaseTrainer):
 
     def _parse_data(self, inputs, device):
-        data, gt = inputs["image"], inputs["gt"]
-        data, gt = data.to(device), gt.to(device)
-        weight = None
-        if inputs["image"] is not None:
-            weight = inputs["weight"]
+        data, label, weight = inputs["image"], inputs["label"], inputs["weight"]
+        data, label = data.to(device), label.to(device)
+        if weight[0]:
             weight = weight.to(device)
         return {"data": data,
-                "label": gt,
+                "label": label,
                 "weight": weight}
 
     def _forward(self, inputs, device):
         inputs = self._parse_data(inputs, device)
-        batch_size = inputs["gt"].size(0)
+        batch_size = inputs["label"].size(0)
         predictions = self.model(inputs["data"])
-        loss = 10.*self.criterion(predictions, inputs["gt"], inputs["weight"])
-        # loss = self.criterion(predictions, inputs["gt"])
+        loss = self.criterion(y_pred=predictions, y_true=inputs["label"], weights=inputs["weight"])
         return loss, batch_size

@@ -68,10 +68,11 @@ class Compose:
 
     def __call__(self, img, label):
         assert img.size == label.size
-        for tf in self.transform:
-            if tf:
-                img, label = tf(img, label)
-                assert img.size == label.size
+        if len(self.transform) > 0:
+            for tf in self.transform:
+                if tf:
+                    img, label = tf(img, label)
+                    assert img.size == label.size
         if not isinstance(img, np.ndarray):
             img, label = np.array(img), np.array(label, dtype=np.uint8)
         return img, label
@@ -91,10 +92,9 @@ class Augmentation(object):
         self.augment = self.gen_compose(aug_list)
 
     def gen_compose(self, aug_list):
-
         augments = []
-        prob = 0.5 / len(aug_list)
         if aug_list:
+            prob = 0.5 / len(aug_list)
             for aug in aug_list:
                 tf = __factory__.get(aug, None)
                 if tf:
