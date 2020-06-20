@@ -9,8 +9,15 @@ from .left_tools_segment import SegmentTools
 from .left_tools_output import OutputTools
 from .left_tools_track import TrackTools
 from .left_tools_annotation import AnnotationTools
+from .left_tools_io import InputOutput
+from .left_tools_data_loader import DataLoader
+from .left_tools_loss import Loss
+from .left_tools_optimizer import Optimizer
+from .left_tools_run_train import RunTrain
 from .left_tools_normalization import NormalizeTools
-from ..utils import get_icon, left_tools_stylesheet
+from .left_tools_weighted_loss import WeightedLoss
+from .left_tools_trainer import Trainer
+from ..utils import get_icon, left_tools_stylesheet, instance_widget_stylesheet
 # from .tool_box import ToolBox
 
 
@@ -34,6 +41,7 @@ class LeftTools(QWidget):
         # self.init_img_preprocess()
         self.init_algorithms()
         self.init_annotation()
+        self.init_network_training()
 
     def init_file_tree(self):
         output_path = osp.dirname(self.project_path)
@@ -53,8 +61,21 @@ class LeftTools(QWidget):
 
         self.left_tools_stylesheet = left_tools_stylesheet
 
+        self.out_widget = QWidget()
+        # self.out_widget.setMinimumSize(250, 750)
+        self.out_widget.setContentsMargins(0, 0, 0, 0)
+        self.out_layout = QVBoxLayout(self.out_widget)
+        self.out_layout.setContentsMargins(0, 0, 0, 0)
+
         self.main_algorithm = QWidget()
-        #self.main_algorithm.setFixedHeight(200)
+        self.main_algorithm.setMinimumSize(240, 1500)
+        self.scroll = QScrollArea()
+        self.scroll.setStyleSheet(instance_widget_stylesheet)
+
+        self.scroll.setWidget(self.main_algorithm)
+        self.scroll.setVerticalScrollBarPolicy(0)
+        self.scroll.setHorizontalScrollBarPolicy(0)
+        # self.main_algorithm.setFixedHeight(200)
         self.main_algorithm.setStyleSheet("background: #323232")
 
         self.main_algorithm_layout = QVBoxLayout()
@@ -145,7 +166,8 @@ class LeftTools(QWidget):
         # main_algorithm_layout.addWidget(self.track.track_tools)
         # main_algorithm_layout.addWidget(self.output.output_tools)
         """
-        self.left_tools.addWidget(self.main_algorithm)
+        self.out_layout.addWidget(self.scroll)
+        self.left_tools.addWidget(self.out_widget)
 
     def init_annotation(self):
         self.annotation = AnnotationTools()
@@ -155,6 +177,145 @@ class LeftTools(QWidget):
 
         self.left_tools.addWidget(self.left_annotation)
         # self.left_tools.addWidget(self.toolbox_box)
+
+    def init_network_training(self):
+        self.io = InputOutput()
+        self.data_loader = DataLoader()
+        self.loss = Loss()
+        self.weighted_loss = WeightedLoss()
+        self.optimizer = Optimizer()
+        self.run_train = RunTrain()
+        self.trainer = Trainer()
+
+        self.out_widget1 = QWidget()
+        # self.out_widget.setMinimumSize(250, 750)
+        self.out_widget1.setContentsMargins(0, 0, 0, 0)
+        self.out_layout1 = QVBoxLayout(self.out_widget1)
+        self.out_layout1.setContentsMargins(0, 0, 0, 0)
+
+        self.main_training = QWidget()
+        self.main_training.setMinimumSize(240, 1500)
+        self.scroll1 = QScrollArea()
+        self.scroll1.setStyleSheet(instance_widget_stylesheet)
+
+        self.scroll1.setWidget(self.main_training)
+        self.scroll1.setVerticalScrollBarPolicy(0)
+        self.scroll1.setHorizontalScrollBarPolicy(0)
+        # self.main_algorithm.setFixedHeight(200)
+        self.main_training.setStyleSheet("background: #323232")
+
+        self.main_training_layout = QVBoxLayout()
+        self.main_training_layout.setAlignment(Qt.AlignTop)
+        self.main_training_layout.setContentsMargins(0, 0, 0, 0)
+        self.main_training_layout.setSpacing(1)
+
+        self.input_output_button = QPushButton()
+        self.input_output_button.setStyleSheet("background: #454545;"
+                                           "font-family: Verdana;"
+                                           "font-size: 15px;"
+                                           "border: 0px;"
+                                           "text-align:left;")
+        self.input_output_button.setFixedHeight(25)
+        self.input_output_button.setText("IO")
+        self.input_output_button.clicked.connect(self.input_output_button_fnc)
+        self.input_output_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+        # self.equalize_hist_tool_button.setFlat(True)
+
+        self.data_loader_button = QPushButton()
+        self.data_loader_button.setStyleSheet("background: #454545;"
+                                          "font-family: Verdana;"
+                                          "font-size: 15px;"
+                                          "border: 0px;"
+                                          "text-align:left;")
+        self.data_loader_button.setFixedHeight(25)
+        self.data_loader_button.setText("DataLoader")
+        self.data_loader_button.clicked.connect(self.data_loader_button_fnc)
+        self.data_loader_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+        # self.min_max_tool_button.setFlat(True)
+
+        self.loss_button = QPushButton()
+        self.loss_button.setStyleSheet("background: #454545;"
+                                        "font-family: Verdana;"
+                                        "font-size: 15px;"
+                                        "border: 0px;"
+                                        "text-align:left;")
+        self.loss_button.setFixedHeight(25)
+        self.loss_button.setText("Loss")
+        self.loss_button.clicked.connect(self.loss_button_fnc)
+        self.loss_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+        # self.retinex_MSRCP_tool_button.setFlat(True)
+
+        self.weighted_loss_button = QPushButton()
+        self.weighted_loss_button.setStyleSheet("background: #454545;"
+                                         "font-family: Verdana;"
+                                         "font-size: 15px;"
+                                         "border: 0px;"
+                                         "text-align:left;")
+        self.weighted_loss_button.setFixedHeight(25)
+        self.weighted_loss_button.setText("Loss Weighted")
+        self.weighted_loss_button.clicked.connect(self.weighted_loss_button_fnc)
+        self.weighted_loss_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+        # self.retinex_MSRCR_tool_button.setFlat(True)
+
+        self.optimizer_button = QPushButton()
+        self.optimizer_button.setStyleSheet("background: #454545;"
+                                                "font-family: Verdana;"
+                                                "font-size: 15px;"
+                                                "border: 0px;"
+                                                "text-align:left;")
+        self.optimizer_button.setFixedHeight(25)
+        self.optimizer_button.setText("Optimizer")
+        self.optimizer_button.clicked.connect(self.optimizer_button_fnc)
+        self.optimizer_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+
+        self.trainer_button = QPushButton()
+        self.trainer_button.setStyleSheet("background: #454545;"
+                                                "font-family: Verdana;"
+                                                "font-size: 15px;"
+                                                "border: 0px;"
+                                                "text-align:left;")
+        self.trainer_button.setFixedHeight(25)
+        self.trainer_button.setText("Trainer")
+        self.trainer_button.clicked.connect(self.trainer_button_fnc)
+        self.trainer_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+
+        self.run_train_button = QPushButton()
+        self.run_train_button.setStyleSheet("background: #454545;"
+                                          "font-family: Verdana;"
+                                          "font-size: 15px;"
+                                          "border: 0px;"
+                                          "text-align:left;")
+        self.run_train_button.setFixedHeight(25)
+        self.run_train_button.setText("Run")
+        self.run_train_button.clicked.connect(self.run_train_button_fnc)
+        self.run_train_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+
+        self.main_training_layout.addWidget(self.input_output_button)
+        self.main_training_layout.addWidget(self.io.input_output)
+        self.io.input_output.setVisible(False)
+        self.main_training_layout.addWidget(self.data_loader_button)
+        self.main_training_layout.addWidget(self.data_loader.data_loader)
+        self.data_loader.data_loader.setVisible(False)
+        self.main_training_layout.addWidget(self.loss_button)
+        self.main_training_layout.addWidget(self.loss.loss)
+        self.loss.loss.setVisible(False)
+        self.main_training_layout.addWidget(self.weighted_loss_button)
+        self.main_training_layout.addWidget(self.weighted_loss.weighted_loss)
+        self.weighted_loss.weighted_loss.setVisible(False)
+        self.main_training_layout.addWidget(self.optimizer_button)
+        self.main_training_layout.addWidget(self.optimizer.optimizer)
+        self.optimizer.optimizer.setVisible(False)
+        self.main_training_layout.addWidget(self.trainer_button)
+        self.main_training_layout.addWidget(self.trainer.trainer)
+        self.trainer.trainer.setVisible(False)
+        self.main_training_layout.addWidget(self.run_train_button)
+        self.main_training_layout.addWidget(self.run_train.run_train)
+        self.run_train.run_train.setVisible(False)
+
+        self.main_training.setLayout(self.main_training_layout)
+        self.out_layout1.addWidget(self.scroll1)
+        self.left_tools.addWidget(self.out_widget1)
+
 
     def update_file_tree(self, project_path):
         self.project_path = project_path
@@ -241,4 +402,147 @@ class LeftTools(QWidget):
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #FFFFFF")
+
+    def input_output_button_fnc(self):
+        if self.io.input_output.isVisible():
+            self.io.input_output.setVisible(False)
+            self.input_output_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.input_output_button.setStyleSheet("background: #454545;"
+                                                         "font-family: Verdana;"
+                                               "font-size: 15px;"
+                                                         "border: 0px;"
+                                                         "text-align:left;"
+                                                         "color: #000000")
+        else:
+            self.io.input_output.setVisible(True)
+            self.input_output_button.setIcon(QIcon(get_icon("Arrow_down.png")))
+            self.input_output_button.setStyleSheet("background: #454545;"
+                                                         "font-family: Verdana;"
+                                               "font-size: 15px;"
+                                                         "border: 0px;"
+                                                         "text-align:left;"
+                                                         "color: #FFFFFF")
+
+    def data_loader_button_fnc(self):
+        if self.data_loader.data_loader.isVisible():
+            self.data_loader.data_loader.setVisible(False)
+            self.data_loader_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.data_loader_button.setStyleSheet("background: #454545;"
+                                                         "font-family: Verdana;"
+                                               "font-size: 15px;"
+                                                         "border: 0px;"
+                                                         "text-align:left;"
+                                                         "color: #000000")
+        else:
+            self.data_loader.data_loader.setVisible(True)
+            self.data_loader_button.setIcon(QIcon(get_icon("Arrow_down.png")))
+            self.data_loader_button.setStyleSheet("background: #454545;"
+                                                         "font-family: Verdana;"
+                                               "font-size: 15px;"
+                                                         "border: 0px;"
+                                                         "text-align:left;"
+                                                         "color: #FFFFFF")
+
+    def loss_button_fnc(self):
+        if self.loss.loss.isVisible():
+            self.loss.loss.setVisible(False)
+            self.loss_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.loss_button.setStyleSheet("background: #454545;"
+                                                         "font-family: Verdana;"
+                                               "font-size: 15px;"
+                                                         "border: 0px;"
+                                                         "text-align:left;"
+                                                         "color: #000000")
+        else:
+            self.loss.loss.setVisible(True)
+            self.loss_button.setIcon(QIcon(get_icon("Arrow_down.png")))
+            self.loss_button.setStyleSheet("background: #454545;"
+                                                         "font-family: Verdana;"
+                                               "font-size: 15px;"
+                                                         "border: 0px;"
+                                                         "text-align:left;"
+                                                         "color: #FFFFFF")
+
+    def weighted_loss_button_fnc(self):
+        if self.weighted_loss.weighted_loss.isVisible():
+            self.weighted_loss.weighted_loss.setVisible(False)
+            self.weighted_loss_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.weighted_loss_button.setStyleSheet("background: #454545;"
+                                                         "font-family: Verdana;"
+                                               "font-size: 15px;"
+                                                         "border: 0px;"
+                                                         "text-align:left;"
+                                                         "color: #000000")
+        else:
+            self.weighted_loss.weighted_loss.setVisible(True)
+            self.weighted_loss_button.setIcon(QIcon(get_icon("Arrow_down.png")))
+            self.weighted_loss_button.setStyleSheet("background: #454545;"
+                                                         "font-family: Verdana;"
+                                               "font-size: 15px;"
+                                                         "border: 0px;"
+                                                         "text-align:left;"
+                                                         "color: #FFFFFF")
+
+    def optimizer_button_fnc(self):
+        if self.optimizer.optimizer.isVisible():
+            self.optimizer.optimizer.setVisible(False)
+            self.optimizer_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.optimizer_button.setStyleSheet("background: #454545;"
+                                                         "font-family: Verdana;"
+                                               "font-size: 15px;"
+                                                         "border: 0px;"
+                                                         "text-align:left;"
+                                                         "color: #000000")
+        else:
+            self.optimizer.optimizer.setVisible(True)
+            self.optimizer_button.setIcon(QIcon(get_icon("Arrow_down.png")))
+            self.optimizer_button.setStyleSheet("background: #454545;"
+                                                         "font-family: Verdana;"
+                                               "font-size: 15px;"
+                                                         "border: 0px;"
+                                                         "text-align:left;"
+                                                         "color: #FFFFFF")
+
+    def run_train_button_fnc(self):
+        if self.run_train.run_train.isVisible():
+            self.run_train.run_train.setVisible(False)
+            self.run_train_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.run_train_button.setStyleSheet("background: #454545;"
+                                                         "font-family: Verdana;"
+                                               "font-size: 15px;"
+                                                         "border: 0px;"
+                                                         "text-align:left;"
+                                                         "color: #000000")
+        else:
+            self.run_train.run_train.setVisible(True)
+            self.run_train_button.setIcon(QIcon(get_icon("Arrow_down.png")))
+            self.run_train_button.setStyleSheet("background: #454545;"
+                                                         "font-family: Verdana;"
+                                               "font-size: 15px;"
+                                                         "border: 0px;"
+                                                         "text-align:left;"
+                                                         "color: #FFFFFF")
+
+    def trainer_button_fnc(self):
+        if self.trainer.trainer.isVisible():
+            self.trainer.trainer.setVisible(False)
+            self.trainer_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.trainer_button.setStyleSheet("background: #454545;"
+                                                         "font-family: Verdana;"
+                                               "font-size: 15px;"
+                                                         "border: 0px;"
+                                                         "text-align:left;"
+                                                         "color: #000000")
+        else:
+            self.trainer.trainer.setVisible(True)
+            self.trainer_button.setIcon(QIcon(get_icon("Arrow_down.png")))
+            self.trainer_button.setStyleSheet("background: #454545;"
+                                                         "font-family: Verdana;"
+                                               "font-size: 15px;"
+                                                         "border: 0px;"
+                                                         "text-align:left;"
+                                                         "color: #FFFFFF")
+
+
+
 

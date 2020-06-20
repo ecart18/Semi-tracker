@@ -163,7 +163,8 @@ class Frame(object):
         self._norm_img      = raw_img.copy()
 
         self._binary_mask   = None   # binary mask (height, width, 1)
-        self._label_img     = None   # label (height, width, 1)
+        self._label_img     = np.zeros(np.shape(raw_img[:, :, 0]))   # label (height, width)
+        self._label_img.astype(np.uint16)
         self._raw_color_img = raw_img.copy()   # color and raw img
         self._annotation_color_img = raw_img.copy()
         self._label2color   = []
@@ -248,6 +249,10 @@ class Frame(object):
     @property
     def color_map_dict(self):
         return self._color_map_dict
+
+    @color_map_dict.setter
+    def color_map_dict(self, color_map_dict):
+        self._color_map_dict = color_map_dict
 
     @property
     def label_img(self):
@@ -345,6 +350,7 @@ class Frame(object):
             coords = instance.coords
             self._raw_color_img[coords[0], coords[1], :] = (0.5 * self._raw_color_img[coords[0], coords[1], :] +
                                                             0.5 * color[coords[0], coords[1], :])
+            self._annotation_color_img[coords[0], coords[1], :] = color[coords[0], coords[1], :]
             self._instances[label] = instance
 
     def update_labling(self, update_ins_id=None, update_ins_label=None, update_ins_name=None,
@@ -358,6 +364,7 @@ class Frame(object):
                     zip(update_ins_id, update_ins_label, update_ins_name, update_ins_color):
                 instance = Instance(frame_id=self.frame_id, label_id=ins_label, name=ins_name, raw_img=self.raw_img)
                 self._color_map[ins_id+1] = ins_color
+                self._color_map_dict[ins_label] = ins_color
                 instance.color = ins_color
                 instance.coords = np.where(self._label_img == ins_label)
                 instance.name = ins_name
@@ -392,6 +399,7 @@ class Frame(object):
                     zip(update_ins_id, update_ins_label, update_ins_name, update_ins_color):
                 instance = Instance(frame_id=self.frame_id, label_id=ins_label, name=ins_name, raw_img=self.raw_img)
                 self._color_map[ins_id+1] = ins_color
+                self._color_map_dict[ins_label] = ins_color
                 instance.color = ins_color
                 instance.coords = np.where(self._label_img == ins_label)
                 instance.name = ins_name
