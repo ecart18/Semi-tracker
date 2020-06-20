@@ -4,7 +4,7 @@ from __future__ import print_function, absolute_import
 
 import time
 import torch
-from ..utils.meters import AverageMeter
+from ..utils import AverageMeter
 
 
 class BaseTrainer(object):
@@ -13,7 +13,7 @@ class BaseTrainer(object):
         self.model = model
         self.criterion = criterion
 
-    def train(self, epoch, data_loader, optimizer, device=torch.device('cuda'), print_freq=1):
+    def train(self, epoch, data_loader, optimizer, device, print_freq=1):
 
         self.model.train()
         batch_time = AverageMeter()
@@ -47,7 +47,7 @@ class BaseTrainer(object):
                               losses.val, losses.avg))
         return losses.avg
 
-    def eval(self, epoch, data_loader, device=torch.device('cuda'), print_freq=1):
+    def eval(self, epoch, data_loader, device, print_freq=1):
 
         self.model.eval()
 
@@ -85,7 +85,7 @@ class BaseTrainer(object):
         raise NotImplementedError
 
 
-class Trainer(BaseTrainer):
+class UnetTrainer(BaseTrainer):
 
     def _parse_data(self, inputs, device):
         data, gt = inputs["image"], inputs["gt"]
@@ -95,7 +95,7 @@ class Trainer(BaseTrainer):
             weight = inputs["weight"]
             weight = weight.to(device)
         return {"data": data,
-                "gt": gt,
+                "label": gt,
                 "weight": weight}
 
     def _forward(self, inputs, device):

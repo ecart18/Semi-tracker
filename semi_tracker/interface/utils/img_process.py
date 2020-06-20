@@ -26,7 +26,7 @@ def img_standardization(img):
     elif len(img.shape) == 3:
         return img
     else:
-        raise TypeError('The Depth of image large than 3.')
+        raise TypeError('The image shape dimension is not equal to 2 or 3.')
 
 
 def load_images(file_names):

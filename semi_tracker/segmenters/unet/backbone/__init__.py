@@ -28,7 +28,7 @@ def init_weights(model):
     return model
 
 
-def get_backbone(name='unet', **kwargs):
+def get_backbone(name, **kwargs):
     """
     :param name: (str): model name
     :param kwargs: other parameters

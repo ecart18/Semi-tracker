@@ -111,18 +111,7 @@ def center_edge(mask, image):
     return check_image.astype(np.uint8), comb_mask.astype(np.uint8)
 
 
-def find_edge(masks):
-    edge = np.zeros_like(masks).astype(np.float32)
-    individual_mask=label(masks, connectivity=2)
-    regions = regionprops(individual_mask)
-    for region in regions:
-        coords = region.coords
-        mask = np.zeros_like(masks)
-        mask[coords[:, 0], coords[:, 1]] = 1
-        temp_edge = cv2.Canny(mask.astype(np.uint8), 2, 5) / 255
-        temp_edge = dilation(temp_edge, square(3)) 
-        edge += temp_edge
-    return np.clip(edge, a_min=0, a_max=1).astype(np.float32)
+
 
 
 def mask_refine(image, mask):

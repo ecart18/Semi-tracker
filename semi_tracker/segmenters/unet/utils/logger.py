@@ -1,7 +1,9 @@
 
+# -*- coding: UTF-8 -*-
+
 import os
 import sys
-from .osutils import mkdir
+from .utils import mkdir
 
 
 class Logger(object):

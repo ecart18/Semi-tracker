@@ -16,8 +16,7 @@ from ..utils.processing import gray_to_bgr
 
 
 class Unet:
-    def __init__(self, model_path='./checkpoint/model_best.pth.tar', 
-                    threshold=0.5, device='cpu'):
+    def __init__(self, model_path, threshold=0.5, device='cpu'):
         if device == 'gpu':
             if not torch.cuda.is_available():
                 device == 'cpu'
