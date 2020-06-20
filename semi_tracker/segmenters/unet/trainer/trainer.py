@@ -4,7 +4,7 @@ from __future__ import print_function, absolute_import
 
 import time
 import torch
-from ..utils.meters import AverageMeter
+from ..utils import AverageMeter
 
 
 class BaseTrainer(object):
@@ -13,7 +13,7 @@ class BaseTrainer(object):
         self.model = model
         self.criterion = criterion
 
-    def train(self, epoch, data_loader, optimizer, device=torch.device('cuda'), print_freq=1):
+    def train(self, epoch, data_loader, optimizer, device, print_freq=1):
 
         self.model.train()
         batch_time = AverageMeter()
@@ -47,7 +47,7 @@ class BaseTrainer(object):
                               losses.val, losses.avg))
         return losses.avg
 
-    def eval(self, epoch, data_loader, device=torch.device('cuda'), print_freq=1):
+    def eval(self, epoch, data_loader, device, print_freq=1):
 
         self.model.eval()
 
@@ -85,23 +85,20 @@ class BaseTrainer(object):
         raise NotImplementedError
 
 
-class Trainer(BaseTrainer):
+class UnetTrainer(BaseTrainer):
 
     def _parse_data(self, inputs, device):
-        data, gt = inputs["image"], inputs["gt"]
-        data, gt = data.to(device), gt.to(device)
-        weight = None
-        if inputs["image"] is not None:
-            weight = inputs["weight"]
+        data, label, weight = inputs["image"], inputs["label"], inputs["weight"]
+        data, label = data.to(device), label.to(device)
+        if weight[0]:
             weight = weight.to(device)
         return {"data": data,
-                "gt": gt,
+                "label": label,
                 "weight": weight}
 
     def _forward(self, inputs, device):
         inputs = self._parse_data(inputs, device)
-        batch_size = inputs["gt"].size(0)
+        batch_size = inputs["label"].size(0)
         predictions = self.model(inputs["data"])
-        loss = 10.*self.criterion(predictions, inputs["gt"], inputs["weight"])
-        # loss = self.criterion(predictions, inputs["gt"])
+        loss = self.criterion(y_pred=predictions, y_true=inputs["label"], weights=inputs["weight"])
         return loss, batch_size

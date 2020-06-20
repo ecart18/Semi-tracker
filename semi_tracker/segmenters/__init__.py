@@ -3,7 +3,7 @@ from .customized.customized import CustomizedSegmentor
 from .tradition_methods.threshold import BinaryThresholding
 from .tradition_methods.watershed import WaterShed
 from .tradition_methods.grabcut import GrabCut
-from .unet.unet import Unet
+from .unet import Unet
 
 __all__ = [
     'BinaryThresholding',

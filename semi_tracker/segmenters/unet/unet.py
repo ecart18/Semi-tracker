@@ -9,15 +9,14 @@ from torchvision.transforms import Compose
 from torchvision.transforms import Normalize
 from torchvision.transforms import ToTensor
 from .backbone import get_backbone
-from .utils.osutils import load_params
-from .utils.osutils import mkdir
-from ..utils.processing import bgr_to_gray
-from ..utils.processing import gray_to_bgr
+from .utils import mkdir
+from .utils import load_params
+from ..utils import bgr_to_gray
+from ..utils import gray_to_bgr
 
 
 class Unet:
-    def __init__(self, model_path='./checkpoint/model_best.pth.tar', 
-                    threshold=0.5, device='cpu'):
+    def __init__(self, model_path, threshold=0.5, device='cpu'):
         if device == 'gpu':
             if not torch.cuda.is_available():
                 device == 'cpu'

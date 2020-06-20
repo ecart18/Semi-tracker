@@ -102,7 +102,7 @@ class OutConv(nn.Module):
 class UNet(nn.Module):
     ''' This Object defines the architecture of U-Net. '''
 
-    def __init__(self, n_channels, n_classes):
+    def __init__(self, n_channels=3, n_classes=1):
         super(UNet, self).__init__()
 
         self.inc = InConv(n_channels, 64)
