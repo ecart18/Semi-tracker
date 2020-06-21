@@ -92,17 +92,19 @@ class MainWindow(QMainWindow):
         self.label_img_root = ''
         self.log_root = ''
         self.validation_ratio = 0.2
+        self.scale_img = 1
+        self.scale_img_list = [4, 2, 1, 0.5, 0.25, 0.125]
         self.weighted_type = 'edge_weighted'  # 'edge_weighted'，'sample_balance' and 'None'
         self.aug_list = ['Flip', 'Rotate', 'GaussainNoise', 'GaussainBlur']
         self.batch_size = 2
         self.workers = 2
         self.gpu_num = 0
-        self.resume = False
+        self.resume = None
         self.epochs = 4
         self.lr = 0.01
         self.weight_decay = 0.0005
         self.loss_type = 'DiceLoss'
-        self.weighted_type_list = ['edge_weighted', 'sample_balance', 'None']
+        self.weighted_type_list = ['edge_weighted', 'sample_balance', None]
         self.loss_type_list = []
 
         self.result_dir_path    = ""
@@ -304,8 +306,8 @@ class MainWindow(QMainWindow):
 
     def train_model_button_fnc(self):
         self.validation_ratio = self.tools.data_loader.validation_radio_sld.value()/10
+        self.scale_img = self.scale_img_list[self.tools.data_loader.scale_img_select.currentIndex()]
         self.weighted_type = self.weighted_type_list[self.tools.weighted_loss.weighted_loss_select.currentIndex()]
-        print(self.weighted_type)
         self.aug_list = []
         if self.tools.data_loader.flip_checkbox.isChecked():
             self.aug_list.append("Flip")
@@ -319,12 +321,11 @@ class MainWindow(QMainWindow):
         self.batch_size = int(self.tools.data_loader.batch_size_select.currentText())
         self.workers = int(self.tools.data_loader.paraller_works_select.currentText())
         self.gpu_num = int(self.tools.trainer.gpu_num_select.currentText())
-        self.resume = False
+        self.resume = self.tools.run_train.model_path
         self.epochs = int(self.tools.trainer.epoch_textline.text())
         self.lr = float(self.tools.optimizer.lr_select.currentText())
         self.weight_decay = float(self.tools.optimizer.weight_decay_select.currentText())
         self.loss_type = self.tools.loss.loss_select.currentText()
-        print(self.loss_type)
         train_parameters = TrainParameters(source_img_root=self.source_img_root,
                                            label_img_root=self.label_img_root,
                                            log_root=self.log_root,
@@ -347,8 +348,8 @@ class MainWindow(QMainWindow):
                                                  filter="*.tar")[0]
         # print(model_path)
         if not model_path == "":
-            self.tools.trainer.model_path_show_lineedit.setText(model_path)
-            self.unet_model_path = model_path
+            self.tools.run_train.model_path_show_lineedit.setText(model_path)
+            self.tools.run_train.model_path = model_path
 
     def default_fnc(self):
         self.tools.update_file_tree(self.project_path)

@@ -18,6 +18,7 @@ class RunTrain(QWidget):
 
         self.run_train = QWidget()
         self.run_train.setStyleSheet(self.trainer_stylesheet)
+        self.model_path = None
 
         self.setup_ui()
 

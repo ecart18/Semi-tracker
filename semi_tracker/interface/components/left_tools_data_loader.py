@@ -37,37 +37,60 @@ class DataLoader(QWidget):
         batch_size_layout.addWidget(batch_size_label)
         batch_size_layout.addWidget(batch_size_select)
 
-        validation_radio_sld = QSlider(Qt.Horizontal)
-        validation_radio_sld.setMinimum(1)
-        validation_radio_sld.setMaximum(5)
-        validation_radio_sld.setValue(2)
-        validation_radio_sld.setStyleSheet(slide_stylesheet)
-        validation_radio_sld.valueChanged.connect(self.sld2text)
+        validation_ratio_sld = QSlider(Qt.Horizontal)
+        validation_ratio_sld.setMinimum(1)
+        validation_ratio_sld.setMaximum(5)
+        validation_ratio_sld.setValue(2)
+        validation_ratio_sld.setStyleSheet(slide_stylesheet)
+        validation_ratio_sld.valueChanged.connect(self.sld2text)
 
-        validation_radio_label = QLabel()
-        validation_radio_label.setText("Validation radio(0.1~0.5)")
-        validation_radio_label.setAlignment(Qt.AlignLeft)
-        validation_radio_label.setStyleSheet("font-family: Verdana;"
+        validation_ratio_label = QLabel()
+        validation_ratio_label.setText("Validation ratio(0.1~0.5)")
+        validation_ratio_label.setAlignment(Qt.AlignLeft)
+        validation_ratio_label.setStyleSheet("font-family: Verdana;"
                                     "color: white;")
 
-        validation_radio_textline = QLineEdit()
-        validation_radio_textline.setAlignment(Qt.AlignCenter)
-        validation_radio_textline.setFixedSize(50, 15)
-        validation_radio_textline.setValidator(QIntValidator())
-        validation_radio_textline.setText("0.2")
-        validation_radio_textline.setStyleSheet("background: #454545;"
+        validation_ratio_textline = QLineEdit()
+        validation_ratio_textline.setAlignment(Qt.AlignCenter)
+        validation_ratio_textline.setFixedSize(50, 15)
+        validation_ratio_textline.setValidator(QIntValidator())
+        validation_ratio_textline.setText("0.2")
+        validation_ratio_textline.setStyleSheet("background: #454545;"
                                        "border: 0px;"
                                        "color: white;"
                                        "border-radius: 5px;"
                                        "font-family: Verdana;")
-        validation_radio_textline.textEdited.connect(self.text2sld)
+        validation_ratio_textline.textEdited.connect(self.text2sld)
 
-        validation_radio_layout = QVBoxLayout()
-        validation_radio_layout1 = QHBoxLayout()
-        validation_radio_layout1.addWidget(validation_radio_sld)
-        validation_radio_layout1.addWidget(validation_radio_textline)
-        validation_radio_layout.addWidget(validation_radio_label)
-        validation_radio_layout.addLayout(validation_radio_layout1)
+        validation_ratio_layout = QVBoxLayout()
+        validation_ratio_layout1 = QHBoxLayout()
+        validation_ratio_layout1.addWidget(validation_ratio_sld)
+        validation_ratio_layout1.addWidget(validation_ratio_textline)
+        validation_ratio_layout.addWidget(validation_ratio_label)
+        validation_ratio_layout.addLayout(validation_ratio_layout1)
+
+        scale_img_label = QLabel()
+        scale_img_label.setText("Batch size:")
+        scale_img_label.setStyleSheet("font-family: Verdana;"
+                                       "color: white;")
+
+        scale_img_select = QComboBox()
+        scale_img_select.setFixedSize(80, 20)
+        scale_img_select.setStyleSheet("border: 0px;"
+                                        "color: white;"
+                                        "font-family: Verdana;"
+                                        "background: transparent;")
+        scale_img_select.addItem("4")
+        scale_img_select.addItem("2")
+        scale_img_select.addItem("1")
+        scale_img_select.addItem("0.5")
+        scale_img_select.addItem("0.25")
+        scale_img_select.addItem("0.125")
+        scale_img_select.setCurrentIndex(2)
+
+        scale_img_layout = QHBoxLayout()
+        scale_img_layout.addWidget(scale_img_label)
+        scale_img_layout.addWidget(scale_img_select)
 
         paraller_works_label = QLabel()
         paraller_works_label.setText("Paraller works:")
@@ -130,15 +153,17 @@ class DataLoader(QWidget):
 
         data_loader_layout = QVBoxLayout()
         data_loader_layout.addLayout(batch_size_layout)
-        data_loader_layout.addLayout(validation_radio_layout)
+        data_loader_layout.addLayout(validation_ratio_layout)
+        data_loader_layout.addLayout(scale_img_layout)
         data_loader_layout.addLayout(paraller_works_layout)
         data_loader_layout.addLayout(augmentation_layout)
 
         self.data_loader.setLayout(data_loader_layout)
 
         self.batch_size_select = batch_size_select
-        self.validation_radio_sld = validation_radio_sld
-        self.validation_radio_textline = validation_radio_textline
+        self.validation_radio_sld = validation_ratio_sld
+        self.validation_radio_textline = validation_ratio_textline
+        self.scale_img_select = scale_img_select
         self.paraller_works_select = paraller_works_select
         self.flip_checkbox = flip_checkbox
         self.rotate_checkbox = rotate_checkbox

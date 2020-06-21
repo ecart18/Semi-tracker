@@ -13,12 +13,12 @@ class WeightedLoss(QWidget):
 
     def setup_ui(self):
         weighted_loss_label = QLabel()
-        weighted_loss_label.setText("Select weighted loss:")
+        weighted_loss_label.setText("Weight:")
         weighted_loss_label.setStyleSheet("font-family: Verdana;"
                                        "color: white;")
 
         weighted_loss_select = QComboBox()
-        weighted_loss_select.setFixedSize(80, 20)
+        # weighted_loss_select.setFixedSize(80, 20)
         weighted_loss_select.setStyleSheet("border: 0px;"
                                         "color: white;"
                                         "font-family: Verdana;"
