@@ -16,6 +16,8 @@ from .loss import build_loss
 from .dataset import build_dataloader
 from .utils import Logger, load_checkpoint, save_checkpoint, export_history
 
+# torch.cuda.set_device(1)
+
 
 def train(train_parameters):
 

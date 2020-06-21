@@ -10,7 +10,7 @@ from ..utils import mkdir
 class TrainParameters:
 
     def __init__(self, source_img_root, label_img_root, log_root, 
-                    validation_ratio, weighted_type,
+                    validation_ratio, scale_img, weighted_type,
                     aug_list, batch_size, workers, gpu_num, resume, epochs,
                     lr, weight_decay, loss_type, **kwargs):
 
@@ -25,6 +25,7 @@ class TrainParameters:
         # dataloader
         self.weighted_type, self.loss_type = self._check_weighted_type(weighted_type, loss_type)
         batch_size, validation_ratio, workers= self._check_dataloader(batch_size, validation_ratio, workers)
+        self.scale_img = scale_img
         self.dataloader_params = {
             'source_img_root': self.source_img_root,
             'label_img_root': self.label_img_root,

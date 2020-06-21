@@ -55,7 +55,26 @@ class FileTree(QWidget):
             default_button.setContentsMargins(0, 0, 0, 0)
             default_button.setFixedHeight(25)
 
+            load_button = QPushButton()
+            load_button.setText("Load images")
+            load_button.setStyleSheet("background: #454545;"
+                                        "color: rgb(245, 245, 245, 255);"
+                                        "font-size: 12px;"
+                                        "font-family: Verdana;")
+            load_button.setContentsMargins(0, 0, 0, 0)
+            load_button.setFixedHeight(25)
+
+            label2 = QLabel()
+            label2.setText("Load images or set image files folder.")
+            # label.setAlignment(QtCore.Qt.AlignRight)
+            label2.setStyleSheet("color: rgb(245, 245, 245, 255);"
+                                "font-size: 12px;"
+                                "font-family: Verdana;")
+            label2.setContentsMargins(0, 0, 0, 0)
+
             layout1 = QVBoxLayout()
+            layout1.addWidget(label2)
+            layout1.addWidget(load_button)
             layout1.addWidget(label)
             layout1.addWidget(create_button)
             layout1.addWidget(label1)
@@ -72,6 +91,7 @@ class FileTree(QWidget):
             self.setLayout(layout2)
             self.create_button = create_button
             self.default_button = default_button
+            self.load_button = load_button
 
         else:
             # 格式检查
