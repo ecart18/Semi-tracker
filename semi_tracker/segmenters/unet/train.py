@@ -70,7 +70,7 @@ def train(train_parameters):
         is_best = val_loss < best_loss
         best_loss = min(val_loss, best_loss)
         save_checkpoint({
-            'state_dict': model.module.state_dict(),
+            'state_dict': model.state_dict(),
             'epoch': epoch + 1,
             'best_loss': best_loss,
         }, is_best, fpath=osp.join(train_parameters.log_root, 'best_checkpoint.pth.tar'))
