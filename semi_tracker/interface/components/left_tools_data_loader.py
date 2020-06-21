@@ -70,7 +70,7 @@ class DataLoader(QWidget):
         validation_ratio_layout.addLayout(validation_ratio_layout1)
 
         scale_img_label = QLabel()
-        scale_img_label.setText("Batch size:")
+        scale_img_label.setText("Scale image:")
         scale_img_label.setStyleSheet("font-family: Verdana;"
                                        "color: white;")
 
