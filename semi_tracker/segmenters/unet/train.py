@@ -73,7 +73,7 @@ def train(train_parameters):
             'state_dict': model.state_dict(),
             'epoch': epoch + 1,
             'best_loss': best_loss,
-        }, is_best, fpath=osp.join(train_parameters.log_root, 'best_checkpoint.pth.tar'))
+        }, is_best, fpath=osp.join(train_parameters.log_root, 'checkpoint.pth.tar'))
 
         print('\n * Finished epoch {:3d}  train_loss: {:.3f}  val_loss: {:.3f}  best: {:.3f}{}\n'.
               format(epoch, train_loss, val_loss, best_loss, ' *' if is_best else ''))

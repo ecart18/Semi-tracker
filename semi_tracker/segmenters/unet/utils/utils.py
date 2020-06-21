@@ -74,7 +74,6 @@ def copy_state_dict(state_dict, model, strip=None):
     return model
 
 
-
 def to_numpy(tensor):
     if torch.is_tensor(tensor):
         return tensor.cpu().numpy()
