@@ -4,6 +4,7 @@ from __future__ import absolute_import
 import collections
 import random
 import numpy as np
+import cv2
 from semi_tracker.utils.logger import logger
 
 
@@ -22,7 +23,7 @@ class Instance(object):
         self._frame_id      = frame_id
         self._label_id      = label_id
         self._raw_img       = raw_img
-        self._norm_img      = raw_img
+
         
         self._coords        = None
         self._bbox          = None
@@ -93,6 +94,18 @@ class Instance(object):
     def coords(self):
         return self._coords
 
+    @property
+    def edge(self):
+        return self._edge  # array of [y, x]
+
+    @staticmethod
+    def _find_edge_coordinates(x_max, y_max, coords):
+        binary_mask = np.zeros((y_max + 1, x_max + 1), dtype=np.uint8)
+        binary_mask[coords[0], coords[1]] = 255
+        contours, _ = cv2.findContours(binary_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+        edge = np.vstack((x.reshape(-1,2) for x in contours))  # array of [y, x]
+        return edge
+
     @coords.setter
     def coords(self, coords):
         self._coords = coords
@@ -102,10 +115,9 @@ class Instance(object):
         self._bbox = np.array([x1, y1, x2, y2])
         self._centroid = [int((x1+x2)/2), int((y1+y2)/2)]
         self._area = np.shape(self._coords)[1]
-
-        self._intensity = sum(sum(self._raw_img[coords[0], coords[1], :]))/self._area
-
-
+        self._intensity = np.sum(self._raw_img[coords[0], coords[1], :]) / (self._raw_img.shape[-1] * self._area)
+        self._edge = self._find_edge_coordinates(x_max=x2, y_max=y2, coords=coords)
+        
 
     @property
     def color(self):
@@ -146,12 +158,16 @@ class Frame(object):
     def __init__(self, file_name, frame_id, raw_img):
         self._frame_id      = frame_id
         self._file_name     = file_name
-        self._raw_img       = raw_img
+        self._raw_img       = raw_img.copy()
         self._img_size      = np.shape(raw_img)[0:-1]
+        self._norm_img      = raw_img.copy()
 
         self._binary_mask   = None   # binary mask (height, width, 1)
-        self._label_img     = None   # label (height, width, 1)
-        self._raw_color_img = None   # color and raw img
+        self._label_img     = np.zeros(np.shape(raw_img[:, :, 0]))   # label (height, width)
+        self._label_img.astype(np.uint16)
+        self._raw_color_img = raw_img.copy()   # color and raw img
+        self._annotation_color_img = raw_img.copy()
+        self._label2color   = []
         
         self._label_n       = 0
         self._label_max     = 0
@@ -169,6 +185,22 @@ class Frame(object):
     @property
     def label_max(self):
         return self._label_max
+
+    @property
+    def annotation_color_img(self):
+        return self._annotation_color_img
+
+    @annotation_color_img.setter
+    def annotation_color_img(self, annotation_color_img):
+        self._annotation_color_img = annotation_color_img
+
+    @property
+    def norm_img(self):
+        return self._norm_img
+
+    @norm_img.setter
+    def norm_img(self, norm_img):
+        self._norm_img = norm_img
 
     @property
     def label_n(self):
@@ -194,6 +226,10 @@ class Frame(object):
     def raw_img(self):
         return self._raw_img
 
+    @raw_img.setter
+    def raw_img(self, raw_img):
+        self._raw_img = raw_img
+
     @property
     def binary_mask(self):
         return self._binary_mask
@@ -214,6 +250,10 @@ class Frame(object):
     def color_map_dict(self):
         return self._color_map_dict
 
+    @color_map_dict.setter
+    def color_map_dict(self, color_map_dict):
+        self._color_map_dict = color_map_dict
+
     @property
     def label_img(self):
         return self._label_img
@@ -229,6 +269,7 @@ class Frame(object):
         self._binary_mask = 255 * self._binary_mask
         self._binary_mask = self._binary_mask.astype(np.uint8)
         self._labels = np.delete(np.unique(self._label_img), 0)
+        self._label_max = label_img.max()
         
 
     @property
@@ -309,6 +350,7 @@ class Frame(object):
             coords = instance.coords
             self._raw_color_img[coords[0], coords[1], :] = (0.5 * self._raw_color_img[coords[0], coords[1], :] +
                                                             0.5 * color[coords[0], coords[1], :])
+            self._annotation_color_img[coords[0], coords[1], :] = color[coords[0], coords[1], :]
             self._instances[label] = instance
 
     def update_labling(self, update_ins_id=None, update_ins_label=None, update_ins_name=None,
@@ -317,21 +359,24 @@ class Frame(object):
         add, delete and modify instances
         """
         # print(update_ins_label)
-        if not len(update_ins_label) == 0:
+        if update_ins_label is not None:
             for ins_id, ins_label, ins_name, ins_color in \
                     zip(update_ins_id, update_ins_label, update_ins_name, update_ins_color):
                 instance = Instance(frame_id=self.frame_id, label_id=ins_label, name=ins_name, raw_img=self.raw_img)
                 self._color_map[ins_id+1] = ins_color
+                self._color_map_dict[ins_label] = ins_color
                 instance.color = ins_color
                 instance.coords = np.where(self._label_img == ins_label)
                 instance.name = ins_name
 
                 color = np.ones_like(self._raw_color_img) * np.array(instance.color)
                 coords = instance.coords
+                # print(np.shape(self.raw_img))
+                # print(np.shape(color))
                 self._raw_color_img[coords[0], coords[1], :] = (0.5 * self.raw_img[coords[0], coords[1], :] +
                                                                 0.5 * color[coords[0], coords[1], :])
                 self._instances[ins_label] = instance
-        if not len(delete_ins_label) == 0:
+        if delete_ins_label is not None:
             for ins_id, ins_label in zip(delete_ins_id, delete_ins_label):
                 self._color_map.remove(self._color_map[ins_id+1])
                 ins = self.instances[ins_label]
@@ -340,6 +385,8 @@ class Frame(object):
                 if ins.coords is not None:
                     if annotation_flag == 2:
                         self._label_img[ins.coords[0], ins.coords[1]] = 0
+                        self.annotation_color_img[ins.coords[0], ins.coords[1], :] = \
+                            self.raw_img[ins.coords[0], ins.coords[1], :]
                     else:
                         self._label_img[ins.coords[0], ins.coords[1], ins.coords[2]] = 0
                 self._label_n -= 1
@@ -352,6 +399,7 @@ class Frame(object):
                     zip(update_ins_id, update_ins_label, update_ins_name, update_ins_color):
                 instance = Instance(frame_id=self.frame_id, label_id=ins_label, name=ins_name, raw_img=self.raw_img)
                 self._color_map[ins_id+1] = ins_color
+                self._color_map_dict[ins_label] = ins_color
                 instance.color = ins_color
                 instance.coords = np.where(self._label_img == ins_label)
                 instance.name = ins_name

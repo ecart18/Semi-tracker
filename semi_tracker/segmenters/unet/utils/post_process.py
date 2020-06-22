@@ -5,16 +5,6 @@ from skimage.measure import label, regionprops
 from skimage.morphology import square, erosion, dilation
 from skimage import segmentation
 
-def region_to_edge(region, height, width):
-    edge = np.zeros([height,width])
-    coords = region.coords
-    mask = np.zeros([height, width])
-    mask[coords[:, 0], coords[:, 1]] = 1
-    mask = dilation(mask, square(3))
-    temp_edge = cv2.Canny(mask.astype(np.uint8), 2, 5) / 255
-    edge += temp_edge
-    edge = np.tile(np.expand_dims(edge,2),(1,1,3))
-    return np.clip(edge, a_min=0, a_max=1).astype(np.float32)
 
 def region_to_mask(region, height, width):
     coords = region.coords
@@ -111,18 +101,7 @@ def center_edge(mask, image):
     return check_image.astype(np.uint8), comb_mask.astype(np.uint8)
 
 
-def find_edge(masks):
-    edge = np.zeros_like(masks).astype(np.float32)
-    individual_mask=label(masks, connectivity=2)
-    regions = regionprops(individual_mask)
-    for region in regions:
-        coords = region.coords
-        mask = np.zeros_like(masks)
-        mask[coords[:, 0], coords[:, 1]] = 1
-        temp_edge = cv2.Canny(mask.astype(np.uint8), 2, 5) / 255
-        temp_edge = dilation(temp_edge, square(3)) 
-        edge += temp_edge
-    return np.clip(edge, a_min=0, a_max=1).astype(np.float32)
+
 
 
 def mask_refine(image, mask):

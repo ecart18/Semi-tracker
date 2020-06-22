@@ -2,16 +2,18 @@
 
 import os.path as osp
 import random
+import cv2
 import numpy as np
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import QSize, Qt
 from PyQt5 import QtCore, QtWidgets
 from PyQt5 import QtGui
+from PIL import Image
 import pyqtgraph as pg
 from .frame import Instance
 from ..utils import get_icon
-import cv2
+from semi_tracker.utils import format_out
 
 
 class InstanceSettings(QWidget):
@@ -347,72 +349,144 @@ class CellAttributeWindow(QWidget):
 
         cell_show = QLabel()
         cell_show.setFixedSize(170, 170)
-        self.get_cell_icon()
-        cell_show_pix = QPixmap(get_icon("cell_show.png"))
+        # q_sub_img = self.get_cell_icon()
+        cell_show_pix = self.get_cell_icon()
         cell_show_pix = cell_show_pix.scaled(QSize(170, 170), Qt.KeepAspectRatio)
         cell_show.setPixmap(cell_show_pix)
 
+        colon_label = QLabel()
+        colon_label.setText(":")
+
+        colon_label1 = QLabel()
+        colon_label1.setText(":")
+
+        colon_label2 = QLabel()
+        colon_label2.setText(":")
+
+        colon_label3 = QLabel()
+        colon_label3.setText(":")
+
+        colon_label4 = QLabel()
+        colon_label4.setText(":")
+
+        colon_label5 = QLabel()
+        colon_label5.setText(":")
+
+        colon_label6 = QLabel()
+        colon_label6.setText(":")
+
+        colon_label7 = QLabel()
+        colon_label7.setText(":")
+
+        frame_id_label = QLabel()
+        # frame_id_display = "Frame id: " + str(self.frame_id)
+        frame_id_label.setText("Frame id")
+        frame_id_label.adjustSize()
+
         frame_id = QLabel()
-        frame_id_display = "Frame id: " + str(self.frame_id)
-        frame_id.setText(frame_id_display)
+        frame_id.setText(str(self.frame_id))
+        frame_id.adjustSize()
+
+        cell_label_label = QLabel()
+        # cell_label_display = "Cell label: " + str(self.ins_label)
+        cell_label_label.setText("Label")
+        cell_label_label.adjustSize()
 
         cell_label = QLabel()
-        cell_label_display = "Cell label: " + str(self.ins_label)
-        cell_label.setText(cell_label_display)
+        cell_label.setText(str(self.ins_label))
+        cell_label.adjustSize()
 
+        cell_name_label = QLabel()
+        cell_name_label.setText("Name")
         cell_name = QLabel()
-        cell_name.setText("Cell name: ")
-        cell_name_editor = QLineEdit()
-        cell_name_editor.setText(str(self.ins_name))
+        cell_name.setText(str(self.ins_name))
+        cell_name.adjustSize()
         # cell_name_editor.setFixedSize(40, 20)
 
-        cell_color = QLabel()
-        cell_color.setText("Cell color: ")
+        cell_color_label = QLabel()
+        cell_color_label.setText("Color")
         stylesheet = "background: rgb(" + str(self.ins_color[0]) + ", " + str(self.ins_color[1]) + ", " \
                      + str(self.ins_color[2]) + ", 255);"
         cell_color_show = QLabel()
         cell_color_show.setStyleSheet(stylesheet)
         cell_color_show.setFixedSize(40, 20)
+        cell_color_show.adjustSize()
+
+        cell_bbox_label = QLabel()
+        # cell_bbox_display = "Cell bbox: " + str(self.ins_bbox)
+        cell_bbox_label.setText("Box")
+        cell_bbox_label.adjustSize()
 
         cell_bbox = QLabel()
-        cell_bbox_display = "Cell bbox: " + str(self.ins_bbox)
-        cell_bbox.setText(cell_bbox_display)
+        cell_bbox.setText(str(self.ins_bbox))
+        cell_bbox.adjustSize()
+
+        cell_centroid_label = QLabel()
+        # cell_centroid_display = "Cell centroid: " + str(self.ins_centroid)
+        cell_centroid_label.setText("Centroid")
+        cell_centroid_label.adjustSize()
 
         cell_centroid = QLabel()
-        cell_centroid_display = "Cell centroid: " + str(self.ins_centroid)
-        cell_centroid.setText(cell_centroid_display)
+        cell_centroid.setText("("+str(self.ins_centroid[0])+", "+str(self.ins_centroid[1])+")")
+        cell_centroid.adjustSize()
+
+        cell_area_label = QLabel()
+        # cell_area_display = "Cell area: " + str(self.ins_area)
+        cell_area_label.setText("Area")
+        cell_area_label.adjustSize()
 
         cell_area = QLabel()
-        cell_area_display = "Cell area: " + str(self.ins_area)
-        cell_area.setText(cell_area_display)
+        cell_area.setText(str(self.ins_area)+"  (pixel)")
+        cell_area.adjustSize()
+
+        cell_intensity_label = QLabel()
+        # cell_intensity_display = "Cell intensity: " + str(self.ins_intensity)
+        cell_intensity_label.setText("Intensity")
+        cell_intensity_label.adjustSize()
 
         cell_intensity = QLabel()
-        cell_intensity_display = "Cell intensity: " + str(self.ins_intensity)
-        cell_intensity.setText(cell_intensity_display)
+        cell_intensity.setText(format_out(self.ins_intensity) + "  (A.U.)")
+        cell_intensity.adjustSize()
 
-        labels_layout = QVBoxLayout()
-        labels_layout.addWidget(frame_id)
-        labels_layout.addWidget(cell_label)
-        name_layout = QHBoxLayout()
-        name_layout.addWidget(cell_name)
-        name_layout.addWidget(cell_name_editor)
-        name_layout.setAlignment(Qt.AlignLeft)
-        labels_layout.addLayout(name_layout)
-        color_layout = QHBoxLayout()
-        color_layout.addWidget(cell_color)
-        color_layout.addWidget(cell_color_show)
-        color_layout.setAlignment(Qt.AlignLeft)
-        labels_layout.addLayout(color_layout)
-        labels_layout.addWidget(cell_bbox)
-        labels_layout.addWidget(cell_centroid)
-        labels_layout.addWidget(cell_area)
-        labels_layout.addWidget(cell_intensity)
+        attributes_layout = QGridLayout()
+        attributes_layout.addWidget(frame_id_label, 0, 0, 1, 3)
+        attributes_layout.addWidget(colon_label, 0, 2, 1, 1)
+        attributes_layout.addWidget(frame_id, 0, 3, 1, 3)
+
+        attributes_layout.addWidget(cell_label_label, 1, 0, 1, 3)
+        attributes_layout.addWidget(colon_label1, 1, 2, 1, 1)
+        attributes_layout.addWidget(cell_label, 1, 3, 1, 3)
+
+        attributes_layout.addWidget(cell_name_label, 2, 0, 1, 3)
+        attributes_layout.addWidget(colon_label2, 2, 2, 1, 1)
+        attributes_layout.addWidget(cell_name, 2, 3, 1, 3)
+
+        attributes_layout.addWidget(cell_color_label, 3, 0, 1, 3)
+        attributes_layout.addWidget(colon_label3, 3, 2, 1, 1)
+        attributes_layout.addWidget(cell_color_show, 3, 3, 1, 3)
+
+        attributes_layout.addWidget(cell_bbox_label, 4, 0, 1, 3)
+        attributes_layout.addWidget(colon_label4, 4, 2, 1, 1)
+        attributes_layout.addWidget(cell_bbox, 4, 3, 1, 3)
+
+        attributes_layout.addWidget(cell_centroid_label, 5, 0, 1, 3)
+        attributes_layout.addWidget(colon_label5, 5, 2, 1, 1)
+        attributes_layout.addWidget(cell_centroid, 5, 3, 1, 3)
+
+        attributes_layout.addWidget(cell_area_label, 6, 0, 1, 3)
+        attributes_layout.addWidget(colon_label6, 6, 2, 1, 1)
+        attributes_layout.addWidget(cell_area, 6, 3, 1, 3)
+
+        attributes_layout.addWidget(cell_intensity_label, 7, 0, 1, 3)
+        attributes_layout.addWidget(colon_label7, 7, 2, 1, 1)
+        attributes_layout.addWidget(cell_intensity, 7, 3, 1, 3)
 
         main_layout = QHBoxLayout()
         main_layout.addWidget(cell_show)
-        main_layout.addLayout(labels_layout)
+        main_layout.addLayout(attributes_layout)
+        main_layout.setSpacing(15)
 
-        self.setFixedSize(450, 220)
+        self.setFixedSize(450, 250)
         self.setWindowIcon(QIcon(get_icon("cell.png")))
         self.setWindowTitle("Cell attribute")
         self.setStyleSheet(main_stylesheet)
@@ -425,8 +499,11 @@ class CellAttributeWindow(QWidget):
         y = coords[0]-[self.ins_bbox[1]]*length
 
         sub_img = np.zeros((self.ins_bbox[3]-self.ins_bbox[1]+1, self.ins_bbox[2]-self.ins_bbox[0]+1, 3))
-        sub_img[y, x, 0] = self.ins_color[2]
+        sub_img[y, x, 0] = self.ins_color[0]
         sub_img[y, x, 1] = self.ins_color[1]
-        sub_img[y, x, 2] = self.ins_color[0]
+        sub_img[y, x, 2] = self.ins_color[2]
 
-        cv2.imwrite('./semi_tracker/interface/icon/cell_show.png', sub_img)
+        sub_img1 = Image.fromarray(np.uint8(sub_img))
+        img_pix = sub_img1.toqpixmap()
+
+        return img_pix

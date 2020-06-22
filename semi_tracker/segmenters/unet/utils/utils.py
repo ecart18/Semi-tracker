@@ -1,8 +1,9 @@
+# -*- coding: UTF-8 -*-
+
 from __future__ import absolute_import
 
 import os
 import json
-import csv
 import errno
 import torch
 import shutil
@@ -73,38 +74,6 @@ def copy_state_dict(state_dict, model, strip=None):
     return model
 
 
-""" 
-    Export data to csv format. Creates new file if doesn't exist,
-    otherwise update it.
-    Args:
-        header (list): headers of the column
-        value (list): values of correspoding column
-        folder: folder path
-        file_name: file name with path
-"""
-def export_history(header, value, folder, file_name):
-    # If folder does not exists make folder
-    if not os.path.exists(folder):
-        os.makedirs(folder)
-
-    file_path = os.path.join(folder, file_name)
-    file_existence = os.path.isfile(file_path)
-
-    # If there is no file make file
-    if file_existence == False:
-        file = open(file_path, 'w', newline='')
-        writer = csv.writer(file)
-        writer.writerow(header)
-        writer.writerow(value)
-    # If there is file overwrite
-    else:
-        file = open(file_path, 'a', newline='')
-        writer = csv.writer(file)
-        writer.writerow(value)
-    # Close file when it is done with writing
-    file.close()
-
-
 def to_numpy(tensor):
     if torch.is_tensor(tensor):
         return tensor.cpu().numpy()
@@ -122,26 +91,7 @@ def to_torch(ndarray):
                          .format(type(ndarray)))
     return ndarray
 
-'''
-def load_param(model, path='param.pth', device='cpu'):
-    checkpoint = torch.load(path,  map_location=torch.device(device))
-    if 'state_dict' in checkpoint.keys():  # from training result
-        state_dict = checkpoint['state_dict']
-    else:
-        state_dict = checkpoint
-    from collections import OrderedDict
-    new_state_dict = OrderedDict()
-    for k, v in state_dict.items():
-        if 'module' in k:  # train with nn.DataParallel
-            name = k[7:]  # remove `module.`
-            if name in model.state_dict().keys():
-                new_state_dict[name] = v
-        else:
-            if k in model.state_dict().keys():
-              new_state_dict[k] = v
-    model.load_state_dict(new_state_dict)
-    return model
-'''
+
 
 def check_keys(model, pretrained_state_dict):
     ckpt_keys = set(pretrained_state_dict.keys())

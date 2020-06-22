@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 import pyqtgraph as pg
-from ..utils import get_icon
+from ..utils import get_icon, slide_stylesheet
 
 
 class VisualizeWindow(QWidget):
@@ -13,26 +13,7 @@ class VisualizeWindow(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.sld_stylesheet = """
-            QSlider:horizontal 
-            {
-                min-height: 20px;
-            }
-            QSlider::groove:horizontal {
-                height: 1px;
-                background: white; 
-            }
-            QSlider::handle:horizontal {
-                width: 12px;
-                margin-top: -6px;
-                margin-bottom: -6px;
-                border-radius: 6px;
-                background: qradialgradient(spread:reflect, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.7 rgba(210, 210, 210, 255), stop:0.7 rgba(210, 210, 210, 255));
-            }
-            QSlider::handle:horizontal:hover {
-                background: qradialgradient(spread:reflect, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.7 rgba(255, 255, 255, 255), stop:0.7 rgba(255, 255, 255, 255));
-            }
-        """
+        self.sld_stylesheet = slide_stylesheet
 
         self.visualize_window = QWidget()
         self.visualize_window.setStyleSheet("background: #212121;")
@@ -40,11 +21,13 @@ class VisualizeWindow(QWidget):
         self.setup_ui()
 
     def setup_ui(self):
-        main_frame = pg.ImageView()
+        main_frame = pg.ImageView(view=pg.PlotItem())
         main_frame.ui.roiBtn.hide()
         main_frame.ui.menuBtn.hide()
         main_frame.ui.histogram.hide()
         main_frame.view.mouseClickEvent = self.my_mouse_click_event
+        colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
+        main_frame.setColorMap(colormap)
 
         # pg.setConfigOption()
 

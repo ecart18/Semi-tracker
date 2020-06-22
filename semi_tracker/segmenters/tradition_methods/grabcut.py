@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 
 
-class GradCut:
+class GrabCut:
     def __init__(self, iteration=3):
         self.iteration = iteration
         self.label_img = None
@@ -20,7 +20,7 @@ class GradCut:
         ymax = min(rect[3], height)
         return (xmin, ymin, ymax - ymin, xmax - xmin)
 
-    def _single_seg(self, img, rect, obj_idx):
+    def __call__(self, img, rect, obj_idx):
         img_sz = img.shape[0:2]
         rect = self.bbox_verify(rect, img_sz)
         mask = np.zeros(img.shape[:2], np.uint8)
@@ -31,7 +31,8 @@ class GradCut:
         binary_mask = np.where((mask == 2) | (mask == 0), 0, obj_idx).astype('uint8')
         binary_mask = np.expand_dims(binary_mask, axis=2)  # 0 and obj_idx
         return binary_mask
-    
+
+    '''
     def __call__(self, img, rect):
         if not self.label_img:
             obj_idx = 1
@@ -40,6 +41,7 @@ class GradCut:
             obj_idx = np.max(self.label_img) + 1
             self.label_img += self._single_seg(img, rect, obj_idx)
         return self.label_img 
+    '''
 
 
 if __name__ == '__main__':
@@ -55,7 +57,7 @@ if __name__ == '__main__':
         return img.astype(np.uint8), visual_img.astype(np.uint8)
 
     img = cv2.imread('../../../debug_scripts/test_imgs/min_max.jpg')
-    seg = GradCut()
+    seg = GrabCut()
     label_img = seg(img, rect=[85,85,85+55,85+55], obj_idx=1)
     img, visual_img = visual(img, label_img)
     cv2.imwrite('./img.png', img)

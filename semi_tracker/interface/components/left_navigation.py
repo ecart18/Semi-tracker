@@ -48,8 +48,9 @@ class LeftNavigation(QWidget):
         self.left_navigation.setFrameShape(QListWidget.NoFrame)
         self.left_navigation.setAcceptDrops(False)
 
-        icon_list = [get_icon(icon) for icon in ["project.png", "pre_progress.png", "seg.png", "view.png"]]
-        tool_tips = ["Explorer", "Preprocess", "Algorithm tools", "Annotation tools"]
+        icon_list = [get_icon(icon) for icon in ["project_management.png", "algorithm.png", "annotation.png",
+                                                 "network_train.png"]]
+        tool_tips = ["Explorer", "Algorithm tools", "Annotation tools", "Training"]
 
         for i in range(4):
             item = QListWidgetItem(self.left_navigation)
@@ -66,7 +67,11 @@ class LeftNavigation(QWidget):
             navigation_icon_label.setAlignment(Qt.AlignCenter)
 
             navigation_icon_label.setFixedSize(50, 50)
+            navigation_icon_image = QImage(icon_list[i])
+            # navigation_icon_image.scaled(QSize(35, 35), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            # navigation_icon_pix = QPixmap.fromImage(navigation_icon_image)
             navigation_icon_pix = QPixmap(icon_list[i])
+            navigation_icon_pix = navigation_icon_pix.scaled(QSize(30, 30), Qt.KeepAspectRatio, Qt.SmoothTransformation)
             navigation_icon_label.setPixmap(navigation_icon_pix)
             navigation_icon_layout.addWidget(navigation_icon_label)
             navigation_icon_widget.setLayout(navigation_icon_layout)

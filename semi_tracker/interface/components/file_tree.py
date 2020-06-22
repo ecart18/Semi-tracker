@@ -22,44 +22,76 @@ class FileTree(QWidget):
     def setup_ui(self):
         if self.dir_path is None:
             create_button = QPushButton()
-            create_button.setText("Create")
-            create_button.setStyleSheet("color: rgb(30, 144, 255, 255);"
-                                        "font-size: 20px;"
+            create_button.setText("Open folder")
+            create_button.setStyleSheet("background: #454545;"
+                                        "color: rgb(245, 245, 245, 255);"
+                                        "font-size: 12px;"
                                         "font-family: Verdana;")
-
-            or_label = QLabel()
-            or_label.setText("/")
-            or_label.setStyleSheet("color: rgb(245, 245, 245, 255);"
-                                   "font-size: 15px;"
-                                   "font-family: Verdana;")
-
-            open_button = QPushButton()
-            open_button.setText("Open")
-            open_button.setStyleSheet("color: rgb(30, 144, 255, 255);"
-                                      "font-size: 20px;"
-                                      "font-family: Verdana;")
+            create_button.setContentsMargins(0, 0, 0, 0)
+            create_button.setFixedHeight(25)
 
             label = QLabel()
-            label.setText("a new project.")
+            label.setText("You have not yet set project folder.")
             # label.setAlignment(QtCore.Qt.AlignRight)
             label.setStyleSheet("color: rgb(245, 245, 245, 255);"
-                                "font-size: 15px;"
+                                "font-size: 12px;"
                                 "font-family: Verdana;")
+            label.setContentsMargins(0, 0, 0, 0)
 
-            layout1 = QHBoxLayout()
-            layout1.setAlignment(QtCore.Qt.AlignLeft)
+            label1 = QLabel()
+            label1.setText("Otherwise the default folder is:")
+            # label.setAlignment(QtCore.Qt.AlignRight)
+            label1.setStyleSheet("color: rgb(245, 245, 245, 255);"
+                                "font-size: 12px;"
+                                "font-family: Verdana;")
+            label1.setContentsMargins(0, 0, 0, 0)
+
+            default_button = QPushButton()
+            default_button.setText("Use .output/untitled")
+            default_button.setStyleSheet("background: #454545;"
+                                        "color: rgb(245, 245, 245, 255);"
+                                        "font-size: 12px;"
+                                        "font-family: Verdana;")
+            default_button.setContentsMargins(0, 0, 0, 0)
+            default_button.setFixedHeight(25)
+
+            load_button = QPushButton()
+            load_button.setText("Load images")
+            load_button.setStyleSheet("background: #454545;"
+                                        "color: rgb(245, 245, 245, 255);"
+                                        "font-size: 12px;"
+                                        "font-family: Verdana;")
+            load_button.setContentsMargins(0, 0, 0, 0)
+            load_button.setFixedHeight(25)
+
+            label2 = QLabel()
+            label2.setText("Load images or set image files folder.")
+            # label.setAlignment(QtCore.Qt.AlignRight)
+            label2.setStyleSheet("color: rgb(245, 245, 245, 255);"
+                                "font-size: 12px;"
+                                "font-family: Verdana;")
+            label2.setContentsMargins(0, 0, 0, 0)
+
+            layout1 = QVBoxLayout()
+            layout1.addWidget(label2)
+            layout1.addWidget(load_button)
+            layout1.addWidget(label)
             layout1.addWidget(create_button)
+            layout1.addWidget(label1)
+            layout1.addWidget(default_button)
+            layout1.setSpacing(10)
             # layout1.addWidget(or_label)
             # layout1.addWidget(open_button)
 
             layout2 = QVBoxLayout()
             layout2.addLayout(layout1)
-            layout2.addWidget(label)
+            # layout2.addWidget(label)
             layout2.setAlignment(QtCore.Qt.AlignTop)
 
             self.setLayout(layout2)
             self.create_button = create_button
-            self.open_button = open_button
+            self.default_button = default_button
+            self.load_button = load_button
 
         else:
             # 格式检查
