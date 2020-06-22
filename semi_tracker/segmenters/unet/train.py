@@ -18,64 +18,70 @@ from .dataset import build_dataloader
 from .utils import Logger, load_checkpoint, save_checkpoint, export_history
 
 
-def train(train_parameters):
-    if train_parameters.gpu_num:
-        os.environ['CUDA_VISIBLE_DEVICES'] = ','.join([str(x) for x in range(train_parameters.gpu_num)])
-    random.seed(train_parameters.train_seed)
-    np.random.seed(train_parameters.train_seed)
-    torch.manual_seed(train_parameters.train_seed)
-    cudnn.benchmark = True
+class TrainerWrapper(object):
+    def __init__(self, train_parameters):
+        self.train_parameters = train_parameters
+        self._init()
+    
+    def _init(self):
+        if self.train_parameters.gpu_num:
+            os.environ['CUDA_VISIBLE_DEVICES'] = ','.join([str(x) for x in range(self.train_parameters.gpu_num)])
+        random.seed(self.train_parameters.train_seed)
+        np.random.seed(self.train_parameters.train_seed)
+        torch.manual_seed(self.train_parameters.train_seed)
+        cudnn.benchmark = True
 
-    # Redirect print to both console and log file
-    train_log = Logger(osp.join(train_parameters.log_root, 'train.log'))
+        # Redirect print to both console and log file
+        self.train_log = Logger(osp.join(self.train_parameters.log_root, 'train.log'))
+        self.train_loader, self.val_loader = build_dataloader(name='cells', **self.train_parameters.dataloader_params)
+        self.model = get_backbone(name='unet').to(self.train_parameters.device)
+        if self.train_parameters.gpu_num > 1:
+            self.model = nn.DataParallel(self.model).to(self.train_parameters.device)
+        else:
+            self.model = self.model.to(self.train_parameters.device)
 
-    train_loader, val_loader = build_dataloader(name='cells', **train_parameters.dataloader_params)
-    model = get_backbone(name='unet').to(train_parameters.device)
-    if train_parameters.gpu_num > 1:
-        model = nn.DataParallel(model).to(train_parameters.device)
-    else:
-        model = model.to(train_parameters.device)
+        self.criterion = build_loss(name=self.train_parameters.loss_type).to(self.train_parameters.device)
 
-    criterion = build_loss(name=train_parameters.loss_type).to(train_parameters.device)
+        self.optimizer = torch.optim.Adam(self.model.parameters(), **self.train_parameters.optimizer_params)
 
-    optimizer = torch.optim.Adam(model.parameters(), **train_parameters.optimizer_params)
+        # Load from checkpoint
+        self.start_epoch = 0
+        self.best_loss = 1e8
+    
+        # Trainer
+        self.trainer = get_trainer(name='unet_trainer', model=self.model, criterion=self.criterion)
 
-    # Load from checkpoint
-    start_epoch = 0
-    best_loss = 1e8
-    header = ['epoch', 'train_loss', 'val_loss']
-
-    # Trainer
-    trainer = get_trainer(name='unet_trainer', model=model, criterion=criterion)
-
-    if train_parameters.resume:
-        try:
-            print("load previous checkpoint file from {} \n".format(train_parameters.resume), file=train_log)
-            checkpoint = load_checkpoint(train_parameters.resume)
-            model.load_state_dict(checkpoint['state_dict'])
-            start_epoch = checkpoint['epoch']
-            best_loss = checkpoint['best_loss']
-            print("=> Start epoch {}  best_loss {:.3%}".format(start_epoch, best_loss), file=train_log)
-        except:
-            raise ValueError('Load previous checkpoint file {} failed.".format(train_parameters.resume)')
+        if self.train_parameters.resume:
+            try:
+                print("load previous checkpoint file from {} \n".format(self.train_parameters.resume), file=self.train_log)
+                checkpoint = load_checkpoint(self.train_parameters.resume)
+                self.model.load_state_dict(checkpoint['state_dict'])
+                self.best_loss = checkpoint['best_loss']
+                self.start_epoch = checkpoint['epoch']
+                print("=> Start epoch {}  best_loss {:.3%}".format(self.start_epoch, self.best_loss), file=self.train_log)
+            except:
+                raise ValueError('Load previous checkpoint file {} failed.".format(train_parameters.resume)')
 
     # Start training
-    for epoch in range(start_epoch, train_parameters.epochs):
+    def train_epoch(self, epoch):
 
-        train_loss = trainer.train(epoch, train_loader, optimizer, device=train_parameters.device, log=train_log)
-        val_loss = trainer.eval(epoch, val_loader, device=train_parameters.device, log=train_log)
+        train_loss = self.trainer.train(epoch, self.train_loader, self.optimizer, 
+                                            device=self.train_parameters.device, log=self.train_log)
+        val_loss = self.trainer.eval(epoch, self.val_loader, 
+                                    device=self.train_parameters.device, log=self.train_log)
 
         values = [epoch + 1, train_loss, val_loss]
-        export_history(header=header, value=values, file_path=osp.join(train_parameters.log_root, "loss_per_epoch.csv"))
+        header = ['epoch', 'train_loss', 'val_loss']
+        export_history(header=header, value=values, file_path=osp.join(self.train_parameters.log_root, "loss_per_epoch.csv"))
 
-        is_best = val_loss < best_loss
-        best_loss = min(val_loss, best_loss)
+        is_best = val_loss < self.best_loss
+        self.best_loss = min(val_loss, self.best_loss)
         save_checkpoint({
-            'state_dict': model.state_dict(),
+            'state_dict': self.model.state_dict(),
             'epoch': epoch + 1,
-            'best_loss': best_loss,
-        }, is_best, fpath=osp.join(train_parameters.log_root, 'checkpoint.pth.tar'))
+            'best_loss': self.best_loss,
+        }, is_best, fpath=osp.join(self.train_parameters.log_root, 'checkpoint.pth.tar'))
 
         print('\n * Finished epoch {:3d}  train_loss: {:.3f}  val_loss: {:.3f}  best: {:.3f}{}\n'.
-              format(epoch, train_loss, val_loss, best_loss, ' *' if is_best else ''), file=train_log)
+              format(epoch, train_loss, val_loss, self.best_loss, ' *' if is_best else ''), file=self.train_log)
 

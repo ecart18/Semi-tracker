@@ -60,7 +60,7 @@ SemiTracker is a highly integrated graph user interfaces software for the cell s
     
     ```
     SemiTrackerEnv
-        semi-tracker
+        semitracker
             |-------main.py
             |
             |-------semi_tracker
@@ -71,6 +71,7 @@ SemiTracker is a highly integrated graph user interfaces software for the cell s
             |-------output
             |-------log
             |...
+        |...
     ```
 
 4. After the extraction, download all dependency with one commend.

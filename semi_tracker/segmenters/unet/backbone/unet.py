@@ -79,7 +79,7 @@ class Up(nn.Module):
         diffY = input2.size()[3] - input1.size()[3]
         input1 = F.pad(input1, [diffX // 2, diffX - diffX // 2,
                                 diffY // 2, diffY - diffY // 2])
-        input1 = F.upsample(input1, size=input2.size()[2:],
+        input1 = F.interpolate(input1, size=input2.size()[2:],
                             mode='bilinear', align_corners=True)
         output = torch.cat([input2, input1], dim=1)
         output = self.conv(output)
