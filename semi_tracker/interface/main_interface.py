@@ -39,9 +39,7 @@ from ..writer import get_writer
 from .utils import get_icon, slide_stylesheet, general_qss
 from ..utils import logger, Logger
 from semi_tracker import PACKAGEPATH
-from semi_tracker.segmenters.unet import TrainParameters, train
-
-# sys.stdout = Logger(os.path.join(PACKAGEPATH, '../log/python.log'))
+from semi_tracker.segmenters.unet import TrainParameters, TrainerWrapper
 
 
 class MainWindow(QMainWindow):
@@ -332,6 +330,7 @@ class MainWindow(QMainWindow):
                                            label_img_root=self.label_img_root,
                                            log_root=self.log_root,
                                            validation_ratio=self.validation_ratio,
+                                           scale_img=self.scale_img,
                                            weighted_type=self.weighted_type,
                                            aug_list=self.aug_list,
                                            batch_size=self.batch_size,
@@ -343,7 +342,11 @@ class MainWindow(QMainWindow):
                                            weight_decay=self.weight_decay,
                                            loss_type=self.loss_type)
 
-        train(train_parameters)
+        train_wrapper = TrainerWrapper(train_parameters)
+        start_epoch = train_wrapper.start_epoch
+        for epoch in range(start_epoch, train_parameters.epochs):
+            train_wrapper.train_epoch(epoch)
+        
 
     def load_model_button_fnc(self):
         model_path = QFileDialog.getOpenFileName(None, "Select a model file..",
