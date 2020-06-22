@@ -17,22 +17,14 @@ from ..utils import gray_to_bgr
 
 class Unet:
     def __init__(self, model_path, threshold=0.5, device='cpu'):
-        if device == 'gpu':
-            if not torch.cuda.is_available():
-                device == 'cpu'
-        self._device = device
-        self._model_path = model_path
-        self._threshold = 0.5
-        self._model = self._load_model(device=self._device)
-        self._mean = [0.26572]
-        self._std = [0.20387]
-
-        # Transforms
-        if self._mean is not None:
-            normalizer = Normalize(mean=self._mean, std=self._std)
+        if torch.cuda.is_available() and device=='gpu':
+            self._device = 'cuda'
         else:
-            normalizer = None
-        self.train_transformer = Compose([ToTensor(), normalizer])
+            self._device = 'cpu'
+        self._model_path = model_path
+        self._threshold = threshold
+        self._model = self._load_model(device=self._device)
+        self.train_transformer = Compose([ToTensor()])
 
     def _load_model(self, device):
         # Create the model

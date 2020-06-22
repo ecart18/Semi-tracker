@@ -37,9 +37,11 @@ from ..segmenters import get_segmenter
 from ..trackers import get_tracker
 from ..writer import get_writer
 from .utils import get_icon, slide_stylesheet, general_qss
-from ..utils import logger
-from semitracker.semi_tracker import PACKAGEPATH
-from semitracker.semi_tracker.segmenters.unet import TrainParameters, train
+from ..utils import logger, Logger
+from semi_tracker import PACKAGEPATH
+from semi_tracker.segmenters.unet import TrainParameters, train
+
+# sys.stdout = Logger(os.path.join(PACKAGEPATH, '../log/python.log'))
 
 
 class MainWindow(QMainWindow):

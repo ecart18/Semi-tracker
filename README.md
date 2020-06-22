@@ -1,6 +1,6 @@
 # Semi-Tracker, a User-friendly Semi-automatic Software for Multiple Cell Segmentation and Tracking
 
-By [Tao Hu] (https://gitlab.com/ecart18) & [Shixiong Xu] (https://gitlab.com/xsx1001).
+By [Tao Hu](https://gitlab.com/ecart18) & [Shixiong Xu](https://gitlab.com/xsx1001).
 
 The code for the official implementation of **Semi-tracker**. 
 
@@ -23,30 +23,68 @@ SemiTracker is a highly integrated graph user interfaces software for the cell s
 - PyTorch 1.4 or higher.
 - CUDA 9.0 or higher if you need train deep learning model.
 
-0. Download or clone the source codes with git. Extract files and put it in the directory you defined. The directory of SemiTracker should have the following structure:
+0. Install Python ref to [PYPT]()
+
+1. Install SemiTracker in virtualenv to keep your environment clean:
+
+    #### on macOS/Linux
     ```
-    semi-tracker
-        |-------main.py
-        |
-        |-------semi_tracker
-                |...
-                |...
-        |-------datasets
-                |...
-        |-------output
-        |-------log
-        |...
+    pip install virtualenv
+    virtualenv --python=python3 SemiTrackerEnv
+    cd SemiTrackerEnv
+    source ./bin/activate
+    ```
+    Shutdown virtual environment with
+    ```
+    deactivate
     ```
 
-1. After the download, download all dependency with one commend.
+    #### on Windows
     ```
+    pip install virtualenv
+    virtualenv --python=python3 SemiTrackerEnv 
+    cd SemiTrackerEnv
+    .\Scripts\activate.bat
+    ```
+    Shutdown virtual environment with
+    ```
+    .\Scripts\deactivate.bat
+    ```
+
+2. Download or clone the source codes with git. 
+    ```
+    git clone https://gitlab.com/ecart18/semitracker.git
+    ```
+
+3. Extract files and put it in the virtual environment directory you defined. The directory of SemiTracker should have the following structure:
+    
+    ```
+    SemiTrackerEnv
+        semi-tracker
+            |-------main.py
+            |
+            |-------semi_tracker
+                    |...
+                    |...
+            |-------datasets
+                    |...
+            |-------output
+            |-------log
+            |...
+    ```
+
+4. After the extraction, download all dependency with one commend.
+    ```
+    cd semitracker
     pip install -r requirements.txt
     ```
-2. Run SemiTracker with python and enjoy it. 
+
+5. Run SemiTracker with python and enjoy it. 
     ```
     python main.py
     ```
     
+
 ## Bibtex<a name="bibtex">
 Please consider citing our paper in your publications if the project helps your research. BibTeX reference is as follows.
 

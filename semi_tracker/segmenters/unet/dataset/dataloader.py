@@ -13,10 +13,11 @@ from .weighted_label import make_balance_weight_map, make_weight_map_instance
 
 
 class Preprocessor(Augmentation):
-    def __init__(self, dataset, mode, source_img_root, label_img_root, weighted_type, aug_list):
+    def __init__(self, dataset, mode, source_img_root, label_img_root, scale_img, weighted_type, aug_list):
         super(Preprocessor, self).__init__(aug_list=aug_list)
         self.dataset = dataset
         self.mode = mode
+        self.scale_img = scale_img
         self.source_img_root = source_img_root
         self.label_img_root = label_img_root
         self.weighted_type = weighted_type
@@ -40,15 +41,18 @@ class Preprocessor(Augmentation):
                 return img
             else:
                 raise TypeError('The Depth of image large than 3.')
-
-        extentions = image_path.split('.')[-1].lower()
-        if extentions in ['png', 'jpg', 'jpeg', 'tif']:
-            img = cv2.imread(image_path, -1)
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            img = img_standardization(img)
-            return img
-        else:
-            raise TypeError('The image type of {} is not supported in training yet.'.format(extentions))
+        
+        try:
+            extentions = image_path.split('.')[-1].lower()
+            if extentions in ['png', 'jpg', 'jpeg', 'tif']:
+                img = cv2.imread(image_path, -1)
+                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                img = img_standardization(img)
+                return img
+            else:
+                raise TypeError('The image type of {} is not supported in training yet.'.format(extentions))
+        except:
+            raise ValueError('Load image {} failed.'.format(image_path))
 
 
     def _label_reader(self, label_path):
@@ -61,13 +65,29 @@ class Preprocessor(Augmentation):
             else:
                 raise TypeError('The label image shape dimension is not equal to 2 or 3.')
 
-        extentions = label_path.split('.')[-1].lower()
-        if extentions in ['png', 'tif']:
-            label = cv2.imread(label_path, -1)
-            label = label_standardization(label)
-            return label
-        else:
-            raise TypeError('The label image type of {} is not supported in training yet.'.format(extentions))
+        try:
+            extentions = label_path.split('.')[-1].lower()
+            if extentions in ['png', 'tif']:
+                label = cv2.imread(label_path, -1)
+                label = label_standardization(label)
+                return label
+            else:
+                raise TypeError('The label image type of {} is not supported in training yet.'.format(extentions))
+        except:
+            raise ValueError('Load label image {} failed.'.format(label_path))
+
+
+    def _scale_img(self, img, label, scale_img):
+        try:
+            assert img.shape[0:2] == label.shape[0:2]
+        except:
+            raise ValueError('The size of source image is not equal to label image.')
+        height, width = img.shape[0:2]
+        size = (int(height*scale_img), int(width*scale_img))
+        img = cv2.resize(img, size, interpolation=cv2.INTER_NEAREST)
+        label = cv2.resize(label, size, interpolation=cv2.INTER_NEAREST)
+        return img, label
+
 
     def _get_single_item(self, index):
         image_path, label_path = self.dataset[index]
@@ -77,6 +97,9 @@ class Preprocessor(Augmentation):
 
         image = self._img_reader(image_path)
         label = self._label_reader(label_path)
+
+        image, label = self._scale_img(image, label, self.scale_img)
+        image, label = self.augment(image, label)
 
         weight = 0
         # enlarge edges and added weight map
@@ -105,7 +128,7 @@ class Preprocessor(Augmentation):
                 "weight": weight}
 
 
-def build_dataloader(name, source_img_root, label_img_root, log_root, validation_ratio, 
+def build_dataloader(name, source_img_root, label_img_root, log_root, validation_ratio, scale_img,
                         weighted_type, aug_list, batch_size, workers, **kwargs):
 
     dataset = create(name=name, source_img_root=source_img_root, label_img_root=label_img_root, 
@@ -118,6 +141,7 @@ def build_dataloader(name, source_img_root, label_img_root, log_root, validation
         Preprocessor(dataset=train_set, mode='train', 
                         source_img_root=source_img_root,
                         label_img_root=label_img_root,
+                        scale_img=scale_img,
                         weighted_type=weighted_type,
                         aug_list=aug_list),
         batch_size=batch_size, 
@@ -130,6 +154,7 @@ def build_dataloader(name, source_img_root, label_img_root, log_root, validation
         Preprocessor(dataset=val_set, mode='val', 
                         source_img_root=source_img_root,
                         label_img_root=label_img_root,
+                        scale_img=scale_img,
                         weighted_type=weighted_type,
                         aug_list=None),
         batch_size=batch_size, 

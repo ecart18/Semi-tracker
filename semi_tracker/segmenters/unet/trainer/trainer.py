@@ -13,7 +13,7 @@ class BaseTrainer(object):
         self.model = model
         self.criterion = criterion
 
-    def train(self, epoch, data_loader, optimizer, device, print_freq=1):
+    def train(self, epoch, data_loader, optimizer, device, log, print_freq=1):
 
         self.model.train()
         batch_time = AverageMeter()
@@ -44,10 +44,10 @@ class BaseTrainer(object):
                       .format(epoch, i + 1, len(data_loader),
                               batch_time.val, batch_time.avg,
                               data_time.val, data_time.avg,
-                              losses.val, losses.avg))
+                              losses.val, losses.avg), file=log)
         return losses.avg
 
-    def eval(self, epoch, data_loader, device, print_freq=1):
+    def eval(self, epoch, data_loader, device, log, print_freq=1):
 
         self.model.eval()
 
@@ -76,7 +76,7 @@ class BaseTrainer(object):
                           .format(epoch, i + 1, len(data_loader),
                                   batch_time.val, batch_time.avg,
                                   data_time.val, data_time.avg,
-                                  losses.val, losses.avg))
+                                  losses.val, losses.avg), file=log)
 
         return losses.avg
 
