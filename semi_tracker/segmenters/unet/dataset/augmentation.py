@@ -75,7 +75,7 @@ class Compose:
             for tf in self.transform:
                 if tf:
                     img, label = tf(img, label)
-                    assert img.size == label.size
+                    assert img.shape[0:2] == label.shape[0:2]
         if not isinstance(img, np.ndarray):
             img, label = np.array(img), np.array(label, dtype=np.uint8)
         return img, label

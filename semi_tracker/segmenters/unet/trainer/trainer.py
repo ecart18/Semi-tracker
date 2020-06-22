@@ -90,7 +90,7 @@ class UnetTrainer(BaseTrainer):
     def _parse_data(self, inputs, device):
         data, label, weight = inputs["image"], inputs["label"], inputs["weight"]
         data, label = data.to(device), label.to(device)
-        if weight[0]:
+        if len(weight.shape) > 3:
             weight = weight.to(device)
         return {"data": data,
                 "label": label,
