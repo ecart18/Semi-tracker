@@ -48,10 +48,11 @@ class LeftNavigation(QWidget):
         self.left_navigation.setFrameShape(QListWidget.NoFrame)
         self.left_navigation.setAcceptDrops(False)
 
-        icon_list = [get_icon(icon) for icon in ["project_management.png", "algorithm.png", "annotation.png"]]
-        tool_tips = ["Explorer", "Algorithm tools", "Annotation tools"]
+        icon_list = [get_icon(icon) for icon in ["project_management.png", "algorithm.png", "annotation.png",
+                                                 "network_train.png"]]
+        tool_tips = ["Explorer", "Algorithm tools", "Annotation tools", "Training"]
 
-        for i in range(3):
+        for i in range(4):
             item = QListWidgetItem(self.left_navigation)
             item.setSizeHint(QSize(50, 50))
             item.setToolTip(tool_tips[i])

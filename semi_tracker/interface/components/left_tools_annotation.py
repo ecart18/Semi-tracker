@@ -56,6 +56,11 @@ class AnnotationTools(QWidget):
         set_path_label.setText("Set the path to save results.")
         set_path_label.setContentsMargins(0, 0, 0, 0)
 
+        save_label = QLabel()
+        save_label.setText("Not saved.")
+        save_label.setContentsMargins(0, 0, 0, 0)
+        save_label.setAlignment(Qt.AlignRight)
+
         set_layout.addWidget(set_path_label)
         set_layout.addWidget(set_button)
         set_layout.setSpacing(10)
@@ -97,6 +102,7 @@ class AnnotationTools(QWidget):
         buttons_layout.addWidget(save_annotation_button)
         buttons_layout.addWidget(finish_annotation_button)
         main_layout.addLayout(buttons_layout)
+        main_layout.addWidget(save_label)
         main_layout.setAlignment(Qt.AlignTop)
         main_layout.setSpacing(15)
 
@@ -106,5 +112,6 @@ class AnnotationTools(QWidget):
         self.result_path_show_lineedit = result_path_show_lineedit
         self.save_annotation_button = save_annotation_button
         self.finish_annotation_button = finish_annotation_button
+        self.save_label = save_label
 
         self.annotation_tools.setLayout(main_layout)

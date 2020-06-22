@@ -609,7 +609,7 @@ class SegmentTools(QWidget):
                                                      "font-family: Verdana;"
                                                      "border: 0px;"
                                                      "text-align:left;"
-                                                     "color: #FFFFFF")
+                                                     "color: #000000")
         else:
             self.segment_algorithm1.setVisible(True)
             self.segment_algorithm1_tool_button.setIcon(QIcon(get_icon("Arrow_down.png")))
@@ -617,7 +617,7 @@ class SegmentTools(QWidget):
                                                      "font-family: Verdana;"
                                                      "border: 0px;"
                                                      "text-align:left;"
-                                                     "color: #000000")
+                                                     "color: #FFFFFF")
 
     def segment_algorithm2_tool_button_fnc(self):
         if self.segment_algorithm2.isVisible():
@@ -627,7 +627,7 @@ class SegmentTools(QWidget):
                                                      "font-family: Verdana;"
                                                      "border: 0px;"
                                                      "text-align:left;"
-                                                     "color: #FFFFFF")
+                                                     "color: #000000")
         else:
             self.segment_algorithm2.setVisible(True)
             self.segment_algorithm2_tool_button.setIcon(QIcon(get_icon("Arrow_down.png")))
@@ -635,7 +635,7 @@ class SegmentTools(QWidget):
                                                      "font-family: Verdana;"
                                                      "border: 0px;"
                                                      "text-align:left;"
-                                                     "color: #000000")
+                                                     "color: #FFFFFF")
 
     def segment_algorithm3_tool_button_fnc(self):
         if self.segment_algorithm3.isVisible():
@@ -645,7 +645,7 @@ class SegmentTools(QWidget):
                                                      "font-family: Verdana;"
                                                      "border: 0px;"
                                                      "text-align:left;"
-                                                     "color: #FFFFFF")
+                                                     "color: #000000")
         else:
             self.segment_algorithm3.setVisible(True)
             self.segment_algorithm3_tool_button.setIcon(QIcon(get_icon("Arrow_down.png")))
@@ -653,7 +653,7 @@ class SegmentTools(QWidget):
                                                      "font-family: Verdana;"
                                                      "border: 0px;"
                                                      "text-align:left;"
-                                                     "color: #000000")
+                                                     "color: #FFFFFF")
 
     def segment_algorithm4_tool_button_fnc(self):
         if self.segment_algorithm4.isVisible():
@@ -663,7 +663,7 @@ class SegmentTools(QWidget):
                                                      "font-family: Verdana;"
                                                      "border: 0px;"
                                                      "text-align:left;"
-                                                     "color: #FFFFFF")
+                                                     "color: #000000")
         else:
             self.segment_algorithm4.setVisible(True)
             self.segment_algorithm4_tool_button.setIcon(QIcon(get_icon("Arrow_down.png")))
@@ -671,7 +671,7 @@ class SegmentTools(QWidget):
                                                      "font-family: Verdana;"
                                                      "border: 0px;"
                                                      "text-align:left;"
-                                                     "color: #000000")
+                                                     "color: #FFFFFF")
 
     def segment_algorithm5_tool_button_fnc(self):
         if self.segment_algorithm5.isVisible():
@@ -681,7 +681,7 @@ class SegmentTools(QWidget):
                                                      "font-family: Verdana;"
                                                      "border: 0px;"
                                                      "text-align:left;"
-                                                     "color: #FFFFFF")
+                                                     "color: #000000")
         else:
             self.segment_algorithm5.setVisible(True)
             self.segment_algorithm5_tool_button.setIcon(QIcon(get_icon("Arrow_down.png")))
@@ -689,4 +689,4 @@ class SegmentTools(QWidget):
                                                      "font-family: Verdana;"
                                                      "border: 0px;"
                                                      "text-align:left;"
-                                                     "color: #000000")
+                                                     "color: #FFFFFF")

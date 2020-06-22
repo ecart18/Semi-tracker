@@ -67,7 +67,10 @@ class Compose:
         self.transform = transform
 
     def __call__(self, img, label):
-        assert img.size == label.size
+        try:
+            assert img.shape[0:2] == label.shape[0:2]
+        except:
+            raise ValueError('The size of source image is not equal to label image.')
         if len(self.transform) > 0:
             for tf in self.transform:
                 if tf:

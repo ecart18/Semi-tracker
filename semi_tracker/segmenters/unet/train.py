@@ -2,6 +2,7 @@
 
 from __future__ import print_function, absolute_import
 
+import os
 import sys
 import random
 import os.path as osp
@@ -18,14 +19,15 @@ from .utils import Logger, load_checkpoint, save_checkpoint, export_history
 
 
 def train(train_parameters):
-
+    if train_parameters.gpu_num:
+        os.environ['CUDA_VISIBLE_DEVICES'] = ','.join([str(x) for x in range(train_parameters.gpu_num)])
     random.seed(train_parameters.train_seed)
     np.random.seed(train_parameters.train_seed)
     torch.manual_seed(train_parameters.train_seed)
     cudnn.benchmark = True
 
     # Redirect print to both console and log file
-    sys.stdout = Logger(osp.join(train_parameters.log_root, 'train_log.txt'))
+    train_log = Logger(osp.join(train_parameters.log_root, 'train.log'))
 
     train_loader, val_loader = build_dataloader(name='cells', **train_parameters.dataloader_params)
     model = get_backbone(name='unet').to(train_parameters.device)
@@ -48,21 +50,20 @@ def train(train_parameters):
 
     if train_parameters.resume:
         try:
-            print("load previous checkpoint file from {} \n".format(train_parameters.resume))
+            print("load previous checkpoint file from {} \n".format(train_parameters.resume), file=train_log)
             checkpoint = load_checkpoint(train_parameters.resume)
             model.load_state_dict(checkpoint['state_dict'])
             start_epoch = checkpoint['epoch']
             best_loss = checkpoint['best_loss']
-            print("=> Start epoch {}  best_loss {:.3%}"
-                .format(start_epoch, best_loss))
+            print("=> Start epoch {}  best_loss {:.3%}".format(start_epoch, best_loss), file=train_log)
         except:
             raise ValueError('Load previous checkpoint file {} failed.".format(train_parameters.resume)')
 
     # Start training
     for epoch in range(start_epoch, train_parameters.epochs):
 
-        train_loss = trainer.train(epoch, train_loader, optimizer, device=train_parameters.device)
-        val_loss = trainer.eval(epoch, val_loader, device=train_parameters.device)
+        train_loss = trainer.train(epoch, train_loader, optimizer, device=train_parameters.device, log=train_log)
+        val_loss = trainer.eval(epoch, val_loader, device=train_parameters.device, log=train_log)
 
         values = [epoch + 1, train_loss, val_loss]
         export_history(header=header, value=values, file_path=osp.join(train_parameters.log_root, "loss_per_epoch.csv"))
@@ -73,8 +74,8 @@ def train(train_parameters):
             'state_dict': model.state_dict(),
             'epoch': epoch + 1,
             'best_loss': best_loss,
-        }, is_best, fpath=osp.join(train_parameters.log_root, 'best_checkpoint.pth.tar'))
+        }, is_best, fpath=osp.join(train_parameters.log_root, 'checkpoint.pth.tar'))
 
         print('\n * Finished epoch {:3d}  train_loss: {:.3f}  val_loss: {:.3f}  best: {:.3f}{}\n'.
-              format(epoch, train_loss, val_loss, best_loss, ' *' if is_best else ''))
+              format(epoch, train_loss, val_loss, best_loss, ' *' if is_best else ''), file=train_log)
 

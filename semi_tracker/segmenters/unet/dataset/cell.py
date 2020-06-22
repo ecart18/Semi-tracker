@@ -18,7 +18,7 @@ class Cells(Benchmark):
         self.validation_ratio = validation_ratio
 
         if self._check_integrity():
-            print("Files already downloaded and verified")
+            print("Files already prepared and verified")
         else:
             self.make()
 

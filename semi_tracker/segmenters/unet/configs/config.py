@@ -10,7 +10,7 @@ from ..utils import mkdir
 class TrainParameters:
 
     def __init__(self, source_img_root, label_img_root, log_root, 
-                    validation_ratio, weighted_type,
+                    validation_ratio, scale_img, weighted_type,
                     aug_list, batch_size, workers, gpu_num, resume, epochs,
                     lr, weight_decay, loss_type, **kwargs):
 
@@ -23,17 +23,20 @@ class TrainParameters:
         self.source_img_root, self.label_img_root, self.log_root = self._check_io(source_img_root, label_img_root, log_root)
 
         # dataloader
+        self.aug_list = self._check_aug_list(aug_list)
         self.weighted_type, self.loss_type = self._check_weighted_type(weighted_type, loss_type)
-        batch_size, validation_ratio, workers= self._check_dataloader(batch_size, validation_ratio, workers)
+        self.batch_size, self.validation_ratio, self.workers, self.scale_img = \
+            self._check_dataloader(batch_size, validation_ratio, workers, scale_img)
         self.dataloader_params = {
             'source_img_root': self.source_img_root,
             'label_img_root': self.label_img_root,
             'log_root': self.log_root,
-            'validation_ratio': validation_ratio,
+            'validation_ratio': self.validation_ratio,
+            'scale_img': self.scale_img,
             'weighted_type': self.weighted_type,
-            'aug_list': aug_list,
-            'batch_size': batch_size,
-            'workers': workers
+            'aug_list': self.aug_list,
+            'batch_size': self.batch_size,
+            'workers': self.workers
         }
 
         # optimizer
@@ -45,6 +48,15 @@ class TrainParameters:
 
         # loss
         self.loss_type = self._check_loss(self.loss_type)
+
+
+    def _check_aug_list(self, aug_list):
+        if aug_list:
+            try:
+                assert isinstance(aug_list, list)
+            except:
+                raise ValueError('augmentation should be selected.')
+        return aug_list
 
 
     def _check_weighted_type(self, weighted_type, loss_type):
@@ -61,7 +73,7 @@ class TrainParameters:
         return weighted_type, loss_type
 
     
-    def _check_dataloader(self, batch_size, validation_ratio, workers):
+    def _check_dataloader(self, batch_size, validation_ratio, workers, scale_img):
         if batch_size:
             try:
                 assert isinstance(batch_size, int)
@@ -86,7 +98,15 @@ class TrainParameters:
         else:
             validation_ratio = 0.2
 
-        return batch_size, validation_ratio, workers
+        if scale_img:
+            try:
+                assert isinstance(scale_img, float)
+            except AssertionError:
+                raise TypeError('scale img should be float type')
+        else:
+            scale_img = 1.0
+
+        return batch_size, validation_ratio, workers, scale_img
 
 
     def _check_train(self, epochs, gpu_num):
@@ -103,6 +123,10 @@ class TrainParameters:
                 assert isinstance(gpu_num, int)
             except AssertionError:
                 raise TypeError('gpu number should be int type')
+            try:
+                assert gpu_num <= torch.cuda.device_count()
+            except AssertionError:
+                raise ValueError('The aviliable gpu detected in your device is smaller than {}'.format(gpu_num))
             device = 'cpu'
             if gpu_num > 0 and torch.cuda.is_available():
                 device = 'cuda'
