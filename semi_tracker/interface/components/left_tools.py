@@ -86,7 +86,7 @@ class LeftTools(QWidget):
         self.normlize_button = QPushButton()
         self.normlize_button.setStyleSheet("background: #454545;"
                                                      "font-family: Verdana;"
-                                           "font-size: 15px;"
+                                           "font-size: 14px;"
                                                      "border: 0px;"
                                                      "text-align:left;")
         self.normlize_button.setFixedHeight(25)
@@ -98,7 +98,7 @@ class LeftTools(QWidget):
         self.segment_button = QPushButton()
         self.segment_button.setStyleSheet("background: #454545;"
                                                "font-family: Verdana;"
-                                          "font-size: 15px;"
+                                          "font-size: 14px;"
                                                "border: 0px;"
                                                "text-align:left;")
         self.segment_button.setFixedHeight(25)
@@ -110,7 +110,7 @@ class LeftTools(QWidget):
         self.track_button = QPushButton()
         self.track_button.setStyleSheet("background: #454545;"
                                                      "font-family: Verdana;"
-                                        "font-size: 15px;"
+                                        "font-size: 14px;"
                                                      "border: 0px;"
                                                      "text-align:left;")
         self.track_button.setFixedHeight(25)
@@ -122,7 +122,7 @@ class LeftTools(QWidget):
         self.output_button = QPushButton()
         self.output_button.setStyleSheet("background: #454545;"
                                                      "font-family: Verdana;"
-                                         "font-size: 15px;"
+                                         "font-size: 14px;"
                                                      "border: 0px;"
                                                      "text-align:left;")
         self.output_button.setFixedHeight(25)
@@ -212,7 +212,7 @@ class LeftTools(QWidget):
         self.input_output_button = QPushButton()
         self.input_output_button.setStyleSheet("background: #454545;"
                                            "font-family: Verdana;"
-                                           "font-size: 15px;"
+                                           "font-size: 14px;"
                                            "border: 0px;"
                                            "text-align:left;")
         self.input_output_button.setFixedHeight(25)
@@ -224,7 +224,7 @@ class LeftTools(QWidget):
         self.data_loader_button = QPushButton()
         self.data_loader_button.setStyleSheet("background: #454545;"
                                           "font-family: Verdana;"
-                                          "font-size: 15px;"
+                                          "font-size: 14px;"
                                           "border: 0px;"
                                           "text-align:left;")
         self.data_loader_button.setFixedHeight(25)
@@ -236,7 +236,7 @@ class LeftTools(QWidget):
         self.loss_button = QPushButton()
         self.loss_button.setStyleSheet("background: #454545;"
                                         "font-family: Verdana;"
-                                        "font-size: 15px;"
+                                        "font-size: 14px;"
                                         "border: 0px;"
                                         "text-align:left;")
         self.loss_button.setFixedHeight(25)
@@ -248,7 +248,7 @@ class LeftTools(QWidget):
         self.weighted_loss_button = QPushButton()
         self.weighted_loss_button.setStyleSheet("background: #454545;"
                                          "font-family: Verdana;"
-                                         "font-size: 15px;"
+                                         "font-size: 14px;"
                                          "border: 0px;"
                                          "text-align:left;")
         self.weighted_loss_button.setFixedHeight(25)
@@ -260,7 +260,7 @@ class LeftTools(QWidget):
         self.optimizer_button = QPushButton()
         self.optimizer_button.setStyleSheet("background: #454545;"
                                                 "font-family: Verdana;"
-                                                "font-size: 15px;"
+                                                "font-size: 14px;"
                                                 "border: 0px;"
                                                 "text-align:left;")
         self.optimizer_button.setFixedHeight(25)
@@ -271,7 +271,7 @@ class LeftTools(QWidget):
         self.trainer_button = QPushButton()
         self.trainer_button.setStyleSheet("background: #454545;"
                                                 "font-family: Verdana;"
-                                                "font-size: 15px;"
+                                                "font-size: 14px;"
                                                 "border: 0px;"
                                                 "text-align:left;")
         self.trainer_button.setFixedHeight(25)
@@ -282,7 +282,7 @@ class LeftTools(QWidget):
         self.run_train_button = QPushButton()
         self.run_train_button.setStyleSheet("background: #454545;"
                                           "font-family: Verdana;"
-                                          "font-size: 15px;"
+                                          "font-size: 14px;"
                                           "border: 0px;"
                                           "text-align:left;")
         self.run_train_button.setFixedHeight(25)
@@ -329,7 +329,7 @@ class LeftTools(QWidget):
             self.normlize_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.normlize_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
-                                               "font-size: 15px;"
+                                               "font-size: 14px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #000000")
@@ -338,7 +338,7 @@ class LeftTools(QWidget):
             self.normlize_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.normlize_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
-                                               "font-size: 15px;"
+                                               "font-size: 14px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #FFFFFF")
@@ -349,7 +349,7 @@ class LeftTools(QWidget):
             self.segment_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.segment_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
-                                              "font-size: 15px;"
+                                              "font-size: 14px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #000000")
@@ -358,7 +358,7 @@ class LeftTools(QWidget):
             self.segment_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.segment_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
-                                              "font-size: 15px;"
+                                              "font-size: 14px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #FFFFFF")
@@ -368,7 +368,7 @@ class LeftTools(QWidget):
             self.track.track_tools.setVisible(False)
             self.track_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.track_button.setStyleSheet("background: #454545;"
-                                            "font-size: 15px;"
+                                            "font-size: 14px;"
                                                          "font-family: Verdana;"
                                                          "border: 0px;"
                                                          "text-align:left;"
@@ -377,7 +377,7 @@ class LeftTools(QWidget):
             self.track.track_tools.setVisible(True)
             self.track_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.track_button.setStyleSheet("background: #454545;"
-                                            "font-size: 15px;"
+                                            "font-size: 14px;"
                                                          "font-family: Verdana;"
                                                          "border: 0px;"
                                                          "text-align:left;"
@@ -388,7 +388,7 @@ class LeftTools(QWidget):
             self.output.output_tools.setVisible(False)
             self.output_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.output_button.setStyleSheet("background: #454545;"
-                                             "font-size: 15px;"
+                                             "font-size: 14px;"
                                                          "font-family: Verdana;"
                                                          "border: 0px;"
                                                          "text-align:left;"
@@ -398,7 +398,7 @@ class LeftTools(QWidget):
             self.output_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.output_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
-                                             "font-size: 15px;"
+                                             "font-size: 14px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #FFFFFF")
@@ -409,7 +409,7 @@ class LeftTools(QWidget):
             self.input_output_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.input_output_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
-                                               "font-size: 15px;"
+                                               "font-size: 14px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #000000")
@@ -418,7 +418,7 @@ class LeftTools(QWidget):
             self.input_output_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.input_output_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
-                                               "font-size: 15px;"
+                                               "font-size: 14px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #FFFFFF")
@@ -429,7 +429,7 @@ class LeftTools(QWidget):
             self.data_loader_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.data_loader_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
-                                               "font-size: 15px;"
+                                               "font-size: 14px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #000000")
@@ -438,7 +438,7 @@ class LeftTools(QWidget):
             self.data_loader_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.data_loader_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
-                                               "font-size: 15px;"
+                                               "font-size: 14px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #FFFFFF")
@@ -449,7 +449,7 @@ class LeftTools(QWidget):
             self.loss_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.loss_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
-                                               "font-size: 15px;"
+                                               "font-size: 14px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #000000")
@@ -458,7 +458,7 @@ class LeftTools(QWidget):
             self.loss_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.loss_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
-                                               "font-size: 15px;"
+                                               "font-size: 14px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #FFFFFF")
@@ -469,7 +469,7 @@ class LeftTools(QWidget):
             self.weighted_loss_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.weighted_loss_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
-                                               "font-size: 15px;"
+                                               "font-size: 14px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #000000")
@@ -478,7 +478,7 @@ class LeftTools(QWidget):
             self.weighted_loss_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.weighted_loss_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
-                                               "font-size: 15px;"
+                                               "font-size: 14px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #FFFFFF")
@@ -489,7 +489,7 @@ class LeftTools(QWidget):
             self.optimizer_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.optimizer_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
-                                               "font-size: 15px;"
+                                               "font-size: 14px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #000000")
@@ -498,7 +498,7 @@ class LeftTools(QWidget):
             self.optimizer_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.optimizer_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
-                                               "font-size: 15px;"
+                                               "font-size: 14px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #FFFFFF")
@@ -509,7 +509,7 @@ class LeftTools(QWidget):
             self.run_train_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.run_train_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
-                                               "font-size: 15px;"
+                                               "font-size: 14px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #000000")
@@ -518,7 +518,7 @@ class LeftTools(QWidget):
             self.run_train_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.run_train_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
-                                               "font-size: 15px;"
+                                               "font-size: 14px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #FFFFFF")
@@ -529,7 +529,7 @@ class LeftTools(QWidget):
             self.trainer_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.trainer_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
-                                               "font-size: 15px;"
+                                               "font-size: 14px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #000000")
@@ -538,7 +538,7 @@ class LeftTools(QWidget):
             self.trainer_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.trainer_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
-                                               "font-size: 15px;"
+                                               "font-size: 14px;"
                                                          "border: 0px;"
                                                          "text-align:left;"
                                                          "color: #FFFFFF")

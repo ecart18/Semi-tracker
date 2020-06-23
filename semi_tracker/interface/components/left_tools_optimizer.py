@@ -13,16 +13,16 @@ class Optimizer(QWidget):
 
     def setup_ui(self):
         weight_decay_label = QLabel()
-        weight_decay_label.setText("Select weight decay:")
+        weight_decay_label.setText("Weight decay:")
         weight_decay_label.setStyleSheet("font-family: Verdana;"
                                           "color: white;")
 
         weight_decay_select = QComboBox()
-        weight_decay_select.setFixedSize(80, 20)
+        # weight_decay_select.setFixedSize(80, 20)
         weight_decay_select.setStyleSheet("border: 0px;"
                                            "color: white;"
                                            "font-family: Verdana;"
-                                           "background: transparent;")
+                                           "background: #353535;")
         weight_decay_select.addItem("0.0001")
         weight_decay_select.addItem("0.0005")
         weight_decay_select.addItem("0.001")
@@ -35,16 +35,16 @@ class Optimizer(QWidget):
         weight_decay_layout.addWidget(weight_decay_select)
 
         lr_label = QLabel()
-        lr_label.setText("Select learning rate:")
+        lr_label.setText("Learning rate:")
         lr_label.setStyleSheet("font-family: Verdana;"
                                          "color: white;")
 
         lr_select = QComboBox()
-        lr_select.setFixedSize(80, 20)
         lr_select.setStyleSheet("border: 0px;"
-                                          "color: white;"
-                                          "font-family: Verdana;"
-                                          "background: transparent;")
+                                "color: white;"
+                                "font-family: Verdana;"
+                                "background: #353535;")
+
         lr_select.addItem("0.001")
         lr_select.addItem("0.01")
         lr_select.addItem("0.1")
