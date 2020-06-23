@@ -22,7 +22,7 @@ class Loss(QWidget):
         loss_select.setStyleSheet("border: 0px;"
                                         "color: white;"
                                         "font-family: Verdana;"
-                                        "background: transparent;")
+                                        "background: #353535;")
         loss_select.addItem("DiceLoss")
         loss_select.addItem("WeightedSoftDiceLoss")
         loss_select.addItem("BCELoss")

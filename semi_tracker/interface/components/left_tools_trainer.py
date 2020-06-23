@@ -46,16 +46,16 @@ class Trainer(QWidget):
         epoch_layout.addLayout(epoch_layout1)
 
         gpu_num_label = QLabel()
-        gpu_num_label.setText("Select gpu number:")
+        gpu_num_label.setText("Gpu number:")
         gpu_num_label.setStyleSheet("font-family: Verdana;"
                                          "color: white;")
 
         gpu_num_select = QComboBox()
-        gpu_num_select.setFixedSize(80, 20)
+        # gpu_num_select.setFixedSize(80, 20)
         gpu_num_select.setStyleSheet("border: 0px;"
                                           "color: white;"
                                           "font-family: Verdana;"
-                                          "background: transparent;")
+                                          "background: #353535;")
         gpu_num_select.addItem("0")
         gpu_num_select.addItem("1")
         gpu_num_select.addItem("2")
