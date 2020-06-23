@@ -99,7 +99,8 @@ class Preprocessor(Augmentation):
         label = self._label_reader(label_path)
 
         image, label = self._scale_img(image, label, self.scale_img)
-        image, label = self.augment(image, label)
+        if self.mode == 'train':
+            image, label = self.augment(image, label)
 
         weight = 0
         # enlarge edges and added weight map
