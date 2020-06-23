@@ -54,7 +54,9 @@ class MainWindow(QMainWindow):
 
         mkdir(os.path.join(PACKAGEPATH, "../output"))
         mkdir(os.path.join(PACKAGEPATH, "../checkpoint"))
+        self.open_path = os.path.join(PACKAGEPATH, "../output")
         self.project_path       = os.path.join(PACKAGEPATH, "../output/untitled")
+        # print(self.project_path)
         self.unet_model_path    = os.path.join(PACKAGEPATH, "../checkpoint/model_best.pth.tar")
         self.last_index         = 0             # left navigation update
         self.frames_num         = 0             # num of frames
@@ -166,6 +168,7 @@ class MainWindow(QMainWindow):
     def init_left_part(self):
         self.navigation = LeftNavigation()
         self.left_navigation = self.navigation.left_navigation
+        # print(self.open_path)
         self.tools = LeftTools()
         self.left_tools = self.tools.left_tools
         # self.tools.left_tools.setVisible(False)
@@ -499,7 +502,6 @@ class MainWindow(QMainWindow):
         self.correction.instances_widget.clear()
         # print(self.frames[self.visualize.main_sld.value()].instances.keys())
         for key in self.frames[self.visualize.main_sld.value()].instances.keys():
-            print(key)
             if self.frames[self.visualize.main_sld.value()].instances[key].name is not None:
                 show_contents = "Name: " + self.frames[self.visualize.main_sld.value()].instances[key].name + "\n" + \
                                 " Centroid: " + str(self.frames[self.visualize.main_sld.value()].instances[key].centroid)
@@ -524,6 +526,7 @@ class MainWindow(QMainWindow):
             self.chinese_path_message_box.show()
         else:
             self.project_path = dir_path
+            print(self.project_path)
             self.tools.update_file_tree(self.project_path)
 
     def result_path_fnc(self):
@@ -922,10 +925,10 @@ class MainWindow(QMainWindow):
         current_color = current_frame.instances[self.widget_list[current_id]].color
         self.changed_instances.add_update_ins(current_id, current_label, current_name, current_color)
 
-        x0 = int(pos[1]) - ssv + 1
-        x1 = int(pos[1]) + ssv
-        y0 = int(pos[0]) - ssv + 1
-        y1 = int(pos[0]) + ssv
+        x0 = max(int(pos[1]) - ssv + 1, 0)
+        x1 = max(int(pos[1]) + ssv, 0)
+        y0 = max(int(pos[0]) - ssv + 1, 0)
+        y1 = max(int(pos[0]) + ssv, 0)
         if self.annotation_flag == 2:
 
             self.frames[self.visualize.main_sld.value()].label_img[x0: x1, y0: y1] = current_label

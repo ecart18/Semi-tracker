@@ -234,7 +234,7 @@ class SegmentTools(QWidget):
         device_select.setStyleSheet("border: 0px;"
                                      "color: white;"
                                      "font-family: Verdana;"
-                                     "background: transparent;")
+                                     "background: #353535;")
         device_select.addItem("CPU")
         device_select.addItem("GPU")
         device_select.setCurrentIndex(0)

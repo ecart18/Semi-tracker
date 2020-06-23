@@ -19,6 +19,15 @@ class CorrectionTools(QWidget):
         self.setup_ui()
 
     def setup_ui(self):
+        qtooltips_style_sheet = """
+        QPushButton {border:0px;}
+        QToolTip
+            {
+                font-family: Verdana;
+                color: black;
+                background-color: rgb(255, 255, 255, 255);
+            }
+        """
         ins_label = QLabel()
         ins_label.setText("Cells")
         ins_label.setAlignment(Qt.AlignVCenter)
@@ -31,7 +40,7 @@ class CorrectionTools(QWidget):
         add_instance_button.setIconSize(QSize(18, 18))
         add_instance_button.setFixedSize(QSize(20, 20))
         add_instance_button.setFlat(True)
-        add_instance_button.setStyleSheet("border: 0px")
+        add_instance_button.setStyleSheet(qtooltips_style_sheet)
         # add_instance_button.clicked.connect(self.add_instance_fnc)
 
         instances_widget = QListWidget()
@@ -57,7 +66,7 @@ class CorrectionTools(QWidget):
         size_left_button.setIconSize(QSize(15, 15))
         size_left_button.setFixedSize(QSize(15, 15))
         size_left_button.setFlat(True)
-        size_left_button.setStyleSheet("border: 0px")
+        size_left_button.setStyleSheet(qtooltips_style_sheet)
         # size_left_button.clicked.connect(self.size_left_fnc)
 
         size_right_button = QPushButton()
@@ -65,7 +74,7 @@ class CorrectionTools(QWidget):
         size_right_button.setIconSize(QSize(15, 15))
         size_right_button.setFixedSize(QSize(15, 15))
         size_right_button.setFlat(True)
-        size_right_button.setStyleSheet("border: 0px")
+        size_right_button.setStyleSheet(qtooltips_style_sheet)
         # size_right_button.clicked.connect(self.size_right_fnc)
 
         switch_show_button = QPushButton()
@@ -74,7 +83,7 @@ class CorrectionTools(QWidget):
         switch_show_button.setIconSize(QSize(18, 18))
         switch_show_button.setFixedSize(QSize(20, 20))
         switch_show_button.setFlat(True)
-        switch_show_button.setStyleSheet("border: 0px")
+        switch_show_button.setStyleSheet(qtooltips_style_sheet)
         # switch_show_button.clicked.connect(self.switch_show_fnc)
 
         brush_button = QPushButton()
@@ -83,7 +92,7 @@ class CorrectionTools(QWidget):
         brush_button.setIconSize(QSize(18, 18))
         brush_button.setFixedSize(QSize(25, 25))
         brush_button.setFlat(True)
-        brush_button.setStyleSheet("border: 0px")
+        brush_button.setStyleSheet(qtooltips_style_sheet)
         # brush_button.clicked.connect(self.draw_mask_fnc)
 
         eraser_button = QPushButton()
@@ -92,7 +101,7 @@ class CorrectionTools(QWidget):
         eraser_button.setIconSize(QSize(20, 20))
         eraser_button.setFixedSize(QSize(25, 25))
         eraser_button.setFlat(True)
-        eraser_button.setStyleSheet("border: 0px")
+        eraser_button.setStyleSheet(qtooltips_style_sheet)
         # eraser_button.clicked.connect(self.mask_eraser_fnc)
 
         drag_button = QPushButton()
@@ -101,7 +110,7 @@ class CorrectionTools(QWidget):
         drag_button.setIconSize(QSize(25, 25))
         drag_button.setFixedSize(QSize(25, 25))
         drag_button.setFlat(True)
-        drag_button.setStyleSheet("border: 0px")
+        drag_button.setStyleSheet(qtooltips_style_sheet)
         # drag_button.clicked.connect(self.mask_drag_fnc)
 
         confirm_button = QPushButton()
@@ -110,7 +119,7 @@ class CorrectionTools(QWidget):
         confirm_button.setIconSize(QSize(23, 23))
         confirm_button.setFixedSize(QSize(25, 25))
         confirm_button.setFlat(True)
-        confirm_button.setStyleSheet("border: 0px")
+        confirm_button.setStyleSheet(qtooltips_style_sheet)
         # confirm_button.clicked.connect(self.mask_confirm_fnc)
 
         delete_button = QPushButton()
@@ -119,7 +128,7 @@ class CorrectionTools(QWidget):
         delete_button.setIconSize(QSize(20, 20))
         delete_button.setFixedSize(QSize(25, 25))
         delete_button.setFlat(True)
-        delete_button.setStyleSheet("border: 0px")
+        delete_button.setStyleSheet(qtooltips_style_sheet)
         # delete_button.clicked.connect(self.instance_delete_fnc)
 
         assist_frame = pg.ImageView(self)
