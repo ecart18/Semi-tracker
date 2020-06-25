@@ -7,13 +7,14 @@ from PyQt5.QtCore import QFileInfo, QUrl
 # from PyQt5 import *
 from PyQt5 import QtGui
 from PyQt5 import QtCore
+# from ....semi_tracker import PACKAGEPATH
 
 
 class FileTree(QWidget):
     def __init__(self, dir_path=None):
         super(FileTree, self).__init__()
         # need an absolute path
-        self.open_path = "D:/Semi-tracker/semi-tracker/output"
+        # self.open_path = open_path
         self.dir_path = dir_path
         
         self.setup_ui()
@@ -147,11 +148,9 @@ class FileTree(QWidget):
         while parent_item is not None:
             url_list.append(parent_item.text(0))
             parent_item = parent_item.parent()
+        url_list = url_list[:-1]
         url = "/".join(url_list[::-1])
-        # print(url)
-
-        full_url = "file:///" + self.open_path + "/" + url
-        # print(full_url)
-        url_info = QFileInfo(self.open_path + "/" + url)
+        url = "/".join([self.dir_path, url])
+        url_info = QFileInfo(url)
         if not url_info.isDir():
-            QDesktopServices.openUrl(QUrl(full_url))
+            QDesktopServices.openUrl(QUrl.fromLocalFile(url))

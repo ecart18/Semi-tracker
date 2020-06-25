@@ -25,7 +25,7 @@ class LeftNavigation(QWidget):
             {
                 font-family: Verdana;
                 color: black;
-                background-color: black;
+                background-color: rgb(255, 255, 255, 255);
             }
         """
         self.left_navigation = QListWidget()
@@ -50,7 +50,10 @@ class LeftNavigation(QWidget):
 
         icon_list = [get_icon(icon) for icon in ["project_management.png", "algorithm.png", "annotation.png",
                                                  "network_train.png"]]
-        tool_tips = ["Explorer", "Algorithm tools", "Annotation tools", "Training"]
+        tool_tips = ["Explorer",
+                     "Algorithm tools",
+                     "Annotation tools",
+                     "Training"]
 
         for i in range(4):
             item = QListWidgetItem(self.left_navigation)

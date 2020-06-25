@@ -22,7 +22,7 @@ from ..utils import get_icon, left_tools_stylesheet, instance_widget_stylesheet
 
 
 class LeftTools(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, open_path=None):
         super().__init__()
         self.left_tools = QStackedWidget()
         self.left_tools.setStyleSheet("background: #323232;"
@@ -30,6 +30,7 @@ class LeftTools(QWidget):
         self.left_tools.setFixedWidth(250)
 
         self.project_path = "./output/untitled"
+        self.open_path = open_path
 
         self.setup_ui()
 
@@ -45,7 +46,8 @@ class LeftTools(QWidget):
 
     def init_file_tree(self):
         output_path = osp.dirname(self.project_path)
-        # print(output_path)
+        print(output_path)
+        print(self.project_path)
         self.file_system = QWidget()
         self.file_system_layout = QVBoxLayout(self.file_system)
         self.file_system_layout.setContentsMargins(0, 0, 0, 0)

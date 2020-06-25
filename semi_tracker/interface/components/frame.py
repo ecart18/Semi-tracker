@@ -179,6 +179,10 @@ class Frame(object):
         self._instances    = collections.OrderedDict()                 # hash map for id:instance
 
     @property
+    def img_size(self):
+        return self._img_size
+
+    @property
     def labels(self):
         return self._labels
 
