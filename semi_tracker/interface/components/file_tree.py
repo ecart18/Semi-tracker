@@ -25,7 +25,7 @@ class FileTree(QWidget):
             create_button = QPushButton()
             create_button.setText("Open folder")
             create_button.setStyleSheet("background: #454545;"
-                                        "color: rgb(245, 245, 245, 255);"
+                                        "color: rgb(245, 245, 245);"
                                         "font-size: 12px;"
                                         "font-family: Verdana;")
             create_button.setContentsMargins(0, 0, 0, 0)
@@ -34,7 +34,7 @@ class FileTree(QWidget):
             label = QLabel()
             label.setText("You have not yet set project folder.")
             # label.setAlignment(QtCore.Qt.AlignRight)
-            label.setStyleSheet("color: rgb(245, 245, 245, 255);"
+            label.setStyleSheet("color: rgb(245, 245, 245);"
                                 "font-size: 12px;"
                                 "font-family: Verdana;")
             label.setContentsMargins(0, 0, 0, 0)
@@ -42,7 +42,7 @@ class FileTree(QWidget):
             label1 = QLabel()
             label1.setText("Otherwise the default folder is:")
             # label.setAlignment(QtCore.Qt.AlignRight)
-            label1.setStyleSheet("color: rgb(245, 245, 245, 255);"
+            label1.setStyleSheet("color: rgb(245, 245, 245);"
                                 "font-size: 12px;"
                                 "font-family: Verdana;")
             label1.setContentsMargins(0, 0, 0, 0)
@@ -50,7 +50,7 @@ class FileTree(QWidget):
             default_button = QPushButton()
             default_button.setText("Use .output/untitled")
             default_button.setStyleSheet("background: #454545;"
-                                        "color: rgb(245, 245, 245, 255);"
+                                        "color: rgb(245, 245, 245);"
                                         "font-size: 12px;"
                                         "font-family: Verdana;")
             default_button.setContentsMargins(0, 0, 0, 0)
@@ -59,7 +59,7 @@ class FileTree(QWidget):
             load_button = QPushButton()
             load_button.setText("Load images")
             load_button.setStyleSheet("background: #454545;"
-                                        "color: rgb(245, 245, 245, 255);"
+                                        "color: rgb(245, 245, 245);"
                                         "font-size: 12px;"
                                         "font-family: Verdana;")
             load_button.setContentsMargins(0, 0, 0, 0)
@@ -68,7 +68,7 @@ class FileTree(QWidget):
             label2 = QLabel()
             label2.setText("Load images or set image files folder.")
             # label.setAlignment(QtCore.Qt.AlignRight)
-            label2.setStyleSheet("color: rgb(245, 245, 245, 255);"
+            label2.setStyleSheet("color: rgb(245, 245, 245);"
                                 "font-size: 12px;"
                                 "font-family: Verdana;")
             label2.setContentsMargins(0, 0, 0, 0)
@@ -101,7 +101,7 @@ class FileTree(QWidget):
             QTreeWidget 
             {
                 font-family: Verdana;
-                color: rgb(245, 245, 245, 255);
+                color: rgb(245, 245, 245);
             }
             """
             tree = QTreeWidget()
