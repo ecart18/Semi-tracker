@@ -56,7 +56,7 @@ class MainWindow(QMainWindow):
         mkdir(os.path.join(PACKAGEPATH, "../checkpoint"))
         self.open_path = os.path.join(PACKAGEPATH, "../output")
         self.project_path       = os.path.join(PACKAGEPATH, "../output/untitled")
-        # print(self.project_path)
+        mkdir(self.project_path)
         self.unet_model_path    = os.path.join(PACKAGEPATH, "../checkpoint/model_best.pth.tar")
         self.last_index         = 0             # left navigation update
         self.frames_num         = 0             # num of frames
@@ -524,6 +524,9 @@ class MainWindow(QMainWindow):
         if self.has_chinese(dir_path):
             self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese words.")
             self.chinese_path_message_box.show()
+        elif not dir_path:
+            self.blank_path_message_box = WarningMessageBox("Please select a valid path.")
+            self.blank_path_message_box.show()
         else:
             self.project_path = dir_path
             print(self.project_path)

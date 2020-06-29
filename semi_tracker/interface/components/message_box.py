@@ -184,8 +184,8 @@ class WarningMessageBox(QWidget):
 
         self.icon_label = icon_label
         self.message_label = message_label
-        self.yes_button = yes_button
-        self.cancel_button = cancel_button
+        # self.yes_button = yes_button
+        # self.cancel_button = cancel_button
 
         self.setLayout(layout3)
         self.setWindowIcon(QIcon(get_icon("cell.png")))
