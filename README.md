@@ -34,7 +34,7 @@ SemiTracker is a highly integrated graph user interfaces software for the cell s
     cd SemiTrackerEnv
     source ./bin/activate
     ```
-    Shutdown virtual environment with
+    After use, shutdown virtual environment with
     ```
     deactivate
     ```
@@ -68,8 +68,10 @@ SemiTracker is a highly integrated graph user interfaces software for the cell s
                     |...
             |-------datasets
                     |...
-            |-------output
             |-------log
+            |-------output
+            |-------training_demo1
+            |-------training_demo2
             |...
         |...
     ```

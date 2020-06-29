@@ -2,18 +2,18 @@ import sys
 import os.path as osp
 
 CURRENT_DIR = osp.dirname(__file__)
+ABS_DIR = osp.dirname(osp.abspath(__file__))
 sys.path.append(CURRENT_DIR)
 sys.path.append(osp.join(CURRENT_DIR, '..'))
 
 from semi_tracker.segmenters.unet import TrainParameters
 from semi_tracker.segmenters.unet import TrainerWrapper
 
-
 if __name__ == "__main__":
     
-    source_img_root = './source_img'
-    label_img_root = './label_img'
-    log_root = './log'
+    source_img_root = osp.join(ABS_DIR, 'source_img')
+    label_img_root = osp.join(ABS_DIR, 'label_img')
+    log_root = osp.join(ABS_DIR, 'log')
     validation_ratio = 0.2
     scale_img = 1.0
     weighted_type = 'edge_weighted'  # 'edge_weighted'，'sample_balance' and 'None'
