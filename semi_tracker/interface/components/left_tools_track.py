@@ -27,7 +27,7 @@ class TrackTools(QWidget):
         tracker_select.setStyleSheet("border: 0px;"
                                            "color: white;"
                                            "font-family: Verdana;"
-                                           "background: transparent;")
+                                           "background: #353535;")
         tracker_select.addItem("Bipartite")
         tracker_select.addItem("None")
 

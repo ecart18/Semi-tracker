@@ -23,7 +23,7 @@ class DataLoader(QWidget):
         batch_size_select.setStyleSheet("border: 0px;"
                                         "color: white;"
                                         "font-family: Verdana;"
-                                        "background: transparent;")
+                                        "background: #353535;")
         batch_size_select.addItem("1")
         batch_size_select.addItem("2")
         batch_size_select.addItem("4")
@@ -79,7 +79,7 @@ class DataLoader(QWidget):
         scale_img_select.setStyleSheet("border: 0px;"
                                         "color: white;"
                                         "font-family: Verdana;"
-                                        "background: transparent;")
+                                        "background: #353535;")
         scale_img_select.addItem("4")
         scale_img_select.addItem("2")
         scale_img_select.addItem("1")
@@ -102,7 +102,9 @@ class DataLoader(QWidget):
         paraller_works_select.setStyleSheet("border: 0px;"
                                         "color: white;"
                                         "font-family: Verdana;"
-                                        "background: transparent;")
+                                        "background: #353535;")
+        paraller_works_select.addItem("0")
+        paraller_works_select.addItem("1")
         paraller_works_select.addItem("2")
         paraller_works_select.addItem("4")
         paraller_works_select.addItem("8")

@@ -22,7 +22,7 @@ class WeightedLoss(QWidget):
         weighted_loss_select.setStyleSheet("border: 0px;"
                                         "color: white;"
                                         "font-family: Verdana;"
-                                        "background: transparent;")
+                                        "background: #353535;")
         weighted_loss_select.addItem("Adjacent Edge")
         weighted_loss_select.addItem("Sample balance")
         weighted_loss_select.addItem("No")

@@ -54,7 +54,9 @@ class MainWindow(QMainWindow):
 
         mkdir(os.path.join(PACKAGEPATH, "../output"))
         mkdir(os.path.join(PACKAGEPATH, "../checkpoint"))
+        self.open_path = os.path.join(PACKAGEPATH, "../output")
         self.project_path       = os.path.join(PACKAGEPATH, "../output/untitled")
+        # print(self.project_path)
         self.unet_model_path    = os.path.join(PACKAGEPATH, "../checkpoint/model_best.pth.tar")
         self.last_index         = 0             # left navigation update
         self.frames_num         = 0             # num of frames
@@ -64,6 +66,7 @@ class MainWindow(QMainWindow):
         # self.status_flag        = 0
         self.segmenter_dict     = {0: 'binary_thresholding', 1: 'unet', 2: 'water_shed', 3: 'grab_cut', 4: 'User-defined'}
         self.segmenter_name     = 'binary_thresholding'
+        self.segment_flag        = 0
         self.tracker_dict       = {0: 'none', 1: 'bipartite_tracker'}
         self.tracker_name       = 'bipartite_tracker'
         self.normalizer_dict    = {0: 'equalize_hist', 1: 'min_max', 2: 'retinex_MSRCP', 3: 'retinex_MSRCR', 4: 'reset'}
@@ -93,7 +96,7 @@ class MainWindow(QMainWindow):
         self.log_root = ''
         self.validation_ratio = 0.2
         self.scale_img = 1
-        self.scale_img_list = [4, 2, 1, 0.5, 0.25, 0.125]
+        self.scale_img_list = [4.0, 2.0, 1.0, 0.5, 0.25, 0.125]
         self.weighted_type = 'edge_weighted'  # 'edge_weighted'，'sample_balance' and 'None'
         self.aug_list = ['Flip', 'Rotate', 'GaussainNoise', 'GaussainBlur']
         self.batch_size = 2
@@ -165,6 +168,7 @@ class MainWindow(QMainWindow):
     def init_left_part(self):
         self.navigation = LeftNavigation()
         self.left_navigation = self.navigation.left_navigation
+        # print(self.open_path)
         self.tools = LeftTools()
         self.left_tools = self.tools.left_tools
         # self.tools.left_tools.setVisible(False)
@@ -305,6 +309,8 @@ class MainWindow(QMainWindow):
             self.tools.io.log_folder_show_lineedit.setText(self.log_root)
 
     def train_model_button_fnc(self):
+        QApplication.processEvents()
+        self.status.work_info_label.setText("Training the model...")
         self.validation_ratio = self.tools.data_loader.validation_radio_sld.value()/10
         self.scale_img = self.scale_img_list[self.tools.data_loader.scale_img_select.currentIndex()]
         self.weighted_type = self.weighted_type_list[self.tools.weighted_loss.weighted_loss_select.currentIndex()]
@@ -344,8 +350,19 @@ class MainWindow(QMainWindow):
 
         train_wrapper = TrainerWrapper(train_parameters)
         start_epoch = train_wrapper.start_epoch
+        self.status.progressbar.setMaximum(train_parameters.epochs-start_epoch)
+        self.status.progressbar.setVisible(True)
+        QApplication.processEvents()
+        self.status.work_info_label.setText("Training the model...")
+
+        t = 1
         for epoch in range(start_epoch, train_parameters.epochs):
+            self.status.update_progressbar(t)
+            t = t + 1
             train_wrapper.train_epoch(epoch)
+        self.status.progressbar.setVisible(False)
+        QApplication.processEvents()
+        self.status.work_info_label.setText("")
         
 
     def load_model_button_fnc(self):
@@ -483,9 +500,8 @@ class MainWindow(QMainWindow):
     def instance_widget_update_fnc(self):
         self.widget_list = []
         self.correction.instances_widget.clear()
-        print(self.frames[self.visualize.main_sld.value()].instances.keys())
+        # print(self.frames[self.visualize.main_sld.value()].instances.keys())
         for key in self.frames[self.visualize.main_sld.value()].instances.keys():
-            print(key)
             if self.frames[self.visualize.main_sld.value()].instances[key].name is not None:
                 show_contents = "Name: " + self.frames[self.visualize.main_sld.value()].instances[key].name + "\n" + \
                                 " Centroid: " + str(self.frames[self.visualize.main_sld.value()].instances[key].centroid)
@@ -510,6 +526,7 @@ class MainWindow(QMainWindow):
             self.chinese_path_message_box.show()
         else:
             self.project_path = dir_path
+            print(self.project_path)
             self.tools.update_file_tree(self.project_path)
 
     def result_path_fnc(self):
@@ -695,30 +712,30 @@ class MainWindow(QMainWindow):
     def files_loader(self):
         filenames = QFileDialog.getOpenFileNames(None, "Select lsm data files to concatenate...",
                                                  filter="*bmp *.tif *.png *.jpg *.JPEG *avi *mp4 *mpg")[0]
-        print(filenames)
-        if self.has_chinese(filenames[0]):
-            self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese words.")
-            self.chinese_path_message_box.show()
-        elif not filenames == []:
-            self.frames = load_images(filenames)
-            self.frames_num = len(self.frames)
+        if not filenames == []:
+            if self.has_chinese(filenames[0]):
+                self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese words.")
+                self.chinese_path_message_box.show()
+            else:
+                self.frames = load_images(filenames)
+                self.frames_num = len(self.frames)
 
-            # colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
-            # self.visualize.main_frame.setColorMap(colormap)
+                # colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
+                # self.visualize.main_frame.setColorMap(colormap)
 
-            self.visualize.main_frame.setImage(img=self.frames[0].raw_img)
-            self.correction.assist_frame.setImage(self.frames[0].raw_img)
+                self.visualize.main_frame.setImage(img=self.frames[0].raw_img)
+                self.correction.assist_frame.setImage(self.frames[0].raw_img)
 
-            self.show_flag = 1
-            self.visualize.main_sld.setValue(0)
-            self.visualize.main_sld.setMaximum(self.frames_num - 1)
-            self.status.frame_info_label.setText(" Current frame: " + str(1))
-            self.status.total_frame_label.setText(" Total frames: " + str(self.frames_num))
-            # self.status_signal[0] = 1
+                self.show_flag = 1
+                self.visualize.main_sld.setValue(0)
+                self.visualize.main_sld.setMaximum(self.frames_num - 1)
+                self.status.frame_info_label.setText(" Current frame: " + str(1))
+                self.status.total_frame_label.setText(" Total frames: " + str(self.frames_num))
+                # self.status_signal[0] = 1
 
-    def dir_loader(self):
-        self.origin_dir_path = QFileDialog.getExistingDirectory()
-        self.tools.annotation.origin_path_show_lineedit.setText(self.origin_dir_path)
+        def dir_loader(self):
+            self.origin_dir_path = QFileDialog.getExistingDirectory()
+            self.tools.annotation.origin_path_show_lineedit.setText(self.origin_dir_path)
 
         # colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
         # self.visualize.main_frame.setColorMap(colormap)
@@ -834,16 +851,21 @@ class MainWindow(QMainWindow):
 
             current_frame = self.frames[self.visualize.main_sld.value()]
             current_id = self.correction.instances_widget.currentRow()
-            if current_id >= 0:
+            if current_id >= 0 and self.annotation_flag == 2:
                 # colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
                 # self.visualize.main_frame.setColorMap(colormap)
                 self.visualize.main_frame.setImage(current_frame.annotation_color_img)
+                self.visualize.main_frame.getImageItem().mouseDragEvent = self.brush_drag1
+            elif current_id >= 0 and self.annotation_flag == 1:
+                self.visualize.main_frame.setImage(current_frame.raw_color_img)
                 self.visualize.main_frame.getImageItem().mouseDragEvent = self.brush_drag1
             else:
                 self.brush_message_box = InformationMessageBox("Please add a cell first!")
                 self.brush_message_box.show()
         elif self.annotation_flag == 0:
-            pix = QPixmap(get_icon("pen1.png"))
+            ssv = int(self.correction.size_editor.text())
+            pix = QPixmap(get_icon("circle.png"))
+            pix = pix.scaled(QSize(ssv * 2, ssv * 2))
             cursor = QCursor(pix)
             self.visualize_window.setCursor(cursor)
             self.show_flag = 4
@@ -869,16 +891,18 @@ class MainWindow(QMainWindow):
             self.visualize_window.setCursor(cursor)
             current_frame = self.frames[self.visualize.main_sld.value()]
             current_id = self.correction.instances_widget.currentRow()
-            if current_id >= 0:
-                self.visualize.main_frame.imageItem.updateImage(current_frame.annotation_color_img)
+            if current_id >= 0 and self.annotation_flag == 2:
+                # colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
+                # self.visualize.main_frame.setColorMap(colormap)
+                self.visualize.main_frame.setImage(current_frame.annotation_color_img)
+                self.visualize.main_frame.getImageItem().mouseDragEvent = self.eraser_drag1
+            elif current_id >= 0 and self.annotation_flag == 1:
+                self.visualize.main_frame.setImage(current_frame.raw_color_img)
                 self.visualize.main_frame.getImageItem().mouseDragEvent = self.eraser_drag1
             else:
                 self.eraser_message_box = InformationMessageBox("Please add a cell first!")
                 self.eraser_message_box.show()
         elif self.annotation_flag == 0:
-            # pix = QPixmap(get_icon("eraser1.png"))
-            # cursor = QCursor(pix)
-            # self.visualize_window.setCursor(cursor)
             self.show_flag = 4
             self.visualize.main_frame.getImageItem().mouseDragEvent = self.eraser_drag1
         else:
@@ -887,11 +911,13 @@ class MainWindow(QMainWindow):
 
     def brush_drag1(self, event):
 
-
+        ssv = int(self.correction.size_editor.text())
+        pix = QPixmap(get_icon("circle.png"))
+        pix = pix.scaled(QSize(ssv * 2, ssv * 2))
+        cursor = QCursor(pix)
+        self.visualize_window.setCursor(cursor)
         event.accept()
         pos = event.pos()
-
-
         current_frame = self.frames[self.visualize.main_sld.value()]
         current_id    = self.correction.instances_widget.currentRow()
         current_label = current_frame.instances[self.widget_list[current_id]].label_id
@@ -899,12 +925,10 @@ class MainWindow(QMainWindow):
         current_color = current_frame.instances[self.widget_list[current_id]].color
         self.changed_instances.add_update_ins(current_id, current_label, current_name, current_color)
 
-        temp = current_frame.label_img
-        temp_color_img = current_frame.annotation_color_img
-        x0 = int(pos[1]) - ssv + 1
-        x1 = int(pos[1]) + ssv
-        y0 = int(pos[0]) - ssv + 1
-        y1 = int(pos[0]) + ssv
+        x0 = max(int(pos[1]) - ssv + 1, 0)
+        x1 = max(int(pos[1]) + ssv, 0)
+        y0 = max(int(pos[0]) - ssv + 1, 0)
+        y1 = max(int(pos[0]) + ssv, 0)
         if self.annotation_flag == 2:
 
             self.frames[self.visualize.main_sld.value()].label_img[x0: x1, y0: y1] = current_label
@@ -1114,7 +1138,10 @@ class MainWindow(QMainWindow):
         current_frame = self.frames[self.visualize.main_sld.value()]
         # colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
         # self.visualize.main_frame.setColorMap(colormap)
-        self.visualize.main_frame.setImage(current_frame.annotation_color_img)
+        if self.annotation_flag == 2:
+            self.visualize.main_frame.setImage(current_frame.annotation_color_img)
+        else:
+            self.visualize.main_frame.setImage(current_frame.raw_color_img)
 
     def instances_widget_fnc(self):
         self.visualize_window.setCursor(Qt.ArrowCursor)
@@ -1234,20 +1261,24 @@ class MainWindow(QMainWindow):
 
     def segment(self, name, **kwargs):
         self.segmenter_name = name
-        if (not len(self.frames) == 0 and self.frames[0].label_img is None) or \
+        if (not len(self.frames) == 0 and self.segment_flag == 0) or \
                 self.segmenter_name == 'grab_cut':
             self.segment_message_box1_fnc(name, **kwargs)
-        elif not len(self.frames) == 0 and self.frames[0].label_img is not None:
+        elif not len(self.frames) == 0 and self.segment_flag == 1:
             self.segment_message_box1 = QuestionMessageBox("Are you sure to re-segment the images?")
-            self.segment_message_box1.yes_button.clicked.connect(lambda: self.segment_message_box1_fnc(name, **kwargs))
+            self.segment_message_box1.yes_button.clicked.connect(
+                lambda: self.segment_message_box1_fnc(name, close_flag=1, **kwargs))
             self.segment_message_box1.cancel_button.clicked.connect(self.segment_message_box1.close_fnc)
             self.segment_message_box1.show()
         else:
             self.segment_message_box2 = InformationMessageBox("Please load images first!")
             self.segment_message_box2.show()
 
-    def segment_message_box1_fnc(self, name, **kwargs):
+    def segment_message_box1_fnc(self, name, close_flag=0, **kwargs):
 
+        self.segment_flag = 1
+        if close_flag == 1:
+            self.segment_message_box1.close()
         if not name == 'grab_cut':
             self.status.progressbar.setMaximum(self.frames_num)
 
@@ -1319,7 +1350,8 @@ class MainWindow(QMainWindow):
             self.track_message_box1 = InformationMessageBox("Please do segment first!")
             self.track_message_box1.show()
         elif not len(self.frames) == 0 and self.frames[0].label_img is not None:
-            self.status_fnc()
+            QApplication.processEvents()
+            self.status.work_info_label.setText("Tracking...")
             tracker = get_tracker(name=name, **kwargs)
             self.frames = tracker(self.frames)
             self.get_label_fnc1()
@@ -1338,15 +1370,16 @@ class MainWindow(QMainWindow):
             self.write_message_box1 = InformationMessageBox("Please do segment first!")
             self.write_message_box1.show()
         elif not len(self.frames) == 0 and self.frames[0].label_img is not None:
-            self.status.work_info_label.setText("Outputing...")
+
             QApplication.processEvents()
-            # self.status.progressbar.setVisible(True)
+            self.status.work_info_label.setText("Exporting result...")
             writer = get_writer(**kwargs)
             writer(self.frames,
                    output_csv=self.tools.output.csv_checkbox.isChecked(),
                    output_html=self.tools.output.html_checkbox.isChecked(),
                    output_img=self.tools.output.visualization_checkbox.isChecked())
             # self.status.progressbar.setVisible(True)
+            QApplication.processEvents()
             self.status.work_info_label.setText("")
             self.tools.update_file_tree(self.project_path)
         else:

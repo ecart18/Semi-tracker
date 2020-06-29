@@ -224,6 +224,25 @@ class SegmentTools(QWidget):
                                           "font-family: Verdana;")
         # model_browse_button.clicked.connect(self.model_select_fnc)
 
+        device_label = QLabel()
+        device_label.setText("Gpu number:")
+        device_label.setStyleSheet("font-family: Verdana;"
+                                    "color: white;")
+
+        device_select = QComboBox()
+        # gpu_num_select.setFixedSize(80, 20)
+        device_select.setStyleSheet("border: 0px;"
+                                     "color: white;"
+                                     "font-family: Verdana;"
+                                     "background: #353535;")
+        device_select.addItem("CPU")
+        device_select.addItem("GPU")
+        device_select.setCurrentIndex(0)
+
+        device_layout = QHBoxLayout()
+        device_layout.addWidget(device_label)
+        device_layout.addWidget(device_select)
+
         thresh_sld2 = QSlider(Qt.Horizontal)
         thresh_sld2.setMinimum(0)
         thresh_sld2.setMaximum(10)
@@ -273,6 +292,7 @@ class SegmentTools(QWidget):
         segment_algorithm2_layout4.setAlignment(Qt.AlignRight)
 
         segment_algorithm2_layout.addLayout(segment_algorithm2_layout1)
+        segment_algorithm2_layout.addLayout(device_layout)
         segment_algorithm2_layout.addLayout(segment_algorithm2_layout2)
         segment_algorithm2_layout.addLayout(segment_algorithm2_layout3)
         segment_algorithm2_layout.addLayout(segment_algorithm2_layout4)
@@ -281,6 +301,7 @@ class SegmentTools(QWidget):
         segment_algorithm2_layout.setContentsMargins(5, 5, 5, 5)
 
         self.segment_algorithm2     = segment_algorithm2
+        self.device_select          = device_select
         self.model_select_label     = model_select_label
         self.model_path_label       = model_path_label
         self.model_browse_button    = model_browse_button
