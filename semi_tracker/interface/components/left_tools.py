@@ -46,8 +46,6 @@ class LeftTools(QWidget):
 
     def init_file_tree(self):
         output_path = osp.dirname(self.project_path)
-        print(output_path)
-        print(self.project_path)
         self.file_system = QWidget()
         self.file_system_layout = QVBoxLayout(self.file_system)
         self.file_system_layout.setContentsMargins(0, 0, 0, 0)

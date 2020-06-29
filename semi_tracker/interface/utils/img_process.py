@@ -5,6 +5,7 @@ from __future__ import absolute_import
 import cv2
 import numpy as np
 import os.path as osp
+from semi_tracker.utils import logger
 from ..components.frame import Frame
 
 
@@ -15,6 +16,7 @@ def unit16b2uint8(img):
         img = img.astype(np.float32) / 65535.0 * 255.0
         return img.astype(np.uint8)
     else:
+        logger.error('No such of image transfer type: {} for image/'.format(img.dtype))
         raise TypeError('No such of image transfer type: {} for image/'.format(img.dtype))
 
 def img_standardization(img):
@@ -26,6 +28,7 @@ def img_standardization(img):
     elif len(img.shape) == 3:
         return img
     else:
+        logger.error('The image shape dimension is not equal to 2 or 3.')
         raise TypeError('The image shape dimension is not equal to 2 or 3.')
 
 
@@ -43,6 +46,7 @@ def load_images(file_names):
 
     elif extentions in ['mp4', 'avi', 'mpg']:
         if len(file_names) > 1:
+            logger.error('The number of selected video ({}) file larger than one.'.format(';'.join(file_names)))
             raise ValueError('The number of selected video ({}) file larger than one.'.format(';'.join(file_names)))
         capture = cv2.VideoCapture(file_names[0])
         dirname = osp.dirname(file_names[0])
@@ -65,9 +69,11 @@ def load_images(file_names):
         capture.release()
 
     else:
+        logger.error('No supported images format with extentions: {}.'.format(extentions))
         raise TypeError('No supported images format with extentions: {}.'.format(extentions))
     
     if not len(frames) >= 1:
+        logger.error('Load images failure, image number less than 1.')
         raise ValueError('Load images failure, image number less than 1.')
     
     return frames

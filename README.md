@@ -21,9 +21,9 @@ SemiTracker is a highly integrated graph user interfaces software for the cell s
 - MAC OS, Linux or Windows.
 - Python 3.5+.
 - PyTorch 1.4 or higher.
-- CUDA 9.0 or higher if you need train deep learning model.
+- CUDA 9.0 or higher if you need train deep learning model with gpu.
 
-0. Install Python ref to [PYPT]()
+0. Install Python ref to [Download Python](https://www.python.org/downloads/)
 
 1. Install SemiTracker in virtualenv to keep your environment clean:
 
@@ -87,6 +87,12 @@ SemiTracker is a highly integrated graph user interfaces software for the cell s
 5. Run SemiTracker with python and enjoy it. 
     ```
     python main.py
+    ```
+
+6. If you need re-training deep CNN network with your customized datasets. 
+    ```
+    cd training_demo1  # or cd training_demo2
+    python retraining.py
     ```
     
 

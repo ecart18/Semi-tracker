@@ -209,7 +209,6 @@ class MainWindow(QMainWindow):
     def init_left_part(self):
         self.navigation = LeftNavigation()
         self.left_navigation = self.navigation.left_navigation
-        # print(self.open_path)
         self.tools = LeftTools()
         self.left_tools = self.tools.left_tools
         # self.tools.left_tools.setVisible(False)
@@ -255,7 +254,7 @@ class MainWindow(QMainWindow):
         self.tools.normlize.equalize_hist_button.clicked.connect(lambda: self.normalize('equalize_hist'))
         self.tools.normlize.min_max_button.clicked.connect(lambda: self.normalize('min_max'))
         self.tools.normlize.retinex_MSRCP_button.clicked.connect(lambda: self.normalize('retinex_MSRCP'))
-        self.tools.normlize.retinex_MSRCR_button.clicked.connect(lambda: self.normalize('reset'))
+        self.tools.normlize.retinex_MSRCR_button.clicked.connect(lambda: self.normalize('retinex_MSRCR'))
         self.tools.normlize.reset_raw_button.clicked.connect(self.reset_raw_button_fnc)
 
         # track
@@ -410,7 +409,6 @@ class MainWindow(QMainWindow):
     def load_model_button_fnc(self):
         model_path = QFileDialog.getOpenFileName(None, "Select a model file..",
                                                  filter="*.tar")[0]
-        # print(model_path)
         if not model_path == "":
             self.tools.run_train.model_path_show_lineedit.setText(model_path)
             self.tools.run_train.model_path = model_path
@@ -476,14 +474,11 @@ class MainWindow(QMainWindow):
                 self.tools.segment.segment_tools.setItemIcon(i, QIcon(get_icon("Arrow_down.png")))
             else:
                 self.tools.segment.segment_tools.setItemIcon(i, QIcon(get_icon("Arrow_right.png")))
-        # print(segmenter_key)
         self.segmenter_name = self.segmenter_dict[segmenter_key]
-        # print(self.segmenter_name)
 
     def model_select_fnc(self):
         model_path = QFileDialog.getOpenFileName(None, "Select a model file..",
                                                  filter="*.tar")[0]
-        # print(model_path)
         if model_path == "":
             self.tools.segment.model_path_label.setText("Select a model..")
         else:
@@ -542,7 +537,6 @@ class MainWindow(QMainWindow):
     def instance_widget_update_fnc(self):
         self.widget_list = []
         self.correction.instances_widget.clear()
-        # print(self.frames[self.visualize.main_sld.value()].instances.keys())
         for key in self.frames[self.visualize.main_sld.value()].instances.keys():
             if self.frames[self.visualize.main_sld.value()].instances[key].name is not None:
                 show_contents = "Name: " + self.frames[self.visualize.main_sld.value()].instances[key].name + "\n" + \
@@ -571,7 +565,6 @@ class MainWindow(QMainWindow):
             self.blank_path_message_box.show()
         else:
             self.project_path = dir_path
-            print(self.project_path)
             self.tools.update_file_tree(self.project_path)
 
     def result_path_fnc(self):
@@ -640,7 +633,6 @@ class MainWindow(QMainWindow):
         '''
 
         for key in self.frames.keys():
-            # print("max: ", self.frames[key].label_img.max())
             if self.frames[key].label_img is not None:
                 if self.frames[key].label_img.max() > 0:
                     self.frames[key].auto_labeling1(color_groups, None)
@@ -667,7 +659,6 @@ class MainWindow(QMainWindow):
             self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese words.")
             self.chinese_path_message_box.show()
         else:
-            # print(self.result_dir_path)
             self.tools.annotation.result_path_show_lineedit.setText(self.result_dir_path)
             # mkdir(os.path.join(self.result_dir_path, "annotation"))
             # mkdir(os.path.join(self.result_dir_path, "color"))
@@ -675,7 +666,6 @@ class MainWindow(QMainWindow):
             for key in self.frames.keys():
                 self.frames[key].label_img = np.zeros(np.shape(self.frames[key].raw_img[:, :, 0]))
                 self.frames[key].label_img.astype(np.uint16)
-                # print(self.frames[key].label_img.dtype)
                 # self.frames_roi[key] = []
             self.annotation_flag = 2
             self.show_flag = 4
@@ -698,7 +688,6 @@ class MainWindow(QMainWindow):
             self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese words.")
             self.chinese_path_message_box.show()
         else:
-            # print(self.result_dir_path)
             self.tools.annotation.result_path_show_lineedit.setText(self.result_dir_path)
             # mkdir(os.path.join(self.result_dir_path, "annotation"))
             # mkdir(os.path.join(self.result_dir_path, "color"))
@@ -706,7 +695,6 @@ class MainWindow(QMainWindow):
             for key in self.frames.keys():
                 self.frames[key].label_img = np.zeros(np.shape(self.frames[key].raw_img[:, :, 0]))
                 self.frames[key].label_img.astype(np.uint16)
-                # print(self.frames[key].label_img.dtype)
                 # self.frames_roi[key] = []
             self.annotation_flag = 2
             self.show_flag = 4
@@ -822,7 +810,6 @@ class MainWindow(QMainWindow):
                 # annotation_csv_result = os.path.join(self.result_dir_path, "csv")
                 filepath, fullflname = os.path.split(self.frames[key].file_name)
                 file_name = fullflname.split('.')[0]
-                # print(file_name)
                 name = "annotation_" + file_name + ".tif"
                 # name1 = "annotation_color_" + str(key) + ".tif"
                 #name2 = "csv_" + str(key) + ".csv"
@@ -832,7 +819,6 @@ class MainWindow(QMainWindow):
                 if self.frames[key].label_img.max() > 0:
                     imageio.imwrite(annotation_path, self.frames[key].label_img.astype(np.uint16))
                 # imageio.imwrite(annotation_path1, self.frames[key].annotation_color_img.astype(np.uint8))
-                # print([key for key in self.frames[key].color_map_dict.keys()])
                 '''
                 with open(annotation_csv, 'w', newline="")as f:
                     fieldnames = [key1 for key1 in self.frames[key].color_map_dict.keys()]
@@ -1004,7 +990,6 @@ class MainWindow(QMainWindow):
         self.changed_instances.add_update_ins(current_id, current_label, current_name, current_color)
 
         temp_raw_img = current_frame.raw_img
-        # print(np.shape(temp_raw_img))
         temp = current_frame.label_img
         temp_color_img = current_frame.annotation_color_img
         x0 = int(pos[1]) - ssv + 1
@@ -1492,7 +1477,6 @@ class MainWindow(QMainWindow):
             self.frames[key].auto_labeling1(self.my_colors, color_map_dict)
             t = t+1
             color_map_dict = self.frames[key].color_map_dict
-            # print(key, color_map_dict)
         self.status.progressbar.setVisible(False)
         self.status.work_info_label.setText("")
 
