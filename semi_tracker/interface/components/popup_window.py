@@ -226,21 +226,21 @@ class ProjectWindow(QWidget):
         QLabel 
         {
             font-family: Verdana;
-            color: rgb(245, 245, 245, 255);
+            color: rgb(245, 245, 245);
         }
         QLineEdit
         {
             font-family: Verdana;
             border-radius: 4px;
             background: #454545;
-            color: rgb(245, 245, 245, 255);
+            color: rgb(245, 245, 245);
         }
         QPushButton
         {
             font-family: Verdana;
             border-radius: 4px;
             background: #454545;
-            color: rgb(245, 245, 245, 255);
+            color: rgb(245, 245, 245);
         }
         """
 

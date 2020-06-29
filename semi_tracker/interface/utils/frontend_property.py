@@ -7,12 +7,12 @@ instance_widget_stylesheet = """
             {
                 background: #323232;
                 border: 0px;
-                color: rgb(245, 245, 245, 250);
+                color: rgb(245, 245, 245);
             }
             QScrollBar:vertical
                 {
                     width:8px;
-                    background:rgb(0,0,0,0%);
+                    background:rgba(0,0,0,0%);
                     margin:0px,0px,0px,0px;
                     padding-top:0px;   /*上预留位置*/
                     padding-bottom:0px;    /*下预留位置*/
@@ -22,7 +22,7 @@ instance_widget_stylesheet = """
                 QScrollBar::handle:vertical
                 {
                     width:8px;
-                    background:rgb(0,0,0,25%);
+                    background:rgba(0,0,0,25%);
                     border-radius:4px;
                     min-height:20px;
                 }
@@ -31,7 +31,7 @@ instance_widget_stylesheet = """
                 QScrollBar::handle:vertical:hover
                 {
                     width:9px;
-                    background:rgb(0,0,0,50%);
+                    background:rgba(0,0,0,50%);
                     border-radius:4px;
                     min-height:20;
                 }
@@ -75,7 +75,7 @@ instance_widget_stylesheet = """
                 /*当滚动条滚动的时候，上面的部分和下面的部分*/
                 QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical
                 {
-                    background:rgb(0,0,0,10%);
+                    background:rgba(0,0,0,10%);
                     border-radius:4px;
                 }
         """
@@ -198,14 +198,14 @@ general_qss = """
             QToolTip
             {
                 font-family: Verdana;
-                color: rgb(245, 245, 245, 255);
+                color: rgb(245, 245, 245);
                 background: #323232;
             }
             QLabel
             {
                 font-family: Verdana;
                 font-size: 12px;
-                color: rgb(245, 245, 245, 255);
+                color: rgb(245, 245, 245);
             }
             QLineEdit
             {

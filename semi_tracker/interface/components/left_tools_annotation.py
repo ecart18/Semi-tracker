@@ -15,7 +15,7 @@ class AnnotationTools(QWidget):
             {
                 font-family: Verdana;
                 font-size: 12px;
-                color: rgb(245, 245, 245, 255);
+                color: rgb(245, 245, 245);
             }
         """
 
@@ -31,7 +31,7 @@ class AnnotationTools(QWidget):
         load_button = QPushButton()
         load_button.setText("Load images")
         load_button.setStyleSheet("background: #454545;"
-                                  "color: rgb(245, 245, 245, 255);")
+                                  "color: rgb(245, 245, 245);")
         load_button.setContentsMargins(0, 0, 0, 0)
         load_button.setFixedHeight(25)
 
@@ -48,7 +48,7 @@ class AnnotationTools(QWidget):
         set_button = QPushButton()
         set_button.setText("Set path")
         set_button.setStyleSheet("background: #454545;"
-                                 "color: rgb(245, 245, 245, 255);")
+                                 "color: rgb(245, 245, 245);")
         set_button.setContentsMargins(0, 0, 0, 0)
         set_button.setFixedHeight(25)
 

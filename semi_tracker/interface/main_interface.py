@@ -160,8 +160,49 @@ class MainWindow(QMainWindow):
         self.menu_bar = self.menu.menu_bar
 
         self.menu.new_project_act.triggered.connect(self.new_project_fnc)
+        self.menu.default_project_act.triggered.connect(self.default_fnc)
         self.menu.load_act.triggered.connect(self.load_fnc)
+        self.menu.source_folder_act.triggered.connect(self.set_source_button_fnc)
+        self.menu.label_folder_act.triggered.connect(self.set_label_button_fnc)
+        self.menu.log_folder_act.triggered.connect(self.set_log_button_fnc)
         self.menu.exit_act.triggered.connect(self.exit_fnc)
+
+        self.menu.equalize_act.triggered.connect(lambda: self.normalize('equalize_hist'))
+        self.menu.min_max_act.triggered.connect(lambda: self.normalize('min_max'))
+        self.menu.r_p_act.triggered.connect(lambda: self.normalize('retinex_MSRCP'))
+        self.menu.r_r_act.triggered.connect(lambda: self.normalize('retinex_MSRCR'))
+        self.menu.remove_act.triggered.connect(lambda: self.normalize('reset'))
+
+        self.menu.threshold_act.triggered.connect(
+            lambda: self.segment('binary_thresholding', threshold=self.tools.segment.thresh_sld1.value()))
+        self.menu.unet_act.triggered.connect(
+            lambda: self.segment('unet', model_path=self.unet_model_path,
+                                 device=self.tools.segment.device_select.currentText().lower(),
+                                 threshold=self.tools.segment.thresh_sld2.value()/10))
+        self.menu.water_act.triggered.connect(
+            lambda: self.segment('water_shed', noise_amplitude=self.tools.segment.noise_sld.value(),
+                                 dist_thresh=self.tools.segment.dist_thresh_sld.value()/10))
+        self.menu.grabcut_act.triggered.connect(
+            lambda: self.segment('grab_cut', iteration=self.tools.segment.iteration_sld.value()))
+
+        self.menu.track_act.triggered.connect(lambda: self.track(self.tracker_name))
+        self.menu.output_act.triggered.connect(
+            lambda: self.write(write_folder=self.project_path,
+                               add_color=self.tools.output.visualization_color_checkbox.isChecked(),
+                               add_box=self.tools.output.visualization_box_checkbox.isChecked(),
+                               add_edge=self.tools.output.visualization_edge_checkbox.isChecked(),
+                               add_trajectory=self.tools.output.visualization_trajectory_checkbox.isChecked(),
+                               add_label=self.tools.output.visualization_label_checkbox.isChecked(),
+                               trajectory_length=int(self.tools.output.visualization_trajectory_length.text()),
+                               video_fps=int(self.tools.output.visualization_video_fps.text())))
+
+        self.menu.brush_act.triggered.connect(self.brush_fnc)
+        self.menu.eraser_act.triggered.connect(self.eraser_fnc)
+        self.menu.drag_act.triggered.connect(self.drag_fnc)
+        self.menu.confirm_act.triggered.connect(self.confirm_fnc)
+        self.menu.save_act.triggered.connect(self.save_annotation_fnc)
+
+        # self.menu..triggered.connect(self.set_log_button_fnc)
 
         self.setMenuBar(self.menu_bar)
 
@@ -197,6 +238,7 @@ class MainWindow(QMainWindow):
         self.tools.segment.model_browse_button.clicked.connect(self.model_select_fnc)
         self.tools.segment.unet_segment_button.clicked.connect(
             lambda: self.segment('unet', model_path=self.unet_model_path,
+                                 device=self.tools.segment.device_select.currentText().lower(),
                                  threshold=self.tools.segment.thresh_sld2.value()/10))
 
         # seg alg3

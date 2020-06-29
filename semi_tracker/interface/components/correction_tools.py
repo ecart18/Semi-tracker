@@ -25,7 +25,7 @@ class CorrectionTools(QWidget):
             {
                 font-family: Verdana;
                 color: black;
-                background-color: rgb(255, 255, 255, 255);
+                background-color: rgb(255, 255, 255);
             }
         """
         ins_label = QLabel()

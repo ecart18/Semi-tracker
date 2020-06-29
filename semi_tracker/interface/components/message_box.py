@@ -30,7 +30,7 @@ class QuestionMessageBox(QWidget):
         message_label = QLabel()
         message_label.setText(self.message)
         message_label.setStyleSheet("font-family: Verdana;"
-                                    "color: rgb(245, 245, 245, 255);")
+                                    "color: rgb(245, 245, 245);")
 
         yes_button = QPushButton()
         yes_button.setText("Yes")
@@ -38,7 +38,7 @@ class QuestionMessageBox(QWidget):
         yes_button.setStyleSheet("font-family: Verdana;"
                                  "border-radius: 4px;"
                                  "background: #454545;"
-                                 "color: rgb(245, 245, 245, 255);")
+                                 "color: rgb(245, 245, 245);")
 
         cancel_button = QPushButton()
         cancel_button.setText("Cancel")
@@ -47,7 +47,7 @@ class QuestionMessageBox(QWidget):
         cancel_button.setStyleSheet("font-family: Verdana;"
                                     "border-radius: 4px;"
                                     "background: #454545;"
-                                    "color: rgb(245, 245, 245, 255);")
+                                    "color: rgb(245, 245, 245);")
 
         layout1 = QHBoxLayout()
         layout1.addWidget(icon_label)
@@ -90,7 +90,7 @@ class InformationMessageBox(QWidget):
         message_label = QLabel()
         message_label.setText(self.message)
         message_label.setStyleSheet("font-family: Verdana;"
-                                    "color: rgb(245, 245, 245, 255);")
+                                    "color: rgb(245, 245, 245);")
 
         ok_button = QPushButton()
         ok_button.setText("Ok")
@@ -99,7 +99,7 @@ class InformationMessageBox(QWidget):
         ok_button.setStyleSheet("font-family: Verdana;"
                                 "border-radius: 4px;"
                                 "background: #454545;"
-                                "color: rgb(245, 245, 245, 255);")
+                                "color: rgb(245, 245, 245);")
 
         cancel_button = QPushButton()
         cancel_button.setText("Cancel")
@@ -108,7 +108,7 @@ class InformationMessageBox(QWidget):
         cancel_button.setStyleSheet("font-family: Verdana;"
                                     "border-radius: 4px;"
                                     "background: #454545;"
-                                    "color: rgb(245, 245, 245, 255);")
+                                    "color: rgb(245, 245, 245);")
 
         layout1 = QHBoxLayout()
         layout1.addWidget(icon_label)
@@ -151,7 +151,7 @@ class WarningMessageBox(QWidget):
         message_label = QLabel()
         message_label.setText(self.message)
         message_label.setStyleSheet("font-family: Verdana;"
-                                    "color: rgb(245, 245, 245, 255);")
+                                    "color: rgb(245, 245, 245);")
 
         ok_button = QPushButton()
         ok_button.setText("Ok")
@@ -159,7 +159,7 @@ class WarningMessageBox(QWidget):
         ok_button.setStyleSheet("font-family: Verdana;"
                                 "border-radius: 4px;"
                                 "background: #454545;"
-                                "color: rgb(245, 245, 245, 255);")
+                                "color: rgb(245, 245, 245);")
         ok_button.clicked.connect(self.close_fnc)
         '''
         cancel_button = QPushButton()
@@ -169,7 +169,7 @@ class WarningMessageBox(QWidget):
         cancel_button.setStyleSheet("font-family: Verdana;"
                                     "border-radius: 4px;"
                                     "background: #454545;"
-                                    "color: rgb(245, 245, 245, 255);")
+                                    "color: rgb(245, 245, 245);")
         '''
 
         layout1 = QHBoxLayout()

@@ -25,7 +25,7 @@ class LeftNavigation(QWidget):
             {
                 font-family: Verdana;
                 color: black;
-                background-color: rgb(255, 255, 255, 255);
+                background-color: rgb(255, 255, 255);
             }
         """
         self.left_navigation = QListWidget()

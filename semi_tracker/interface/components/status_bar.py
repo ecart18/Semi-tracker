@@ -5,6 +5,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 import pyqtgraph as pg
 
+
 class StatusBar(QWidget):
 
     def __init__(self):
@@ -36,14 +37,14 @@ class StatusBar(QWidget):
         progressbar.setMaximum(10)
         progressbar.setTextVisible(False)
         progressbar.setVisible(False)
-        progressbar.setStyleSheet("border: 1px solid #FFFFF;"
+        progressbar.setStyleSheet("border: 0px solid #FFFFFF;"
                                   "border-radius: 2px;"
                                   "background: #CDC5BF;"
                                   "color:rgb(0, 0, 0);")
 
         frame_info_label = QLabel()
         frame_info_label.setText(" Current frame: INF")
-        frame_info_label.setStyleSheet("border: 1px solid #FFFFF;"
+        frame_info_label.setStyleSheet("border: 0px solid #FFFFFF;"
                                        "color: white;"
                                        "background: transparent;")
 

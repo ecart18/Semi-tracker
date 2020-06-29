@@ -17,7 +17,7 @@ class InputOutput(QWidget):
         set_source_button = QPushButton()
         set_source_button.setText("Set source folder")
         set_source_button.setStyleSheet("background: #454545;"
-                                  "color: rgb(245, 245, 245, 255);")
+                                  "color: rgb(245, 245, 245);")
         set_source_button.setContentsMargins(0, 0, 0, 0)
         set_source_button.setFixedHeight(25)
 
@@ -46,7 +46,7 @@ class InputOutput(QWidget):
         set_source_button = QPushButton()
         set_source_button.setText("Set source folder")
         set_source_button.setStyleSheet("background: #454545;"
-                                        "color: rgb(245, 245, 245, 255);")
+                                        "color: rgb(245, 245, 245);")
         set_source_button.setContentsMargins(0, 0, 0, 0)
         set_source_button.setFixedHeight(25)
 
@@ -75,7 +75,7 @@ class InputOutput(QWidget):
         set_label_button = QPushButton()
         set_label_button.setText("Set label folder")
         set_label_button.setStyleSheet("background: #454545;"
-                                        "color: rgb(245, 245, 245, 255);")
+                                        "color: rgb(245, 245, 245);")
         set_label_button.setContentsMargins(0, 0, 0, 0)
         set_label_button.setFixedHeight(25)
 
@@ -104,7 +104,7 @@ class InputOutput(QWidget):
         set_log_button = QPushButton()
         set_log_button.setText("Set log folder")
         set_log_button.setStyleSheet("background: #454545;"
-                                       "color: rgb(245, 245, 245, 255);")
+                                       "color: rgb(245, 245, 245);")
         set_log_button.setContentsMargins(0, 0, 0, 0)
         set_log_button.setFixedHeight(25)
 
