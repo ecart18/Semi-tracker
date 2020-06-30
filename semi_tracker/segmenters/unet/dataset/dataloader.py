@@ -83,10 +83,11 @@ class Preprocessor(Augmentation):
             assert img.shape[0:2] == label.shape[0:2]
         except:
             raise ValueError('The size of source image is not equal to label image.')
-        height, width = img.shape[0:2]
-        size = (int(width*scale_img), int(height*scale_img))
-        img = cv2.resize(img, size, interpolation=cv2.INTER_NEAREST)
-        label = cv2.resize(label, size, interpolation=cv2.INTER_NEAREST)
+        if scale_img != 1:
+            height, width = img.shape[0:2]
+            size = (int(width*scale_img), int(height*scale_img))
+            img = cv2.resize(img, size, interpolation=cv2.INTER_NEAREST)
+            label = cv2.resize(label, size, interpolation=cv2.INTER_NEAREST)
         return img, label
 
 
@@ -127,7 +128,7 @@ class Preprocessor(Augmentation):
 
         label[label > 0] = 1.0
         label = label.astype(np.float32)
-        image = image.astype(np.float32)
+        image = image.astype(np.float32) / 255.0
 
         image = torch.from_numpy(image.copy())
         label = torch.from_numpy(label.copy())

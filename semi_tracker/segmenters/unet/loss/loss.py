@@ -17,7 +17,7 @@ class DiceLoss(nn.Module):
         self.smooth = smooth
 
     def dice_coef(self, y_pred, y_true):
-        pred_probs = torch.sigmoid(y_pred)
+        pred_probs = F.sigmoid(y_pred)
         y_true_f = y_true.view(-1)
         y_pred_f = pred_probs.view(-1)
         intersection = torch.sum(y_true_f * y_pred_f)
@@ -92,6 +92,7 @@ class MSELoss(nn.Module):
         self.mse = nn.MSELoss()
 
     def forward(self, y_pred, y_true, **kwargs):
+        y_pred = F.sigmoid(y_pred)
         return self.mse(y_pred, y_true)
 
 
@@ -102,4 +103,5 @@ class MAELoss(nn.Module):
         self.mae = nn.L1Loss()
 
     def forward(self, y_pred, y_true, **kwargs):
+        y_pred = F.sigmoid(y_pred)
         return self.mae(y_pred, y_true)

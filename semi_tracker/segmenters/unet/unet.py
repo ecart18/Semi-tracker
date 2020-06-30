@@ -25,7 +25,6 @@ class Unet:
         self._model_path = model_path
         self._threshold = threshold
         self._model = self._load_model(device=self._device)
-        self.train_transformer = Compose([ToTensor()])
 
     def _load_model(self, device):
         # Create the model
@@ -42,7 +41,9 @@ class Unet:
 
     def _pre_process(self, img):
         img = self._scaling_img(img, scale_img=self._scale_img)
-        return self.train_transformer(img).unsqueeze(0)
+        img = img.astype(np.float32) / 255.0
+        img = torch.from_numpy(img.copy())
+        return img.unsqueeze(0)
 
     def __call__(self, img):
         with torch.no_grad():
