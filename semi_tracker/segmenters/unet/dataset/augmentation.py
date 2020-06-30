@@ -21,11 +21,21 @@ class RandomFlip:
 class RandomRotate:
     def __init__(self, prob):
         self.prob = prob
+    
+    @staticmethod
+    def _scaling_img(img, label, size):
+        img = cv2.resize(img, size, interpolation=cv2.INTER_NEAREST)
+        label = cv2.resize(label, size, interpolation=cv2.INTER_NEAREST)
+        return img, label
+
     def __call__(self, img, label):
         if random.random() < self.prob:
+            height, width = img.shape[0:2]
+            size = (width, height)
             factor = random.randint(0, 4)
             img = np.rot90(img, factor)
             label = np.rot90(label, factor)
+            img, label = self._scaling_img(img, label, size)
         return img, label
 
 
