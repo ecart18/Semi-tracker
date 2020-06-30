@@ -5,6 +5,7 @@ from __future__ import absolute_import
 import os.path as osp
 import cv2
 import numpy as np
+import torch
 from torch.utils.data import DataLoader
 from torchvision.transforms import Compose, ToTensor
 from .cell import create
@@ -110,21 +111,28 @@ class Preprocessor(Augmentation):
         if self.weighted_type == 'sample_balance':
             weight = make_balance_weight_map(label)
 
-        # binary label
-        label[label > 0] = 255
-        label = label.astype(np.uint8)
+        # # binary label
+        # label[label > 0] = 255
+        # label = label.astype(np.uint8)
        
-        # Transforms
-        transform = {
-            'image': Compose([ToTensor()]),
-            'label': Compose([ToTensor()])
-        }
-    
-        if transform is not None:
-            image = transform['image'](image)
-            label = transform['label'](label)
+        # # Transforms
+        # transform = {
+            # 'image': Compose([ToTensor()]),
+        #     'label': Compose([ToTensor()])
+        # }
 
-        return {"image": image,
+        # if transform is not None:
+        #     image = transform['image'](image)
+        #     label = transform['label'](label)
+
+        label[label > 0] = 1.0
+        label = label.astype(np.float32)
+        image = image.astype(np.float32)
+
+        image = torch.from_numpy(image.copy())
+        label = torch.from_numpy(label.copy())
+    
+        return {"image": image.permute(2,0,1),
                 "label": label,
                 "weight": weight}
 

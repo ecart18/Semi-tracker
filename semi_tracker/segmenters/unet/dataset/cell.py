@@ -17,11 +17,7 @@ class Cells(Benchmark):
         self.label_img_root = label_img_root
         self.validation_ratio = validation_ratio
 
-        if self._check_integrity():
-            print("Files already prepared and verified")
-        else:
-            self.make()
-
+        self.make()
         if not self._check_integrity():
             raise RuntimeError("Dataset not found or corrupted. " +
                                "Please check it.")
