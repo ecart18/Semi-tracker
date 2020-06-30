@@ -84,7 +84,7 @@ class Preprocessor(Augmentation):
         except:
             raise ValueError('The size of source image is not equal to label image.')
         height, width = img.shape[0:2]
-        size = (int(height*scale_img), int(width*scale_img))
+        size = (int(width*scale_img), int(height*scale_img))
         img = cv2.resize(img, size, interpolation=cv2.INTER_NEAREST)
         label = cv2.resize(label, size, interpolation=cv2.INTER_NEAREST)
         return img, label
