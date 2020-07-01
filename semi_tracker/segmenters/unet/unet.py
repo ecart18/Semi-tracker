@@ -43,7 +43,7 @@ class Unet:
         img = self._scaling_img(img, scale_img=self._scale_img)
         img = img.astype(np.float32) / 255.0
         img = torch.from_numpy(img.copy())
-        return img.unsqueeze(0)
+        return img.permute(2,0,1).unsqueeze(0)
 
     def __call__(self, img):
         with torch.no_grad():
