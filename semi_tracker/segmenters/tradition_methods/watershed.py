@@ -40,4 +40,5 @@ class WaterShed:
             label_img = cv2.watershed(img, markers)  # -1 for edge
             label_img[label_img == -1] = 0  # edge
             label_img[label_img == 1] = 0  # background
+            label_img = np.maximum(label_img - 1, 0)
             return np.expand_dims(label_img, axis=2)
