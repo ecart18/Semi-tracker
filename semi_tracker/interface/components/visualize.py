@@ -29,19 +29,14 @@ class VisualizeWindow(QWidget):
         colormap = pg.ColorMap([0, 1], color=[[0, 0, 0], [255, 255, 255]])
         main_frame.setColorMap(colormap)
 
-        # pg.setConfigOption()
-
         main_left_button = QPushButton()
         main_left_button.setToolTip("Previous frame")
         main_left_button.setIcon(QIcon(get_icon("left1.png")))
         main_left_button.setIconSize(QSize(30, 30))
         main_left_button.setFlat(True)
         main_left_button.setStyleSheet("border: 0px")
-        # main_left.clicked.connect(self.main_left_fnc)
 
         main_sld = QSlider(Qt.Horizontal, self)
-        # main_sld.valueChanged.connect(self.sld_update)
-
         main_sld.setStyleSheet(self.sld_stylesheet)
 
         main_right_button = QPushButton()
@@ -50,7 +45,6 @@ class VisualizeWindow(QWidget):
         main_right_button.setIconSize(QSize(30, 30))
         main_right_button.setFlat(True)
         main_right_button.setStyleSheet("border: 0px")
-        # main_right_button.clicked.connect(self.main_right_fnc)
 
         sld_layout = QHBoxLayout()
         sld_layout.addWidget(main_left_button)

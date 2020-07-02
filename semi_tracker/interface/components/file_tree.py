@@ -13,12 +13,9 @@ from PyQt5 import QtCore
 class FileTree(QWidget):
     def __init__(self, dir_path=None):
         super(FileTree, self).__init__()
-        # need an absolute path
-        # self.open_path = open_path
         self.dir_path = dir_path
         
         self.setup_ui()
-        # self.show()
 
     def setup_ui(self):
         if self.dir_path is None:
@@ -33,7 +30,6 @@ class FileTree(QWidget):
 
             label = QLabel()
             label.setText("You have not yet set project folder.")
-            # label.setAlignment(QtCore.Qt.AlignRight)
             label.setStyleSheet("color: rgb(245, 245, 245);"
                                 "font-size: 12px;"
                                 "font-family: Verdana;")
@@ -41,7 +37,6 @@ class FileTree(QWidget):
 
             label1 = QLabel()
             label1.setText("Otherwise the default folder is:")
-            # label.setAlignment(QtCore.Qt.AlignRight)
             label1.setStyleSheet("color: rgb(245, 245, 245);"
                                 "font-size: 12px;"
                                 "font-family: Verdana;")
@@ -67,7 +62,6 @@ class FileTree(QWidget):
 
             label2 = QLabel()
             label2.setText("Load images or set image files folder.")
-            # label.setAlignment(QtCore.Qt.AlignRight)
             label2.setStyleSheet("color: rgb(245, 245, 245);"
                                 "font-size: 12px;"
                                 "font-family: Verdana;")
@@ -81,12 +75,9 @@ class FileTree(QWidget):
             layout1.addWidget(label1)
             layout1.addWidget(default_button)
             layout1.setSpacing(10)
-            # layout1.addWidget(or_label)
-            # layout1.addWidget(open_button)
 
             layout2 = QVBoxLayout()
             layout2.addLayout(layout1)
-            # layout2.addWidget(label)
             layout2.setAlignment(QtCore.Qt.AlignTop)
 
             self.setLayout(layout2)
@@ -95,8 +86,6 @@ class FileTree(QWidget):
             self.load_button = load_button
 
         else:
-            # 格式检查
-            # https://blog.csdn.net/qq_41398808/article/details/102838427
             tree_stylesheet = """
             QTreeWidget 
             {

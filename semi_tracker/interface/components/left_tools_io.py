@@ -27,7 +27,6 @@ class InputOutput(QWidget):
 
         source_folder_show_lineedit = QLineEdit()
         source_folder_show_lineedit.setPlaceholderText("Source folder")
-        # result_path_show_lineedit.setFixedSize(180, 20)
         source_folder_show_lineedit.setEnabled(False)
         source_folder_show_lineedit.setStyleSheet("background: #454545;"
                                                 "border: 0px;"
@@ -56,7 +55,6 @@ class InputOutput(QWidget):
 
         source_folder_show_lineedit = QLineEdit()
         source_folder_show_lineedit.setPlaceholderText("Source folder")
-        # result_path_show_lineedit.setFixedSize(180, 20)
         source_folder_show_lineedit.setEnabled(False)
         source_folder_show_lineedit.setStyleSheet("background: #454545;"
                                                   "border: 0px;"
@@ -85,7 +83,6 @@ class InputOutput(QWidget):
 
         label_folder_show_lineedit = QLineEdit()
         label_folder_show_lineedit.setPlaceholderText("Label folder")
-        # result_path_show_lineedit.setFixedSize(180, 20)
         label_folder_show_lineedit.setEnabled(False)
         label_folder_show_lineedit.setStyleSheet("background: #454545;"
                                                   "border: 0px;"
@@ -114,7 +111,6 @@ class InputOutput(QWidget):
 
         log_folder_show_lineedit = QLineEdit()
         log_folder_show_lineedit.setPlaceholderText("Label folder")
-        # result_path_show_lineedit.setFixedSize(180, 20)
         log_folder_show_lineedit.setEnabled(False)
         log_folder_show_lineedit.setStyleSheet("background: #454545;"
                                                  "border: 0px;"

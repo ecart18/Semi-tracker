@@ -60,7 +60,6 @@ class StatusBar(QWidget):
         self.status_bar.addPermanentWidget(progressbar)
         self.status_bar.addPermanentWidget(frame_info_label)
         self.status_bar.addPermanentWidget(total_frame_label)
-        # status_bar_widget.setLayout(status_bar_layout)
 
         self.work_info_label    = work_info_label
         self.progressbar        = progressbar

@@ -51,7 +51,6 @@ class Trainer(QWidget):
                                          "color: white;")
 
         gpu_num_select = QComboBox()
-        # gpu_num_select.setFixedSize(80, 20)
         gpu_num_select.setStyleSheet("border: 0px;"
                                           "color: white;"
                                           "font-family: Verdana;"

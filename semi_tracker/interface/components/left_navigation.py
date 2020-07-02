@@ -30,7 +30,6 @@ class LeftNavigation(QWidget):
         """
         self.left_navigation = QListWidget()
         self.left_navigation.setStyleSheet(self.left_navigation_stylesheet)
-        # self.setStyleSheet(self.left_navigation_stylesheet)
 
         self.setup_ui()
 
@@ -59,8 +58,6 @@ class LeftNavigation(QWidget):
             item = QListWidgetItem(self.left_navigation)
             item.setSizeHint(QSize(50, 50))
             item.setToolTip(tool_tips[i])
-            # item.setBackground(QColor(245, 245, 245))
-            # self.left_navigation.addItem(item)
 
             navigation_icon_widget = QWidget()
             navigation_icon_layout = QHBoxLayout()
@@ -70,15 +67,9 @@ class LeftNavigation(QWidget):
             navigation_icon_label.setAlignment(Qt.AlignCenter)
 
             navigation_icon_label.setFixedSize(50, 50)
-            navigation_icon_image = QImage(icon_list[i])
-            # navigation_icon_image.scaled(QSize(35, 35), Qt.KeepAspectRatio, Qt.SmoothTransformation)
-            # navigation_icon_pix = QPixmap.fromImage(navigation_icon_image)
             navigation_icon_pix = QPixmap(icon_list[i])
             navigation_icon_pix = navigation_icon_pix.scaled(QSize(30, 30), Qt.KeepAspectRatio, Qt.SmoothTransformation)
             navigation_icon_label.setPixmap(navigation_icon_pix)
             navigation_icon_layout.addWidget(navigation_icon_label)
             navigation_icon_widget.setLayout(navigation_icon_layout)
             self.left_navigation.setItemWidget(item, navigation_icon_widget)
-
-        # first_item = self.left_navigation.item(self.last_index)
-        # first_item.setBackground(QColor("#323232"))

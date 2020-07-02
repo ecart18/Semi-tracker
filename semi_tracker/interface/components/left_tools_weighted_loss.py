@@ -18,7 +18,6 @@ class WeightedLoss(QWidget):
                                        "color: white;")
 
         weighted_loss_select = QComboBox()
-        # weighted_loss_select.setFixedSize(80, 20)
         weighted_loss_select.setStyleSheet("border: 0px;"
                                         "color: white;"
                                         "font-family: Verdana;"

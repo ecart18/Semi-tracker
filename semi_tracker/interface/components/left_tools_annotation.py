@@ -67,7 +67,6 @@ class AnnotationTools(QWidget):
 
         result_path_show_lineedit = QLineEdit()
         result_path_show_lineedit.setPlaceholderText("Result path")
-        # result_path_show_lineedit.setFixedSize(180, 20)
         result_path_show_lineedit.setEnabled(False)
         result_path_show_lineedit.setStyleSheet("background: #454545;"
                                                 "border: 0px;"
@@ -92,7 +91,6 @@ class AnnotationTools(QWidget):
                                                "border-radius: 5px;"
                                                "font-family: Verdana;")
 
-        # result_path_layout = QHBoxLayout()
         buttons_layout = QHBoxLayout()
 
         main_layout = QVBoxLayout()
@@ -106,7 +104,6 @@ class AnnotationTools(QWidget):
         main_layout.setAlignment(Qt.AlignTop)
         main_layout.setSpacing(15)
 
-        # self.origin_path_label = origin_path_label
         self.load_button = load_button
         self.set_button  = set_button
         self.result_path_show_lineedit = result_path_show_lineedit

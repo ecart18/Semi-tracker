@@ -1,16 +1,11 @@
 # -*- coding: UTF-8 -*-
 
-import os.path as osp
 import random
-import cv2
 import numpy as np
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import QSize, Qt
-from PyQt5 import QtCore, QtWidgets
-from PyQt5 import QtGui
 from PIL import Image
-import pyqtgraph as pg
 from .frame import Instance
 from ..utils import get_icon
 from semi_tracker.utils import format_out
@@ -185,32 +180,6 @@ class ChangedInstances(object):
         self._delete_ins_label = label
 
 
-'''
-class ProgressBar(QtGui.QWidget):
-    def __init__(self, parent=None, total1=20):
-        super(ProgressBar, self).__init__(parent)
-        self.name_line1  =  QtGui.QLineEdit()
-
-        self.progressbar  =  QtWidgets.QProgressBar()
-        self.progressbar.setFixedSize(400, 10)
-        self.progressbar.setMinimum(1)
-        self.progressbar.setMaximum(total1)
-
-
-        main_layout  =  QtGui.QGridLayout()
-        main_layout.addWidget(self.progressbar, 0, 0)
-
-        self.setLayout(main_layout)
-        self.setWindowTitle("                                        Labeling")
-        self.setGeometry(500, 300, 500, 40)
-
-
-    def update_progressbar(self, val1):
-        self.progressbar.setValue(val1)
-        qApp.processEvents()
-'''
-
-
 class ProjectWindow(QWidget):
     """
     The ProjectWindow is the popup window when new project button is clicked.
@@ -254,7 +223,6 @@ class ProjectWindow(QWidget):
         location.setText(default_path)
 
         browse_button = QPushButton()
-        # browse_button.setText(" Browse ")
         browse_button.setIcon(QIcon((get_icon("browse.png"))))
         browse_button.setIconSize(QSize(15, 15))
         browse_button.setFlat(True)
@@ -310,7 +278,6 @@ class CellAttributeWindow(QWidget):
     """
     def __init__(self, ins):
         QWidget.__init__(self)
-        # super(CellAttributeWindow).__init__()
 
         self.frame_id = ins.frame_id
         self.ins = ins
@@ -349,7 +316,6 @@ class CellAttributeWindow(QWidget):
 
         cell_show = QLabel()
         cell_show.setFixedSize(170, 170)
-        # q_sub_img = self.get_cell_icon()
         cell_show_pix = self.get_cell_icon()
         cell_show_pix = cell_show_pix.scaled(QSize(170, 170), Qt.KeepAspectRatio)
         cell_show.setPixmap(cell_show_pix)
@@ -379,7 +345,6 @@ class CellAttributeWindow(QWidget):
         colon_label7.setText(":")
 
         frame_id_label = QLabel()
-        # frame_id_display = "Frame id: " + str(self.frame_id)
         frame_id_label.setText("Frame id")
         frame_id_label.adjustSize()
 
@@ -388,7 +353,6 @@ class CellAttributeWindow(QWidget):
         frame_id.adjustSize()
 
         cell_label_label = QLabel()
-        # cell_label_display = "Cell label: " + str(self.ins_label)
         cell_label_label.setText("Label")
         cell_label_label.adjustSize()
 
@@ -401,7 +365,6 @@ class CellAttributeWindow(QWidget):
         cell_name = QLabel()
         cell_name.setText(str(self.ins_name))
         cell_name.adjustSize()
-        # cell_name_editor.setFixedSize(40, 20)
 
         cell_color_label = QLabel()
         cell_color_label.setText("Color")
@@ -413,7 +376,6 @@ class CellAttributeWindow(QWidget):
         cell_color_show.adjustSize()
 
         cell_bbox_label = QLabel()
-        # cell_bbox_display = "Cell bbox: " + str(self.ins_bbox)
         cell_bbox_label.setText("Box")
         cell_bbox_label.adjustSize()
 
@@ -422,7 +384,6 @@ class CellAttributeWindow(QWidget):
         cell_bbox.adjustSize()
 
         cell_centroid_label = QLabel()
-        # cell_centroid_display = "Cell centroid: " + str(self.ins_centroid)
         cell_centroid_label.setText("Centroid")
         cell_centroid_label.adjustSize()
 
@@ -431,7 +392,6 @@ class CellAttributeWindow(QWidget):
         cell_centroid.adjustSize()
 
         cell_area_label = QLabel()
-        # cell_area_display = "Cell area: " + str(self.ins_area)
         cell_area_label.setText("Area")
         cell_area_label.adjustSize()
 
@@ -440,7 +400,6 @@ class CellAttributeWindow(QWidget):
         cell_area.adjustSize()
 
         cell_intensity_label = QLabel()
-        # cell_intensity_display = "Cell intensity: " + str(self.ins_intensity)
         cell_intensity_label.setText("Intensity")
         cell_intensity_label.adjustSize()
 

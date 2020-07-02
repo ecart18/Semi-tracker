@@ -29,7 +29,6 @@ class OutputTools(QWidget):
 
         visualization_checkbox = QCheckBox()
         visualization_checkbox.setText("Visualization")
-        # visualization_checkbox.setFixedSize(150, 30)
         visualization_checkbox.setStyleSheet("font-family: Verdana;"
                                              "font-size: 15px;"
                                              "color: white;")

@@ -135,19 +135,6 @@ class Instance(object):
     def name(self, name):
         self._name = name
 
-    # def setInstanceId(self, ins_id):
-    #     self.instance_id = ins_id
-
-    # def setCoords(self, coords):
-        # self.coords = coords
-
-    # def setColor(self, color):
-    #     self.color = color
-
-    # def setName(self, name):
-    #     self.name = name
-
-
 class Frame(object):
     """
     The Frame is the basic element of a video. it contains the following information:
@@ -175,7 +162,6 @@ class Frame(object):
         self._color_map     = []
         self._color_map_dict = collections.OrderedDict()
         self._color_map.append([54, 54, 54])
-        # self._color_map[0] = [54, 54, 54]  # background color
         self._instances    = collections.OrderedDict()                 # hash map for id:instance
 
     @property
@@ -291,7 +277,6 @@ class Frame(object):
     def add_instance(self, label, instance):
         self._instances[label] = instance
         self._color_map.append(instance.color)
-        # self._color_map[label] = instance.color
         self._label_max += 1
         self._label_n += 1
 
@@ -302,27 +287,22 @@ class Frame(object):
         self._instances = collections.OrderedDict()
         self._raw_color_img = np.copy(self._raw_img).astype(np.float32)
 
-        # print(color_map_dict)
         if color_map_dict is None:
             self.auto_labling(color_groups)
         else:
             labels = np.delete(np.unique(self._label_img), 0)
-            # print(labels)
             self._label_max = labels.max()
             self._label_n = len(labels)
             for idx, label in enumerate(labels):
                 if int(label) in color_map_dict.keys():
-                    # print(int(label))
                     color = color_map_dict[int(label)]
                     self._color_map_dict[int(label)] = color
-                    # print(color)
                 else:
                     r = random.randint(0, 11)
                     c_color = color_groups[idx % 26]
                     color = c_color[r]
                     self._color_map_dict[int(label)] = color
                 self._color_map.append(color)
-                # self._color_map[label] = c_color[r]
                 instance = Instance(self._frame_id, label_id=label, raw_img=self._raw_img)
                 instance.color = color
                 instance.coords = np.where(self._label_img == label)
@@ -362,7 +342,6 @@ class Frame(object):
         """
         add, delete and modify instances
         """
-        # print(update_ins_label)
         if update_ins_label is not None:
             for ins_id, ins_label, ins_name, ins_color in \
                     zip(update_ins_id, update_ins_label, update_ins_name, update_ins_color):
@@ -375,8 +354,6 @@ class Frame(object):
 
                 color = np.ones_like(self._raw_color_img) * np.array(instance.color)
                 coords = instance.coords
-                # print(np.shape(self.raw_img))
-                # print(np.shape(color))
                 self._raw_color_img[coords[0], coords[1], :] = (0.5 * self.raw_img[coords[0], coords[1], :] +
                                                                 0.5 * color[coords[0], coords[1], :])
                 self._instances[ins_label] = instance
@@ -408,75 +385,5 @@ class Frame(object):
                 instance.coords = np.where(self._label_img == ins_label)
                 instance.name = ins_name
                 self._instances[ins_label] = instance
-
-    # def updateLabelImg(self, label_img):
-    #     self.label_img = label_img
-
-    # def setLabelImg(self, label_img, my_colors):
-    #     self.label_img = label_img
-    #     self.label_n = self.label_img.max()
-    #     self.color_map = []
-    #     self.color_map.append([54, 54, 54])
-    #     for i in range(self.label_n):
-    #         r = random.randint(0, 11)
-    #         t = i % 26
-    #         # print(t)
-    #         c_color = my_colors[t]
-    #         self.color_map.append(c_color[r])
-
-    # def setColorMap(self, color_map):
-    #     self.color_map = color_map
-
-    # def getInstances(self):
-    #     self.label_n = self.label_img.max()
-    #     for i in range(self.label_n):
-    #         ins = Instance(self.frame_id, label_id=i+1)
-    #         name = "cell_" + str(i+1)
-    #         ins.name = name
-    #         ins.color = self.color_map[i+1]
-    #         ins.coords = np.where(self.label_img == i+1)
-
-    #         minx = self.img_size[0]
-    #         maxx = 0
-    #         miny = self.img_size[1]
-    #         maxy = 0
-    #         for c in ins.coords:
-    #             if c[0] < minx:
-    #                 minx = c[0]
-    #             if c[1] < miny:
-    #                 miny = c[1]
-    #             if c[0] > maxx:
-    #                 maxx = c[0]
-    #             if c[1] > maxy:
-    #                 maxy = c[1]
-
-    #         ins.bbox = np.array([minx, miny, maxx, maxy])
-
-    #         self.instances[i + 1] = ins
-
-    # def addInstances(self, ins_id, ins):
-    #     self.instances[ins_id] = ins
-
-    # def deleteInstance(self, ins_id):
-    #     self.color_map.pop(ins_id)
-    #     ins = self.instances[ins_id]
-    #     for i in ins.coords:
-    #         self.label_img[i[0], i[1], 0] = 0
-    #     self.label_n -= 1
-    #     self.instances.pop(ins_id)
-    #     temp = {}
-    #     for key in self.instances.keys():
-    #         if key > ins_id:
-    #             print(key)
-    #             temp_ins = self.instances[key]
-    #             for j in temp_ins.coords:
-    #                 self.label_img[j[0], j[1], 0] -= 1
-    #             temp_ins.label_id = key-1
-    #             nm = "cell_" + str(key-1)
-    #             temp[key-1] = temp_ins
-    #         else:
-    #             temp[key] = self.instances[key]
-
-    #     self.instances = temp
 
 

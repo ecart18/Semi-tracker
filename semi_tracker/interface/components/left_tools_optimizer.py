@@ -18,7 +18,6 @@ class Optimizer(QWidget):
                                           "color: white;")
 
         weight_decay_select = QComboBox()
-        # weight_decay_select.setFixedSize(80, 20)
         weight_decay_select.setStyleSheet("border: 0px;"
                                            "color: white;"
                                            "font-family: Verdana;"

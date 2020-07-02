@@ -21,7 +21,6 @@ class Menu(QWidget):
         self.init_file()
         self.init_edit()
         self.init_run()
-        # self.init_tools()
         self.init_help()
 
     def init_file(self):
@@ -30,42 +29,26 @@ class Menu(QWidget):
 
         new_project_act = QAction("Open project...", self)
         new_project_act.setShortcut('Ctrl+O')
-        # new_project_act.triggered.connect(self.new_project)
         file_menu.addAction(new_project_act)
 
         default_project_act = QAction("Default project...", self)
-        # default_project_act.setShortcut('Ctrl+N')
-        # new_project_act.triggered.connect(self.new_project)
         file_menu.addAction(default_project_act)
 
         load_act = QAction("&Load images...", self)
         load_act.setShortcut('Ctrl+L')
-        # load_act.triggered.connect(self.load_files)
         file_menu.addAction(load_act)
 
         source_folder_act = QAction("Source folder...", self)
-        # default_project_act.setShortcut('Ctrl+N')
-        # new_project_act.triggered.connect(self.new_project)
         file_menu.addAction(source_folder_act)
 
         label_folder_act = QAction("Label folder...", self)
-        # default_project_act.setShortcut('Ctrl+N')
-        # new_project_act.triggered.connect(self.new_project)
         file_menu.addAction(label_folder_act)
 
         log_folder_act = QAction("Log folder...", self)
-        # default_project_act.setShortcut('Ctrl+N')
-        # new_project_act.triggered.connect(self.new_project)
         file_menu.addAction(log_folder_act)
-
-        # file_menu.addMenu("&Save As...")
-        # open_recent = file_menu.addMenu("&Open Recent")
-        # open_recent.addMenu("cell")
-        # file_menu.addMenu("&Settings...")
 
         exit_act = QAction("&Exit", self)
         exit_act.setShortcut('Ctrl+Q')
-        # exit_act.triggered.connect(self.exit_event)
         file_menu.addAction(exit_act)
 
         self.file_menu          = file_menu
@@ -75,35 +58,25 @@ class Menu(QWidget):
         self.source_folder_act  = source_folder_act
         self.label_folder_act = label_folder_act
         self.log_folder_act = log_folder_act
-        # self.open_recent        = open_recent
         self.exit_act           = exit_act
 
     def init_edit(self):
         edit_menu = self.menu_bar.addMenu("&Edit")
 
         brush_act = QAction("Brush", self)
-        # brush_act.setShortcut('Ctrl+O')
-        # new_project_act.triggered.connect(self.new_project)
         edit_menu.addAction(brush_act)
 
         eraser_act = QAction("Eraser", self)
-        # brush_act.setShortcut('Ctrl+O')
-        # new_project_act.triggered.connect(self.new_project)
         edit_menu.addAction(eraser_act)
 
         drag_act = QAction("Drag", self)
-        # brush_act.setShortcut('Ctrl+O')
-        # new_project_act.triggered.connect(self.new_project)
         edit_menu.addAction(drag_act)
 
         confirm_act = QAction("Confirm", self)
-        # brush_act.setShortcut('Ctrl+O')
-        # new_project_act.triggered.connect(self.new_project)
         edit_menu.addAction(confirm_act)
 
         save_act = QAction("Save annotation", self)
         save_act.setShortcut('Ctrl+S')
-        # new_project_act.triggered.connect(self.new_project)
         edit_menu.addAction(save_act)
 
         self.edit_menu = edit_menu
@@ -133,12 +106,10 @@ class Menu(QWidget):
         unet_act = QAction("U-net", self)
         water_act = QAction("WaterShed", self)
         grabcut_act = QAction("GrabCut", self)
-        # remove_act = QAction("Remove norm", self)
         segment_menu.addAction(threshold_act)
         segment_menu.addAction(unet_act)
         segment_menu.addAction(water_act)
         segment_menu.addAction(grabcut_act)
-        # segment_menu.addAction(remove_act)
 
         track_act = QAction("Track", self)
         output_act = QAction("Export result", self)

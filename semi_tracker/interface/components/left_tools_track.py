@@ -55,9 +55,6 @@ class TrackTools(QWidget):
                                  "border-radius: 5px;"
                                  "font-family: Verdana;")
 
-        # tracker_name = 'bipartite_tracker'
-        # run_button.clicked.connect(lambda: self.track(tracker_name))
-
         track_layout = QVBoxLayout()
         track_layout1 = QHBoxLayout()
         track_layout2 = QHBoxLayout()
@@ -65,14 +62,10 @@ class TrackTools(QWidget):
 
         track_layout1.addWidget(tracker_select_label)
         track_layout1.addWidget(tracker_select)
-        # track_layout2.addWidget(none_tracker_button)
-        # track_layout2.addWidget(bipartite_tracker_button)
-        # track_layout2.setAlignment(Qt.AlignCenter)
         track_layout3.addWidget(run_button)
         track_layout3.setAlignment(Qt.AlignRight)
 
         track_layout.addLayout(track_layout1)
-        # track_layout.addLayout(track_layout2)
         track_layout.addLayout(track_layout3)
         track_layout.setAlignment(Qt.AlignTop)
         track_layout.setSpacing(5)

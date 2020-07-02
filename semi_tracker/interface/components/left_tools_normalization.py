@@ -13,10 +13,7 @@ class NormalizeTools(QWidget):
         self.sld_stylesheet = slide_stylesheet
         self.normalize_tools = QWidget()
         self.normalize_tools.setStyleSheet("background: #323232")
-        # self.normalize_tools.clearFocus()
-        # self.normalize_tools.setStyleSheet(self.normalize_tools_stylesheet)
         self.normalize_tools.setContentsMargins(20, 0, 0, 0)
-        # self.normalize_tools.layout().setSpacing(1)
 
         self.setup_ui()
 
@@ -41,7 +38,6 @@ class NormalizeTools(QWidget):
         self.equalize_hist_tool_button.setText("Equalize Histogram")
         self.equalize_hist_tool_button.clicked.connect(self.equalize_hist_tool_button_fnc)
         self.equalize_hist_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
-        # self.equalize_hist_tool_button.setFlat(True)
 
         self.min_max_tool_button = QPushButton()
         self.min_max_tool_button.setStyleSheet("background: #454545;"
@@ -52,7 +48,6 @@ class NormalizeTools(QWidget):
         self.min_max_tool_button.setText("Min-Max")
         self.min_max_tool_button.clicked.connect(self.min_max_tool_button_fnc)
         self.min_max_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
-        # self.min_max_tool_button.setFlat(True)
 
         self.retinex_MSRCP_tool_button = QPushButton()
         self.retinex_MSRCP_tool_button.setStyleSheet("background: #454545;"
@@ -63,7 +58,6 @@ class NormalizeTools(QWidget):
         self.retinex_MSRCP_tool_button.setText("Retinex-MSRCP")
         self.retinex_MSRCP_tool_button.clicked.connect(self.retinex_MSRCP_tool_button_fnc)
         self.retinex_MSRCP_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
-        # self.retinex_MSRCP_tool_button.setFlat(True)
 
         self.retinex_MSRCR_tool_button = QPushButton()
         self.retinex_MSRCR_tool_button.setStyleSheet("background: #454545;"
@@ -74,7 +68,6 @@ class NormalizeTools(QWidget):
         self.retinex_MSRCR_tool_button.setText("Retinex-MSRCR")
         self.retinex_MSRCR_tool_button.clicked.connect(self.retinex_MSRCR_tool_button_fnc)
         self.retinex_MSRCR_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
-        # self.retinex_MSRCR_tool_button.setFlat(True)
 
         self.reset_raw_tool_button = QPushButton()
         self.reset_raw_tool_button.setStyleSheet("background: #454545;"
@@ -85,7 +78,6 @@ class NormalizeTools(QWidget):
         self.reset_raw_tool_button.setText("Remove Norm")
         self.reset_raw_tool_button.clicked.connect(self.reset_raw_tool_button_fnc)
         self.reset_raw_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
-        # self.reset_raw_tool_button.setFlat(True)
 
         self.normalize_tools_layout.addWidget(self.equalize_hist_tool_button)
         self.normalize_tools_layout.addWidget(self.equalize_hist)
@@ -104,21 +96,6 @@ class NormalizeTools(QWidget):
         self.reset_raw.setVisible(False)
 
         self.normalize_tools.setLayout(self.normalize_tools_layout)
-
-
-        """
-        self.normalize_tools.addItem(self.equalize_hist, "Equalize Histogram")
-        self.normalize_tools.addItem(self.min_max, "Min-Max")
-        self.normalize_tools.addItem(self.retinex_MSRCP, "Retinex-MSRCP")
-        self.normalize_tools.addItem(self.retinex_MSRCR, "Retinex-MSRCR")
-        self.normalize_tools.addItem(self.reset_raw, "Reset Origin Image")
-        self.normalize_tools.setItemIcon(0, QIcon(get_icon("Arrow_down.png")))
-        self.normalize_tools.setItemIcon(1, QIcon(get_icon("Arrow_right.png")))
-        self.normalize_tools.setItemIcon(2, QIcon(get_icon("Arrow_right.png")))
-        self.normalize_tools.setItemIcon(3, QIcon(get_icon("Arrow_right.png")))
-        self.normalize_tools.setItemIcon(4, QIcon(get_icon("Arrow_right.png")))
-        self.normalize_tools.setVisible(False)
-        """
 
     def init_equalize_hist(self):
         equalize_hist = QWidget()

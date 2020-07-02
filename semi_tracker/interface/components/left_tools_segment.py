@@ -15,10 +15,8 @@ class SegmentTools(QWidget):
         self.segment_tools_stylesheet = segment_tools_stylesheet
         self.sld_stylesheet = slide_stylesheet
         self.segment_tools = QWidget()
-        # self.segment_tools.setStyleSheet(self.segment_tools_stylesheet)
         self.segment_tools.setContentsMargins(20, 0, 0, 0)
         self.segment_tools.setStyleSheet("background: #323232")
-        # self.segment_tools.layout().setSpacing(1)
 
         self.setup_ui()
 
@@ -43,7 +41,6 @@ class SegmentTools(QWidget):
         self.segment_algorithm1_tool_button.setText("Threshold")
         self.segment_algorithm1_tool_button.clicked.connect(self.segment_algorithm1_tool_button_fnc)
         self.segment_algorithm1_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
-        # self.equalize_hist_tool_button.setFlat(True)
 
         self.segment_algorithm2_tool_button = QPushButton()
         self.segment_algorithm2_tool_button.setStyleSheet("background: #454545;"
@@ -54,7 +51,6 @@ class SegmentTools(QWidget):
         self.segment_algorithm2_tool_button.setText("U-net")
         self.segment_algorithm2_tool_button.clicked.connect(self.segment_algorithm2_tool_button_fnc)
         self.segment_algorithm2_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
-        # self.min_max_tool_button.setFlat(True)
 
         self.segment_algorithm3_tool_button = QPushButton()
         self.segment_algorithm3_tool_button.setStyleSheet("background: #454545;"
@@ -65,7 +61,6 @@ class SegmentTools(QWidget):
         self.segment_algorithm3_tool_button.setText("WaterShed")
         self.segment_algorithm3_tool_button.clicked.connect(self.segment_algorithm3_tool_button_fnc)
         self.segment_algorithm3_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
-        # self.retinex_MSRCP_tool_button.setFlat(True)
 
         self.segment_algorithm4_tool_button = QPushButton()
         self.segment_algorithm4_tool_button.setStyleSheet("background: #454545;"
@@ -76,7 +71,6 @@ class SegmentTools(QWidget):
         self.segment_algorithm4_tool_button.setText("CrabCut")
         self.segment_algorithm4_tool_button.clicked.connect(self.segment_algorithm4_tool_button_fnc)
         self.segment_algorithm4_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
-        # self.retinex_MSRCR_tool_button.setFlat(True)
 
         self.segment_algorithm5_tool_button = QPushButton()
         self.segment_algorithm5_tool_button.setStyleSheet("background: #454545;"
@@ -87,7 +81,6 @@ class SegmentTools(QWidget):
         self.segment_algorithm5_tool_button.setText("User-defined")
         self.segment_algorithm5_tool_button.clicked.connect(self.segment_algorithm5_tool_button_fnc)
         self.segment_algorithm5_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
-        # self.reset_raw_tool_button.setFlat(True)
 
         self.segment_tools_layout.addWidget(self.segment_algorithm1_tool_button)
         self.segment_tools_layout.addWidget(self.segment_algorithm1)
@@ -106,19 +99,6 @@ class SegmentTools(QWidget):
         self.segment_algorithm5.setVisible(False)
 
         self.segment_tools.setLayout(self.segment_tools_layout)
-
-        """
-        self.segment_tools.addItem(self.segment_algorithm1, "Threshold")
-        self.segment_tools.addItem(self.segment_algorithm2, "U-net")
-        self.segment_tools.addItem(self.segment_algorithm3, "WaterShed")
-        self.segment_tools.addItem(self.segment_algorithm4, "CrabCut")
-        self.segment_tools.addItem(self.segment_algorithm5, "User-defined")
-        self.segment_tools.setItemIcon(0, QIcon(get_icon("Arrow_down.png")))
-        self.segment_tools.setItemIcon(1, QIcon(get_icon("Arrow_right.png")))
-        self.segment_tools.setItemIcon(2, QIcon(get_icon("Arrow_right.png")))
-        self.segment_tools.setItemIcon(3, QIcon(get_icon("Arrow_right.png")))
-        self.segment_tools.setItemIcon(4, QIcon(get_icon("Arrow_right.png")))
-        """
 
     def init_seg1(self):
         segment_algorithm1 = QWidget()
@@ -162,8 +142,6 @@ class SegmentTools(QWidget):
                                             "color: white;"
                                             "border-radius: 5px;"
                                             "font-family: Verdana;")
-        segmenter_name = 'binary_thresholding'
-        # thresh_segment_button.clicked.connect(lambda: self.segment(segmenter_name, threshold=self.thresh_sld.value()))
 
         segment_algorithm1_layout1.addWidget(thresh_label1)
         segment_algorithm1_layout1.setAlignment(Qt.AlignLeft)
@@ -177,8 +155,6 @@ class SegmentTools(QWidget):
         segment_algorithm1_layout.addLayout(segment_algorithm1_layout2)
         segment_algorithm1_layout.addLayout(segment_algorithm1_layout3)
         segment_algorithm1_layout.setAlignment(Qt.AlignTop)
-        # segment_algorithm1_layout.setSpacing(5)
-        # segment_algorithm1_layout.setContentsMargins(5, 5, 5, 5)
 
         self.segment_algorithm1     = segment_algorithm1
         self.thresh_sld1            = thresh_sld1
@@ -205,7 +181,6 @@ class SegmentTools(QWidget):
 
         model_path_label = QLineEdit()
         model_path_label.setText("Select a model")
-        # model_path_label.setFixedSize(150, 20)
         model_path_label.setStyleSheet("background: #454545;"
                                        "border: 0px;"
                                        "color: white;"
@@ -222,7 +197,6 @@ class SegmentTools(QWidget):
                                           "color: white;"
                                           "border-radius: 5px;"
                                           "font-family: Verdana;")
-        # model_browse_button.clicked.connect(self.model_select_fnc)
 
         device_label = QLabel()
         device_label.setText("Gpu number:")
@@ -230,7 +204,6 @@ class SegmentTools(QWidget):
                                     "color: white;")
 
         device_select = QComboBox()
-        # gpu_num_select.setFixedSize(80, 20)
         device_select.setStyleSheet("border: 0px;"
                                      "color: white;"
                                      "font-family: Verdana;"
@@ -242,6 +215,29 @@ class SegmentTools(QWidget):
         device_layout = QHBoxLayout()
         device_layout.addWidget(device_label)
         device_layout.addWidget(device_select)
+
+        scale_img_label = QLabel()
+        scale_img_label.setText("Scale image:")
+        scale_img_label.setStyleSheet("font-family: Verdana;"
+                                      "color: white;")
+
+        scale_img_select = QComboBox()
+        scale_img_select.setFixedSize(80, 20)
+        scale_img_select.setStyleSheet("border: 0px;"
+                                       "color: white;"
+                                       "font-family: Verdana;"
+                                       "background: #353535;")
+        scale_img_select.addItem("4")
+        scale_img_select.addItem("2")
+        scale_img_select.addItem("1")
+        scale_img_select.addItem("0.5")
+        scale_img_select.addItem("0.25")
+        scale_img_select.addItem("0.125")
+        scale_img_select.setCurrentIndex(3)
+
+        scale_img_layout = QHBoxLayout()
+        scale_img_layout.addWidget(scale_img_label)
+        scale_img_layout.addWidget(scale_img_select)
 
         thresh_sld2 = QSlider(Qt.Horizontal)
         thresh_sld2.setMinimum(0)
@@ -259,7 +255,6 @@ class SegmentTools(QWidget):
         thresh_textline2 = QLineEdit()
         thresh_textline2.setAlignment(Qt.AlignCenter)
         thresh_textline2.setFixedSize(50, 15)
-        # thresh_textline2.setValidator(QtGui.Validator)
         thresh_textline2.setText("0.5")
         thresh_textline2.setStyleSheet("background: #454545;"
                                        "border: 0px;"
@@ -275,9 +270,6 @@ class SegmentTools(QWidget):
                                           "color: white;"
                                           "border-radius: 5px;"
                                           "font-family: Verdana;")
-        # model_path = "C:\\Users\\Administrator\\Desktop\\xsx1\\semi-tracker-develop\\checkpoint\\model_best.pth.tar"
-        segmenter_name = 'unet'
-        # unet_segment_button.clicked.connect(lambda: self.segment(segmenter_name, threshold=self.thresh_sld.value()))
 
         segment_algorithm2_layout1.addWidget(model_select_label)
         segment_algorithm2_layout1.addWidget(model_path_label)
@@ -293,6 +285,7 @@ class SegmentTools(QWidget):
 
         segment_algorithm2_layout.addLayout(segment_algorithm2_layout1)
         segment_algorithm2_layout.addLayout(device_layout)
+        segment_algorithm2_layout.addLayout(scale_img_layout)
         segment_algorithm2_layout.addLayout(segment_algorithm2_layout2)
         segment_algorithm2_layout.addLayout(segment_algorithm2_layout3)
         segment_algorithm2_layout.addLayout(segment_algorithm2_layout4)
@@ -309,6 +302,7 @@ class SegmentTools(QWidget):
         self.thresh_sld2            = thresh_sld2
         self.thresh_textline2       = thresh_textline2
         self.unet_segment_button    = unet_segment_button
+        self.scale_img_select = scale_img_select
 
     def init_seg3(self):
         segment_algorithm3 = QWidget()
@@ -363,7 +357,6 @@ class SegmentTools(QWidget):
         dist_thresh_textline = QLineEdit()
         dist_thresh_textline.setAlignment(Qt.AlignCenter)
         dist_thresh_textline.setFixedSize(50, 15)
-        # dist_thresh_textline.setValidator(QIntValidator())
         dist_thresh_textline.setText("0.5")
         dist_thresh_textline.setStyleSheet("background: #454545;"
                                      "border: 0px;"
@@ -379,8 +372,6 @@ class SegmentTools(QWidget):
                                              "color: white;"
                                              "border-radius: 5px;"
                                              "font-family: Verdana;")
-        segmenter_name = 'binary_thresholding'
-        # thresh_segment_button.clicked.connect(lambda: self.segment(segmenter_name, threshold=self.thresh_sld.value()))
 
         segment_algorithm3_layout1.addWidget(noise_label)
         segment_algorithm3_layout1.setAlignment(Qt.AlignLeft)
@@ -472,18 +463,13 @@ class SegmentTools(QWidget):
         grabcut_segment_button = QPushButton()
         grabcut_segment_button.setFixedSize(60, 20)
         grabcut_segment_button.setText("Run")
-        # segmenter_name = 'binary_thresholding'
         grabcut_segment_button.setStyleSheet("background: #454545;"
                                              "color: white;"
                                              "border-radius: 5px;"
                                              "font-family: Verdana;")
-        # thresh_segment_button.clicked.connect(lambda: self.segment(segmenter_name, threshold=self.thresh_sld.value()))
 
         segment_algorithm4_layout1.addWidget(select_roi_label)
         segment_algorithm4_layout1.addWidget(select_roi_button)
-        # segment_algorithm4_layout1.setAlignment(Qt.AlignBaseline)
-        # segment_algorithm4_layout1.setAlignment(Qt.AlignLeft)
-        # segment_algorithm4_layout2.addWidget(thresh_sld4)
 
         segment_algorithm4_layout2.addWidget(iteration_label)
         segment_algorithm4_layout2.setAlignment(Qt.AlignLeft)
@@ -491,7 +477,6 @@ class SegmentTools(QWidget):
         segment_algorithm4_layout2.addWidget(iteration_textline)
         segment_algorithm4_layout3.addWidget(grabcut_segment_label)
         segment_algorithm4_layout3.addWidget(grabcut_segment_button)
-        # segment_algorithm4_layout3.setAlignment(Qt.AlignRight)
 
         segment_algorithm4_layout.addLayout(segment_algorithm4_layout1)
         segment_algorithm4_layout.addLayout(segment_algorithm4_layout2)
@@ -515,8 +500,6 @@ class SegmentTools(QWidget):
 
         segment_algorithm5_layout = QVBoxLayout(segment_algorithm5)
         segment_algorithm5_layout1 = QHBoxLayout()
-        segment_algorithm5_layout2 = QHBoxLayout()
-        segment_algorithm5_layout3 = QHBoxLayout()
 
         thresh_sld5 = QSlider(Qt.Horizontal)
         thresh_sld5.setMinimum(0)
@@ -546,24 +529,14 @@ class SegmentTools(QWidget):
         thresh_segment_button5 = QPushButton()
         thresh_segment_button5.setFixedSize(50, 20)
         thresh_segment_button5.setText("Run")
-        segmenter_name = 'binary_thresholding'
         thresh_segment_button5.setStyleSheet("background: #454545;"
                                              "color: white;"
                                              "border-radius: 5px;"
                                              "font-family: Verdana;")
-        # thresh_segment_button.clicked.connect(lambda: self.segment(segmenter_name, threshold=self.thresh_sld.value()))
 
         segment_algorithm5_layout1.addWidget(thresh_label5)
-        # segment_algorithm5_layout1.setAlignment(Qt.AlignLeft)
-        # segment_algorithm5_layout2.addWidget(thresh_sld5)
-        # segment_algorithm5_layout2.addWidget(thresh_textline5)
-        # segment_algorithm5_layout2.setAlignment(Qt.AlignCenter)
         segment_algorithm5_layout1.addWidget(thresh_segment_button5)
-        # segment_algorithm5_layout3.setAlignment(Qt.AlignRight)
-
         segment_algorithm5_layout.addLayout(segment_algorithm5_layout1)
-        # segment_algorithm5_layout.addLayout(segment_algorithm5_layout2)
-        # segment_algorithm5_layout.addLayout(segment_algorithm5_layout3)
         segment_algorithm5_layout.setAlignment(Qt.AlignTop)
         segment_algorithm5_layout.setSpacing(5)
         segment_algorithm5_layout.setContentsMargins(5, 5, 5, 5)

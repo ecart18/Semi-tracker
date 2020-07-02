@@ -38,7 +38,6 @@ class RunTrain(QWidget):
 
         model_path_show_lineedit = QLineEdit()
         model_path_show_lineedit.setPlaceholderText("No select model")
-        # result_path_show_lineedit.setFixedSize(180, 20)
         model_path_show_lineedit.setEnabled(False)
         model_path_show_lineedit.setStyleSheet("background: #454545;"
                                                 "border: 0px;"
@@ -61,7 +60,6 @@ class RunTrain(QWidget):
         run_train_layout.setAlignment(Qt.AlignTop)
         run_train_layout.setSpacing(15)
 
-        # self.origin_path_label = origin_path_label
         self.load_model_button = load_model_button
         self.train_model_button = train_model_button
         self.model_path_show_lineedit = model_path_show_lineedit

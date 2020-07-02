@@ -18,7 +18,6 @@ from .left_tools_normalization import NormalizeTools
 from .left_tools_weighted_loss import WeightedLoss
 from .left_tools_trainer import Trainer
 from ..utils import get_icon, left_tools_stylesheet, instance_widget_stylesheet
-# from .tool_box import ToolBox
 
 
 class LeftTools(QWidget):
@@ -36,16 +35,12 @@ class LeftTools(QWidget):
 
     def setup_ui(self):
 
-        # self.left_tools.clicked.connect(self.click_event)
-
         self.init_file_tree()
-        # self.init_img_preprocess()
         self.init_algorithms()
         self.init_annotation()
         self.init_network_training()
 
     def init_file_tree(self):
-        output_path = osp.dirname(self.project_path)
         self.file_system = QWidget()
         self.file_system_layout = QVBoxLayout(self.file_system)
         self.file_system_layout.setContentsMargins(0, 0, 0, 0)
@@ -62,7 +57,6 @@ class LeftTools(QWidget):
         self.left_tools_stylesheet = left_tools_stylesheet
 
         self.out_widget = QWidget()
-        # self.out_widget.setMinimumSize(250, 750)
         self.out_widget.setContentsMargins(0, 0, 0, 0)
         self.out_layout = QVBoxLayout(self.out_widget)
         self.out_layout.setContentsMargins(0, 0, 0, 0)
@@ -75,7 +69,6 @@ class LeftTools(QWidget):
         self.scroll.setWidget(self.main_algorithm)
         self.scroll.setVerticalScrollBarPolicy(0)
         self.scroll.setHorizontalScrollBarPolicy(0)
-        # self.main_algorithm.setFixedHeight(200)
         self.main_algorithm.setStyleSheet("background: #323232")
 
         self.main_algorithm_layout = QVBoxLayout()
@@ -93,7 +86,6 @@ class LeftTools(QWidget):
         self.normlize_button.setText("Normalization")
         self.normlize_button.clicked.connect(self.normlize_button_fnc)
         self.normlize_button.setIcon(QIcon(get_icon("Arrow_right.png")))
-        # self.equalize_hist_tool_button.setFlat(True)
 
         self.segment_button = QPushButton()
         self.segment_button.setStyleSheet("background: #454545;"
@@ -105,7 +97,6 @@ class LeftTools(QWidget):
         self.segment_button.setText("Segmentation")
         self.segment_button.clicked.connect(self.segment_button_fnc)
         self.segment_button.setIcon(QIcon(get_icon("Arrow_right.png")))
-        # self.min_max_tool_button.setFlat(True)
 
         self.track_button = QPushButton()
         self.track_button.setStyleSheet("background: #454545;"
@@ -117,7 +108,6 @@ class LeftTools(QWidget):
         self.track_button.setText("Track")
         self.track_button.clicked.connect(self.track_button_fnc)
         self.track_button.setIcon(QIcon(get_icon("Arrow_right.png")))
-        # self.retinex_MSRCP_tool_button.setFlat(True)
 
         self.output_button = QPushButton()
         self.output_button.setStyleSheet("background: #454545;"
@@ -129,7 +119,6 @@ class LeftTools(QWidget):
         self.output_button.setText("Output")
         self.output_button.clicked.connect(self.output_button_fnc)
         self.output_button.setIcon(QIcon(get_icon("Arrow_right.png")))
-        # self.retinex_MSRCR_tool_button.setFlat(True)
 
         self.main_algorithm_layout.addWidget(self.normlize_button)
         self.main_algorithm_layout.addWidget(self.normlize.normalize_tools)
@@ -145,38 +134,14 @@ class LeftTools(QWidget):
         self.output.output_tools.setVisible(False)
 
         self.main_algorithm.setLayout(self.main_algorithm_layout)
-
-
-        """
-        self.main_algorithm.addItem(self.normlize.normalize_tools, "Normalization")
-        self.main_algorithm.addItem(self.segment.segment_tools, "Segmentation")
-        self.main_algorithm.addItem(self.track.track_tools, "Track")
-        self.main_algorithm.addItem(self.output.output_tools, "Output")
-        self.main_algorithm.addItem(self.algorithm_widget, "")
-        # self.main_algorithm.setItem
-        self.main_algorithm.setItemIcon(0, QIcon(get_icon("Arrow_right.png")))
-        self.main_algorithm.setItemIcon(1, QIcon(get_icon("Arrow_right.png")))
-        self.main_algorithm.setItemIcon(2, QIcon(get_icon("Arrow_right.png")))
-        self.main_algorithm.setItemIcon(3, QIcon(get_icon("Arrow_right.png")))
-        self.main_algorithm.layout().setSpacing(2)
-        self.main_algorithm.setCurrentIndex(4)
-        # self.main_algorithm.setStyle()
-        # main_algorithm_layout = QVBoxLayout(self.main_algorithm)
-        # main_algorithm_layout.addWidget(self.segment.segment_tools)
-        # main_algorithm_layout.addWidget(self.track.track_tools)
-        # main_algorithm_layout.addWidget(self.output.output_tools)
-        """
         self.out_layout.addWidget(self.scroll)
         self.left_tools.addWidget(self.out_widget)
 
     def init_annotation(self):
         self.annotation = AnnotationTools()
-        # self.toolbox = ToolBox()
-        # self.toolbox_box = self.toolbox.toolbox
         self.left_annotation = self.annotation.annotation_tools
 
         self.left_tools.addWidget(self.left_annotation)
-        # self.left_tools.addWidget(self.toolbox_box)
 
     def init_network_training(self):
         self.io = InputOutput()
@@ -188,7 +153,6 @@ class LeftTools(QWidget):
         self.trainer = Trainer()
 
         self.out_widget1 = QWidget()
-        # self.out_widget.setMinimumSize(250, 750)
         self.out_widget1.setContentsMargins(0, 0, 0, 0)
         self.out_layout1 = QVBoxLayout(self.out_widget1)
         self.out_layout1.setContentsMargins(0, 0, 0, 0)
@@ -201,7 +165,6 @@ class LeftTools(QWidget):
         self.scroll1.setWidget(self.main_training)
         self.scroll1.setVerticalScrollBarPolicy(0)
         self.scroll1.setHorizontalScrollBarPolicy(0)
-        # self.main_algorithm.setFixedHeight(200)
         self.main_training.setStyleSheet("background: #323232")
 
         self.main_training_layout = QVBoxLayout()
@@ -219,7 +182,6 @@ class LeftTools(QWidget):
         self.input_output_button.setText("IO")
         self.input_output_button.clicked.connect(self.input_output_button_fnc)
         self.input_output_button.setIcon(QIcon(get_icon("Arrow_right.png")))
-        # self.equalize_hist_tool_button.setFlat(True)
 
         self.data_loader_button = QPushButton()
         self.data_loader_button.setStyleSheet("background: #454545;"
@@ -231,7 +193,6 @@ class LeftTools(QWidget):
         self.data_loader_button.setText("DataLoader")
         self.data_loader_button.clicked.connect(self.data_loader_button_fnc)
         self.data_loader_button.setIcon(QIcon(get_icon("Arrow_right.png")))
-        # self.min_max_tool_button.setFlat(True)
 
         self.loss_button = QPushButton()
         self.loss_button.setStyleSheet("background: #454545;"
@@ -243,7 +204,6 @@ class LeftTools(QWidget):
         self.loss_button.setText("Loss")
         self.loss_button.clicked.connect(self.loss_button_fnc)
         self.loss_button.setIcon(QIcon(get_icon("Arrow_right.png")))
-        # self.retinex_MSRCP_tool_button.setFlat(True)
 
         self.weighted_loss_button = QPushButton()
         self.weighted_loss_button.setStyleSheet("background: #454545;"
@@ -255,7 +215,6 @@ class LeftTools(QWidget):
         self.weighted_loss_button.setText("Loss Weighted")
         self.weighted_loss_button.clicked.connect(self.weighted_loss_button_fnc)
         self.weighted_loss_button.setIcon(QIcon(get_icon("Arrow_right.png")))
-        # self.retinex_MSRCR_tool_button.setFlat(True)
 
         self.optimizer_button = QPushButton()
         self.optimizer_button.setStyleSheet("background: #454545;"

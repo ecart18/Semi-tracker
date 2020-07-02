@@ -1,17 +1,8 @@
 # -*- coding: UTF-8 -*-
 
-import os.path as osp
-import random
-import numpy as np
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
-from PyQt5.QtCore import QSize, Qt
-from PyQt5 import QtCore, QtWidgets
-from PyQt5 import QtGui
-import pyqtgraph as pg
-from .frame import Instance
 from ..utils import get_icon
-import cv2
 
 
 class QuestionMessageBox(QWidget):
@@ -115,7 +106,6 @@ class InformationMessageBox(QWidget):
         layout1.addWidget(message_label)
         layout2 = QHBoxLayout()
         layout2.addWidget(ok_button)
-        # layout2.addWidget(cancel_button)
         layout3 = QVBoxLayout()
         layout3.addLayout(layout1)
         layout3.addLayout(layout2)
@@ -161,31 +151,17 @@ class WarningMessageBox(QWidget):
                                 "background: #454545;"
                                 "color: rgb(245, 245, 245);")
         ok_button.clicked.connect(self.close_fnc)
-        '''
-        cancel_button = QPushButton()
-        cancel_button.setText("Cancel")
-        cancel_button.setFixedSize(80, 25)
-        cancel_button.clicked.connect(self.close_fnc)
-        cancel_button.setStyleSheet("font-family: Verdana;"
-                                    "border-radius: 4px;"
-                                    "background: #454545;"
-                                    "color: rgb(245, 245, 245);")
-        '''
-
         layout1 = QHBoxLayout()
         layout1.addWidget(icon_label)
         layout1.addWidget(message_label)
         layout2 = QHBoxLayout()
         layout2.addWidget(ok_button)
-        # layout2.addWidget(cancel_button)
         layout3 = QVBoxLayout()
         layout3.addLayout(layout1)
         layout3.addLayout(layout2)
 
         self.icon_label = icon_label
         self.message_label = message_label
-        # self.yes_button = yes_button
-        # self.cancel_button = cancel_button
 
         self.setLayout(layout3)
         self.setWindowIcon(QIcon(get_icon("cell.png")))
@@ -195,29 +171,3 @@ class WarningMessageBox(QWidget):
 
     def close_fnc(self):
         self.close()
-
-'''
-    def setup_ui2(self):
-        icon_label = QLabel()
-
-        message_label = QLabel()
-
-        ok_button = QPushButton()
-
-        layout1 = QHBoxLayout()
-        layout2 = QHBoxLayout()
-        layout3 = QVBoxLayout()
-
-    def setup_ui3(self):
-        icon_label = QLabel()
-
-        message_label = QLabel()
-
-        yes_button = QPushButton()
-
-        cancel_button = QPushButton()
-
-        layout1 = QHBoxLayout()
-        layout2 = QHBoxLayout()
-        layout3 = QVBoxLayout()
-'''

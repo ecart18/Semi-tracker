@@ -41,14 +41,11 @@ class CorrectionTools(QWidget):
         add_instance_button.setFixedSize(QSize(20, 20))
         add_instance_button.setFlat(True)
         add_instance_button.setStyleSheet(qtooltips_style_sheet)
-        # add_instance_button.clicked.connect(self.add_instance_fnc)
 
         instances_widget = QListWidget()
         instances_widget.setStyleSheet(self.instance_widget_stylesheet)
         instances_widget.setIconSize(QSize(30, 30))
         instances_widget.setFont(QFont("Verdana", 10))
-        # instances_widget.clicked.connect(self.instances_widget_fnc)
-        # instances_widget.doubleClicked.connect(self.instances_widget_fnc_double)
 
         size_editor = QLineEdit()
         size_editor.setFixedSize(QSize(20, 20))
@@ -59,7 +56,6 @@ class CorrectionTools(QWidget):
                                   "border: 0px;"
                                   "border-radius: 3px;"
                                   "color: white;")
-        # size_editor.textChanged.connect(self.size_editer_fnc)
 
         size_left_button = QPushButton()
         size_left_button.setIcon(QIcon((get_icon("left.png"))))
@@ -67,7 +63,6 @@ class CorrectionTools(QWidget):
         size_left_button.setFixedSize(QSize(15, 15))
         size_left_button.setFlat(True)
         size_left_button.setStyleSheet(qtooltips_style_sheet)
-        # size_left_button.clicked.connect(self.size_left_fnc)
 
         size_right_button = QPushButton()
         size_right_button.setIcon(QIcon((get_icon("right.png"))))
@@ -75,16 +70,6 @@ class CorrectionTools(QWidget):
         size_right_button.setFixedSize(QSize(15, 15))
         size_right_button.setFlat(True)
         size_right_button.setStyleSheet(qtooltips_style_sheet)
-        # size_right_button.clicked.connect(self.size_right_fnc)
-
-        switch_show_button = QPushButton()
-        switch_show_button.setToolTip("Change the showing contents")
-        switch_show_button.setIcon(QIcon((get_icon("switch.png"))))
-        switch_show_button.setIconSize(QSize(18, 18))
-        switch_show_button.setFixedSize(QSize(20, 20))
-        switch_show_button.setFlat(True)
-        switch_show_button.setStyleSheet(qtooltips_style_sheet)
-        # switch_show_button.clicked.connect(self.switch_show_fnc)
 
         brush_button = QPushButton()
         brush_button.setToolTip("Brush")
@@ -93,7 +78,6 @@ class CorrectionTools(QWidget):
         brush_button.setFixedSize(QSize(25, 25))
         brush_button.setFlat(True)
         brush_button.setStyleSheet(qtooltips_style_sheet)
-        # brush_button.clicked.connect(self.draw_mask_fnc)
 
         eraser_button = QPushButton()
         eraser_button.setToolTip("Eraser")
@@ -102,7 +86,6 @@ class CorrectionTools(QWidget):
         eraser_button.setFixedSize(QSize(25, 25))
         eraser_button.setFlat(True)
         eraser_button.setStyleSheet(qtooltips_style_sheet)
-        # eraser_button.clicked.connect(self.mask_eraser_fnc)
 
         drag_button = QPushButton()
         drag_button.setToolTip("Drag")
@@ -111,7 +94,6 @@ class CorrectionTools(QWidget):
         drag_button.setFixedSize(QSize(25, 25))
         drag_button.setFlat(True)
         drag_button.setStyleSheet(qtooltips_style_sheet)
-        # drag_button.clicked.connect(self.mask_drag_fnc)
 
         confirm_button = QPushButton()
         confirm_button.setToolTip("Update all changes")
@@ -120,7 +102,6 @@ class CorrectionTools(QWidget):
         confirm_button.setFixedSize(QSize(25, 25))
         confirm_button.setFlat(True)
         confirm_button.setStyleSheet(qtooltips_style_sheet)
-        # confirm_button.clicked.connect(self.mask_confirm_fnc)
 
         delete_button = QPushButton()
         delete_button.setToolTip("Delete chose cell")
@@ -129,7 +110,6 @@ class CorrectionTools(QWidget):
         delete_button.setFixedSize(QSize(25, 25))
         delete_button.setFlat(True)
         delete_button.setStyleSheet(qtooltips_style_sheet)
-        # delete_button.clicked.connect(self.instance_delete_fnc)
 
         assist_frame = pg.ImageView(self)
         assist_frame.ui.roiBtn.hide()
@@ -156,7 +136,6 @@ class CorrectionTools(QWidget):
         sub_layout_bottom.addLayout(size_layout)
         sub_layout_bottom.addWidget(drag_button)
         sub_layout_bottom.addWidget(confirm_button)
-        sub_layout_bottom.addWidget(switch_show_button)
 
         annotation_layout = QVBoxLayout()
         annotation_layout.addLayout(sub_layout_top)
@@ -164,13 +143,6 @@ class CorrectionTools(QWidget):
         annotation_layout.addLayout(sub_layout_bottom)
         annotation_layout.setSpacing(3)
         annotation_layout.setContentsMargins(5, 5, 5, 0)
-
-        '''
-        draw_mask_layout = QHBoxLayout()
-        draw_mask_layout.addLayout(sub_mask_layout1)
-        draw_mask_layout.setSpacing(3)
-        draw_mask_layout.setContentsMargins(5, 5, 5, 0)  # 左 上 右 下
-        '''
 
         assist_layout = QVBoxLayout()
         assist_layout.addWidget(assist_frame)
@@ -191,7 +163,6 @@ class CorrectionTools(QWidget):
         self.brush_button           = brush_button
         self.confirm_button         = confirm_button
         self.eraser_button          = eraser_button
-        self.switch_show_button     = switch_show_button
         self.add_instance_button    = add_instance_button
         self.instances_widget       = instances_widget
         self.delete_button          = delete_button
