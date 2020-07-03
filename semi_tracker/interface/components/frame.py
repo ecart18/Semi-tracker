@@ -316,7 +316,6 @@ class Frame(object):
 
     def auto_labling(self, color_groups):
         labels = np.delete(np.unique(self._label_img), 0)
-        # print(labels)
         self._label_max = labels.max()
         self._label_n = len(labels)
         self._raw_color_img = np.copy(self._raw_img).astype(np.float32)

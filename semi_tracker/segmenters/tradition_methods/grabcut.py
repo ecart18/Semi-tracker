@@ -31,34 +31,3 @@ class GrabCut:
         binary_mask = np.where((mask == 2) | (mask == 0), 0, obj_idx).astype('uint8')
         binary_mask = np.expand_dims(binary_mask, axis=2)  # 0 and obj_idx
         return binary_mask
-
-    '''
-    def __call__(self, img, rect):
-        if not self.label_img:
-            obj_idx = 1
-            self.label_img = self._single_seg(img, rect, obj_idx)
-        else:
-            obj_idx = np.max(self.label_img) + 1
-            self.label_img += self._single_seg(img, rect, obj_idx)
-        return self.label_img 
-    '''
-
-
-if __name__ == '__main__':
-    def visual(img, label_img):
-        label = np.unique(label_img)
-        height, width = img.shape[:2]
-        visual_img = np.zeros((height, width, 3))
-        for lab in label:
-            if lab == 0:
-                continue
-            color = np.random.randint(low=0, high=255, size=3)
-            visual_img[label_img==lab, :] = color
-        return img.astype(np.uint8), visual_img.astype(np.uint8)
-
-    img = cv2.imread('../../../debug_scripts/test_imgs/min_max.jpg')
-    seg = GrabCut()
-    label_img = seg(img, rect=[85,85,85+55,85+55], obj_idx=1)
-    img, visual_img = visual(img, label_img)
-    cv2.imwrite('./img.png', img)
-    cv2.imwrite('./results.png', visual_img)

@@ -39,8 +39,6 @@ class Recorder:
             for pre_index in self.all_frame_index[:-1]:
                 iou = InferenceUtil.get_iou(self.all_boxes[pre_index], boxes)
                 self.all_iou[frame_index][pre_index] = iou
-        else:
-            print('currently frame index {} is already exist'.format(frame_index))
 
     def get_region(self, frame_index, detection_index):
         '''

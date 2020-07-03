@@ -37,7 +37,7 @@ from ..segmenters import get_segmenter
 from ..trackers import get_tracker
 from ..writer import get_writer
 from .utils import get_icon, slide_stylesheet, general_qss
-from ..utils import logger, Logger
+from ..utils import logger
 from semi_tracker import PACKAGEPATH
 from semi_tracker.segmenters.unet import TrainParameters, TrainerWrapper
 
@@ -45,25 +45,23 @@ from semi_tracker.segmenters.unet import TrainParameters, TrainerWrapper
 class MainWindow(QMainWindow):
     # MainWindow
     # contains:
-    #
 
     def __init__(self, parent=None):
         super().__init__()
 
         pg.setConfigOption('imageAxisOrder', 'row-major')
-
-        mkdir(os.path.join(PACKAGEPATH, "../output"))
+        default_output_folder = os.path.join(PACKAGEPATH, "../output")
+        mkdir(default_output_folder)
         mkdir(os.path.join(PACKAGEPATH, "../checkpoint"))
         self.open_path = os.path.join(PACKAGEPATH, "../output")
-        self.project_path       = os.path.join(PACKAGEPATH, "../output/untitled")
+        self.project_path = os.path.join(PACKAGEPATH, "../output/untitled")
         mkdir(self.project_path)
-        # self.unet_model_path    = os.path.join(PACKAGEPATH, "../checkpoint/model_best.pth.tar")
+        logger.info('The default output folder is setted to: %s' % self.project_path)
         self.unet_model_path = None
         self.last_index         = 0             # left navigation update
         self.frames_num         = 0             # num of frames
         self.frames             = collections.OrderedDict()
         self.show_flag          = 1    # 1:raw raw 2.mask raw 3.color+raw raw 4.annotation: raw label_img
-        # self.status_flag        = 0
         self.segmenter_dict     = {0: 'binary_thresholding', 1: 'unet', 2: 'water_shed', 3: 'grab_cut', 4: 'User-defined'}
         self.segmenter_name     = 'binary_thresholding'
         self.segment_flag        = 0
@@ -555,7 +553,7 @@ class MainWindow(QMainWindow):
             self.origin_first_message_box.show()
         else:
             self.result_dir_path = QFileDialog.getExistingDirectory()
-            # print(self.result_dir_path)
+            logger.info('The annotation result save path is: %s' % self.result_dir_path)
             if len(self.result_dir_path) > 0:
                 if len(os.listdir(self.result_dir_path)) > 0:
                     self.continue_annotation_message_box = QuestionMessageBox("Do you want to continue the last annotation?")
@@ -724,7 +722,7 @@ class MainWindow(QMainWindow):
                 name = "annotation_" + file_name + ".tif"
                 annotation_path = os.path.join(self.result_dir_path, name)
                 annotation_path = "/".join([self.result_dir_path, name])
-                print(annotation_path)
+                logger.info('Annotation image saved in : %s' % annotation_path)
                 if self.frames[key].label_img.max() > 0:
                     imageio.imwrite(annotation_path, self.frames[key].label_img.astype(np.uint16))
         else:

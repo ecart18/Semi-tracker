@@ -14,7 +14,6 @@ from ..utils import non_max_suppression
 from ..utils import TrackerHyperParams
 
 
-
 class BiTracker:
     def __init__(self):
 
@@ -35,8 +34,6 @@ class BiTracker:
         self.predict_detections = []
 
         self.img_sz = None
-
-        
 
     def get_all_tracks(self):
         return self.tracks.get_all_tracks(minimal_len=self.minimal_tracklet_len)
@@ -145,15 +142,6 @@ class BiTracker:
                 detections_filter.append(detections[idx, :])
         return regions, np.array(detections_filter)
 
-    def predict(self):
-        pass
-        # self.predict_detections = []
-        # for t in self.tracks.tracks:
-        #     if t.get_track_missed_frame() < 5:
-        #         predicted_bbox = t.predicted_bbox
-        #         if predicted_bbox is not None:
-        #             self.predict_detections.append(predicted_bbox)
-        # self.predict_detections = np.array(self.predict_detections)
 
     def update_track(self, frame_index, img_size, detections, mask):
         """
@@ -180,7 +168,6 @@ class BiTracker:
                                             regions=regions[index],
                                             kalman_filter=self.kalman_filter)
             self.tracks.one_frame_pass()
-            self.predict()
             return True
         else:
             distance = []
@@ -242,37 +229,8 @@ class BiTracker:
                                                   regions=self.recorder.get_region(self.frame_index, det_id),
                                                   kalman_filter=self.kalman_filter)
 
-                
-                # # update the tracks for no mitosis
-                # for track_id, det_id in assigned_pairs_id:
-                #     track = self.tracks.get_track_by_id(track_id)
-                #     track.update_track(frame_index=self.frame_index,
-                #                        det_id=det_id,
-                #                        region=self.recorder.get_region(self.frame_index, det_id),
-                #                        kalman_filter=self.kalman_filter,
-                #                        visual_mode=False)
-
-                # for track_id in unassigned_tracks_id:
-                #     track = self.tracks.get_track_by_id(track_id)
-                #     track.update_track(frame_index=self.frame_index,
-                #                        det_id=None, 
-                #                        region=None,
-                #                        kalman_filter=self.kalman_filter,
-                #                        visual_mode=False)
-
-                # # add new track
-                # for det_id in unassigned_detections_id:
-                #     _ = self.tracks.add_new_track(frame_index=self.frame_index,
-                #                                  det_id=det_id,
-                #                                  regions=self.recorder.get_region(self.frame_index, det_id),
-                #                                  kalman_filter=self.kalman_filter)
-                # remove the old track
-                # self.tracks.one_frame_pass()
-                # self.predict()
-            
             # remove the old track
             self.tracks.one_frame_pass(saved_ids=parent_track)
-            self.predict()
 
         return True
 

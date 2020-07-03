@@ -112,19 +112,6 @@ class Preprocessor(Augmentation):
         if self.weighted_type == 'sample_balance':
             weight = make_balance_weight_map(label)
 
-        # # binary label
-        # label[label > 0] = 255
-        # label = label.astype(np.uint8)
-       
-        # # Transforms
-        # transform = {
-            # 'image': Compose([ToTensor()]),
-        #     'label': Compose([ToTensor()])
-        # }
-
-        # if transform is not None:
-        #     image = transform['image'](image)
-        #     label = transform['label'](label)
 
         label[label > 0] = 1.0
         label = label.astype(np.float32)

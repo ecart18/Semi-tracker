@@ -5,6 +5,7 @@ from __future__ import print_function, absolute_import
 import os.path as osp
 import numpy as np
 from ..utils import read_json, mkdir
+from semi_tracker.utils import logger
 
 
 def _pluck(images, labels):
@@ -46,6 +47,14 @@ class Benchmark(object):
             print("  train    | {:8d}"
                   .format(num_train))
             print("  val      | {:8d}"
+                  .format(num_val))
+
+            logger.info(self.__class__.__name__, "dataset loaded")
+            logger.info("  subset   | # images")
+            logger.info("  ---------------------------")
+            logger.info("  train    | {:8d}"
+                  .format(num_train))
+            logger.info("  val      | {:8d}"
                   .format(num_val))
 
     def _check_integrity(self):

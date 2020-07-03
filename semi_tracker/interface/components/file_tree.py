@@ -4,10 +4,8 @@ import os
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtCore import QFileInfo, QUrl
-# from PyQt5 import *
 from PyQt5 import QtGui
 from PyQt5 import QtCore
-# from ....semi_tracker import PACKAGEPATH
 
 
 class FileTree(QWidget):
