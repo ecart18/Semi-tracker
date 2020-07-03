@@ -49,7 +49,7 @@ class Benchmark(object):
             print("  val      | {:8d}"
                   .format(num_val))
 
-            logger.info(self.__class__.__name__, "dataset loaded")
+            logger.info("%s dataset loaded" % self.__class__.__name__)
             logger.info("  subset   | # images")
             logger.info("  ---------------------------")
             logger.info("  train    | {:8d}"
