@@ -13,10 +13,11 @@ from .utils import mkdir
 from .utils import load_params
 from ..utils import bgr_to_gray
 from ..utils import gray_to_bgr
+from ..utils import instance_filtering
 
 
 class Unet:
-    def __init__(self, model_path, threshold=0.5, scale_img=0.5, device='cpu'):
+    def __init__(self, model_path, minimal_size=0, threshold=0.5, scale_img=0.5, device='cpu'):
         if torch.cuda.is_available() and device=='gpu':
             self._device = 'cuda'
         else:
@@ -24,6 +25,7 @@ class Unet:
         self._scale_img = scale_img
         self._model_path = model_path
         self._threshold = threshold
+        self._minimal_size = minimal_size
         self._model = self._load_model(device=self._device)
 
     def _load_model(self, device):
@@ -57,5 +59,7 @@ class Unet:
             binary_mask[binary_mask >= self._threshold] = 1
             binary_mask = (255 * binary_mask).astype(np.uint8)
             binary_mask = np.expand_dims(binary_mask, 2)
-            _, label_img, _, _ = cv2.connectedComponentsWithStats(binary_mask, connectivity=4, ltype=cv2.CV_32S)        
-        return np.expand_dims(label_img, axis=2)
+            _, label_img, _, _ = cv2.connectedComponentsWithStats(binary_mask, connectivity=4, ltype=cv2.CV_32S)
+            label_img = np.expand_dims(label_img, axis=2)
+            label_img = instance_filtering(label_img, minimal_size=self._minimal_size)        
+        return label_img

@@ -13,3 +13,10 @@ def bgr_to_gray(img):
 def gray_to_bgr(img):
     img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
     return img
+
+
+def instance_filtering(label_img, minimal_size=0):
+    for label in np.unique(label_img):
+        if np.sum(label_img==label) < minimal_size:
+            label_img[label_img==label] = 0
+    return label_img

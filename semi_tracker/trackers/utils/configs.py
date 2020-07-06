@@ -12,10 +12,10 @@ class TrackerHyperParams:
     using_kfgating = False
     mitosis_th = 0.15
     dis_th = 1000.0
-    area_th = 10
+    area_th = 1
     edge_pixel = 0
     min_merge_threshold = 0.6
-    minimal_tracklet_len = 1
+    minimal_tracklet_len = 2
     roi_verify_max_iteration = 2
     roi_verify_punish_rate = 0.6
     max_frame_gap = 5 # association  

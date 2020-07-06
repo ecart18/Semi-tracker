@@ -4,7 +4,7 @@ from __future__ import absolute_import
 
 import cv2
 import numpy as np
-
+from ..utils import instance_filtering
 
 def bgr_to_gray(img):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -12,9 +12,10 @@ def bgr_to_gray(img):
 
 
 class WaterShed:
-    def __init__(self, noise_amplitude=5, dist_thresh=0.5):
+    def __init__(self, minimal_size=0, noise_amplitude=5, dist_thresh=0.5):
         self.noise_amplitude = noise_amplitude
         self.dist_thresh = 1 - dist_thresh
+        self._minimal_size = minimal_size
 
     def __call__(self, img, makers=None):
         gray = bgr_to_gray(img)
@@ -41,4 +42,6 @@ class WaterShed:
             label_img[label_img == -1] = 0  # edge
             label_img[label_img == 1] = 0  # background
             label_img = np.maximum(label_img - 1, 0)
-            return np.expand_dims(label_img, axis=2)
+            label_img = np.expand_dims(label_img, axis=2)
+            label_img = instance_filtering(label_img, minimal_size=self._minimal_size)
+            return label_img

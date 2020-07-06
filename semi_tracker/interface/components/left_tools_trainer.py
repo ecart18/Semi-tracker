@@ -46,7 +46,7 @@ class Trainer(QWidget):
         epoch_layout.addLayout(epoch_layout1)
 
         gpu_num_label = QLabel()
-        gpu_num_label.setText("Gpu number:")
+        gpu_num_label.setText("GPU number:")
         gpu_num_label.setStyleSheet("font-family: Verdana;"
                                          "color: white;")
 

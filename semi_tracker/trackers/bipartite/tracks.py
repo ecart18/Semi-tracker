@@ -293,7 +293,7 @@ class Tracks:
                 return t
         return None
 
-    def get_all_tracks(self, minimal_len=10):
+    def get_all_tracks(self, minimal_len=1):
         self.tracks = [t for t in self.tracks if len(t.nodes) >= minimal_len]
         self.saved_tracks = [t for t in self.saved_tracks if len(t.nodes) >= minimal_len]
         for t in self.tracks:

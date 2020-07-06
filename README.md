@@ -4,13 +4,20 @@ By [Tao Hu](https://gitlab.com/ecart18) & [Shixiong Xu](https://gitlab.com/xsx10
 
 The code for the official implementation of **Semi-tracker**. 
 
+This codebase provides: 
+- GUI for cell image analysis
+- GUI correction and annotation tools
+- GUI for deep CNN model training 
+- Python API for deep CNN model training
+- Two demo dataset for training and analysis
+
 ## Contents
 1. [Introduction](#introduction)
 2. [Environment Setup](#environment-setup)
 3. [Bibtex](#bibtex)
 
 ## Introduction <a name="introduction">
-SemiTracker is a highly integrated graph user interfaces software for the cell segmentation and tracking of time-lapse microscopy image. It covers essential steps for full analyzing procedure of microscopy image, including project management, image pre-processing, cell segmentation and tracking, manual correction and downstream statistical analysis such as cell property profiling and intensity quantification. Semi-tracker supports data annotation and model training from scratch, which provides a more flexible and scalable solution for customized datasets.
+Semi-Tracker is a highly integrated graph user interfaces software for the cell segmentation and tracking of time-lapse microscopy image. It covers essential steps for full analyzing procedure of microscopy image, including project management, image pre-processing, cell segmentation and tracking, manual correction and downstream statistical analysis such as cell property profiling and intensity quantification. Semi-tracker supports data annotation and model training from scratch, which provides a more flexible and scalable solution for customized datasets.
 
 <div align='center'><img align="middle" src="imgs/interface.png" width="70%" /><br></div>
 
@@ -23,9 +30,11 @@ SemiTracker is a highly integrated graph user interfaces software for the cell s
 - PyTorch 1.4 or higher.
 - CUDA 9.0 or higher if you need train deep learning model with gpu.
 
+**Steps of using Semi-Tracker:** 
+
 0. Install Python ref to [Download Python](https://www.python.org/downloads/)
 
-1. Install SemiTracker in virtualenv to keep your environment clean:
+1. Install Semi-Tracker in virtualenv to keep your environment clean:
 
     #### on macOS/Linux
     ```
@@ -34,7 +43,7 @@ SemiTracker is a highly integrated graph user interfaces software for the cell s
     cd SemiTrackerEnv
     source ./bin/activate
     ```
-    After use, shutdown virtual environment with
+    Optional: After use, shutdown virtual environment with
     ```
     deactivate
     ```
@@ -46,7 +55,7 @@ SemiTracker is a highly integrated graph user interfaces software for the cell s
     cd SemiTrackerEnv
     .\Scripts\activate.bat
     ```
-    Shutdown virtual environment with
+    Optional: Shutdown virtual environment with
     ```
     .\Scripts\deactivate.bat
     ```
@@ -86,17 +95,31 @@ SemiTracker is a highly integrated graph user interfaces software for the cell s
     pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
     ```
 
-5. Run SemiTracker with python and enjoy it. 
+5. Run Semi-Tracker with python and enjoy it. 
     ```
     python main.py
     ```
 
-6. If you need re-training deep CNN network with your customized datasets. 
+**Steps of re-training deep learning model:** 
+
+Semi-Tracker provides two methods to re-train deep CNN networks for your customized datasets. 
+
+**Warning:** Linux is strongly recommended for training deep learning model. Re-training with the Python API in a Linux terminal can avoid some unexpected environment dependency errors.
+
+0. re-training with User Interface.
+
+1. re-training with Python API in terminal.  Semi-Tracker provides two demo datasets and codes to help you get familiar with this feature, such as: 
     ```
     cd training_demo1  # or cd training_demo2
     python retraining.py
     ```
-    
+
+**Pretrained models download:** 
+
+Semi-Tracker provides two pretrained models for dataset of training_demo1 and training_demo2 respectively. Download them from the following link.
+- [demo1 pretrained model]()
+- [demo2 pretrained model]()
+
 
 ## Bibtex<a name="bibtex">
 Please consider citing our paper in your publications if the project helps your research. BibTeX reference is as follows.

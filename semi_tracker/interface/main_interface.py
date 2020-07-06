@@ -176,8 +176,10 @@ class MainWindow(QMainWindow):
             lambda: self.segment('binary_thresholding', threshold=self.tools.segment.thresh_sld1.value()))
         self.menu.unet_act.triggered.connect(
             lambda: self.segment('unet', model_path=self.unet_model_path,
+                                 scale_img=self.scale_img_list[self.tools.segment.scale_img_select.currentIndex()],
                                  device=self.tools.segment.device_select.currentText().lower(),
                                  threshold=self.tools.segment.thresh_sld2.value()/10))
+
         self.menu.water_act.triggered.connect(
             lambda: self.segment('water_shed', noise_amplitude=self.tools.segment.noise_sld.value(),
                                  dist_thresh=self.tools.segment.dist_thresh_sld.value()/10))
@@ -306,7 +308,7 @@ class MainWindow(QMainWindow):
     def set_source_button_fnc(self):
         source_img_root = QFileDialog.getExistingDirectory()
         if self.has_chinese(source_img_root):
-            self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese words.")
+            self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese characters.")
             self.chinese_path_message_box.show()
         else:
             self.source_img_root = source_img_root
@@ -315,7 +317,7 @@ class MainWindow(QMainWindow):
     def set_label_button_fnc(self):
         label_img_root = QFileDialog.getExistingDirectory()
         if self.has_chinese(label_img_root):
-            self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese words.")
+            self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese characters.")
             self.chinese_path_message_box.show()
         else:
             self.label_img_root = label_img_root
@@ -324,7 +326,7 @@ class MainWindow(QMainWindow):
     def set_log_button_fnc(self):
         log_root = QFileDialog.getExistingDirectory()
         if self.has_chinese(log_root):
-            self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese words.")
+            self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese characters.")
             self.chinese_path_message_box.show()
         else:
             self.log_root = log_root
@@ -538,7 +540,7 @@ class MainWindow(QMainWindow):
     def new_project_fnc(self):
         dir_path = QFileDialog.getExistingDirectory()
         if self.has_chinese(dir_path):
-            self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese words.")
+            self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese characters.")
             self.chinese_path_message_box.show()
         elif not dir_path:
             self.blank_path_message_box = WarningMessageBox("Please select a valid path.")
@@ -549,7 +551,7 @@ class MainWindow(QMainWindow):
 
     def result_path_fnc(self):
         if len(self.frames) == 0:
-            self.origin_first_message_box = InformationMessageBox("Please select the origin images first!")
+            self.origin_first_message_box = InformationMessageBox("Please load the origin images first!")
             self.origin_first_message_box.show()
         else:
             self.result_dir_path = QFileDialog.getExistingDirectory()
@@ -605,7 +607,7 @@ class MainWindow(QMainWindow):
 
     def new_annotation(self):
         if self.has_chinese(self.result_dir_path):
-            self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese words.")
+            self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese characters.")
             self.chinese_path_message_box.show()
         else:
             self.tools.annotation.result_path_show_lineedit.setText(self.result_dir_path)
@@ -630,7 +632,7 @@ class MainWindow(QMainWindow):
 
     def continue_annotation_message_box_cancel(self):
         if self.has_chinese(self.result_dir_path):
-            self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese words.")
+            self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese characters.")
             self.chinese_path_message_box.show()
         else:
             self.tools.annotation.result_path_show_lineedit.setText(self.result_dir_path)
@@ -661,11 +663,11 @@ class MainWindow(QMainWindow):
         self.files_loader()
 
     def files_loader(self):
-        filenames = QFileDialog.getOpenFileNames(None, "Select lsm data files to concatenate...",
+        filenames = QFileDialog.getOpenFileNames(None, "Select image files ...",
                                                  filter="*bmp *.tif *.png *.jpg *.JPEG *avi *mp4 *mpg")[0]
         if not filenames == []:
             if self.has_chinese(filenames[0]):
-                self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese words.")
+                self.chinese_path_message_box = WarningMessageBox("Please select a path without chinese characters.")
                 self.chinese_path_message_box.show()
             else:
                 self.frames = load_images(filenames)
@@ -986,7 +988,7 @@ class MainWindow(QMainWindow):
             self.instances_setting.confirm_button.clicked.connect(self.add_instance_main)
             self.instances_setting.show()
         else:
-            self.add_instance_message_box = InformationMessageBox("Please finish the previous work first!")
+            self.add_instance_message_box = InformationMessageBox("Please do segmentation first!")
             self.add_instance_message_box.show()
 
     def add_instance_main(self):
