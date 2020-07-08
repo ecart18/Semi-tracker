@@ -18,6 +18,16 @@ class SegmentTools(QWidget):
         self.segment_tools.setContentsMargins(20, 0, 0, 0)
         self.segment_tools.setStyleSheet("background: #323232")
 
+        self.qtooltips_stylesheet =  """
+        QPushButton {border:0px;}
+        QToolTip
+            {
+                font-family: Verdana;
+                color: black;
+                background-color: rgb(255, 255, 255);
+            }
+        """
+
         self.setup_ui()
 
     def setup_ui(self):
@@ -135,6 +145,44 @@ class SegmentTools(QWidget):
                                        "font-family: Verdana;")
         thresh_textline1.textEdited.connect(self.text2sld1)
 
+        thresh_min_size_label = QLabel()
+        thresh_min_size_label.setText("Minimal size:")
+        thresh_min_size_label.setAlignment(Qt.AlignLeft)
+        thresh_min_size_label.setStyleSheet("font-family: Verdana;"
+                                          "color: white;")
+
+        thresh_min_size_editor = QLineEdit()
+        thresh_min_size_editor.setFixedSize(QSize(50, 20))
+        thresh_min_size_editor.setAlignment(Qt.AlignCenter)
+        thresh_min_size_editor.setText(str(0))
+        thresh_min_size_editor.setValidator(QIntValidator())
+        thresh_min_size_editor.setStyleSheet("background: #545454;"
+                                           "border: 0px;"
+                                           "border-radius: 3px;"
+                                           "color: white;")
+
+        thresh_min_size_left_button = QPushButton()
+        thresh_min_size_left_button.setIcon(QIcon((get_icon("left.png"))))
+        thresh_min_size_left_button.setIconSize(QSize(15, 15))
+        thresh_min_size_left_button.setFixedSize(QSize(15, 15))
+        thresh_min_size_left_button.setFlat(True)
+        thresh_min_size_left_button.setStyleSheet(self.qtooltips_stylesheet)
+        thresh_min_size_left_button.clicked.connect(self.min_size_left_fnc1)
+
+        thresh_min_size_right_button = QPushButton()
+        thresh_min_size_right_button.setIcon(QIcon((get_icon("right.png"))))
+        thresh_min_size_right_button.setIconSize(QSize(15, 15))
+        thresh_min_size_right_button.setFixedSize(QSize(15, 15))
+        thresh_min_size_right_button.setFlat(True)
+        thresh_min_size_right_button.setStyleSheet(self.qtooltips_stylesheet)
+        thresh_min_size_right_button.clicked.connect(self.min_size_right_fnc1)
+
+        thresh_min_size_layout = QHBoxLayout()
+        thresh_min_size_layout.addWidget(thresh_min_size_label)
+        thresh_min_size_layout.addWidget(thresh_min_size_left_button)
+        thresh_min_size_layout.addWidget(thresh_min_size_editor)
+        thresh_min_size_layout.addWidget(thresh_min_size_right_button)
+
         thresh_segment_button = QPushButton()
         thresh_segment_button.setFixedSize(180, 20)
         thresh_segment_button.setText("Threshold")
@@ -153,6 +201,7 @@ class SegmentTools(QWidget):
 
         segment_algorithm1_layout.addLayout(segment_algorithm1_layout1)
         segment_algorithm1_layout.addLayout(segment_algorithm1_layout2)
+        segment_algorithm1_layout.addLayout(thresh_min_size_layout)
         segment_algorithm1_layout.addLayout(segment_algorithm1_layout3)
         segment_algorithm1_layout.setAlignment(Qt.AlignTop)
 
@@ -161,6 +210,9 @@ class SegmentTools(QWidget):
         self.thresh_label1          = thresh_label1
         self.thresh_textline1       = thresh_textline1
         self.thresh_segment_button  = thresh_segment_button
+        self.thresh_min_size_editor = thresh_min_size_editor
+        self.thresh_min_size_left_button = thresh_min_size_left_button
+        self.thresh_min_size_right_button = thresh_min_size_right_button
 
     def init_seg2(self):
         segment_algorithm2 = QWidget()
@@ -233,7 +285,7 @@ class SegmentTools(QWidget):
         scale_img_select.addItem("0.5")
         scale_img_select.addItem("0.25")
         scale_img_select.addItem("0.125")
-        scale_img_select.setCurrentIndex(3)
+        scale_img_select.setCurrentIndex(2)
 
         scale_img_layout = QHBoxLayout()
         scale_img_layout.addWidget(scale_img_label)
@@ -263,6 +315,44 @@ class SegmentTools(QWidget):
                                        "font-family: Verdana;")
         thresh_textline2.textEdited.connect(self.text2sld2)
 
+        unet_min_size_label = QLabel()
+        unet_min_size_label.setText("Minimal size:")
+        unet_min_size_label.setAlignment(Qt.AlignLeft)
+        unet_min_size_label.setStyleSheet("font-family: Verdana;"
+                                    "color: white;")
+
+        unet_min_size_editor = QLineEdit()
+        unet_min_size_editor.setFixedSize(QSize(50, 20))
+        unet_min_size_editor.setAlignment(Qt.AlignCenter)
+        unet_min_size_editor.setText(str(0))
+        unet_min_size_editor.setValidator(QIntValidator())
+        unet_min_size_editor.setStyleSheet("background: #545454;"
+                                  "border: 0px;"
+                                  "border-radius: 3px;"
+                                  "color: white;")
+
+        unet_min_size_left_button = QPushButton()
+        unet_min_size_left_button.setIcon(QIcon((get_icon("left.png"))))
+        unet_min_size_left_button.setIconSize(QSize(15, 15))
+        unet_min_size_left_button.setFixedSize(QSize(15, 15))
+        unet_min_size_left_button.setFlat(True)
+        unet_min_size_left_button.setStyleSheet(self.qtooltips_stylesheet)
+        unet_min_size_left_button.clicked.connect(self.min_size_left_fnc2)
+
+        unet_min_size_right_button = QPushButton()
+        unet_min_size_right_button.setIcon(QIcon((get_icon("right.png"))))
+        unet_min_size_right_button.setIconSize(QSize(15, 15))
+        unet_min_size_right_button.setFixedSize(QSize(15, 15))
+        unet_min_size_right_button.setFlat(True)
+        unet_min_size_right_button.setStyleSheet(self.qtooltips_stylesheet)
+        unet_min_size_right_button.clicked.connect(self.min_size_right_fnc2)
+
+        unet_min_size_layout = QHBoxLayout()
+        unet_min_size_layout.addWidget(unet_min_size_label)
+        unet_min_size_layout.addWidget(unet_min_size_left_button)
+        unet_min_size_layout.addWidget(unet_min_size_editor)
+        unet_min_size_layout.addWidget(unet_min_size_right_button)
+
         unet_segment_button = QPushButton()
         unet_segment_button.setFixedSize(180, 20)
         unet_segment_button.setText("U-net segment")
@@ -288,6 +378,7 @@ class SegmentTools(QWidget):
         segment_algorithm2_layout.addLayout(scale_img_layout)
         segment_algorithm2_layout.addLayout(segment_algorithm2_layout2)
         segment_algorithm2_layout.addLayout(segment_algorithm2_layout3)
+        segment_algorithm2_layout.addLayout(unet_min_size_layout)
         segment_algorithm2_layout.addLayout(segment_algorithm2_layout4)
         segment_algorithm2_layout.setAlignment(Qt.AlignTop)
         segment_algorithm2_layout.setSpacing(5)
@@ -303,6 +394,9 @@ class SegmentTools(QWidget):
         self.thresh_textline2       = thresh_textline2
         self.unet_segment_button    = unet_segment_button
         self.scale_img_select = scale_img_select
+        self.unet_min_size_editor   = unet_min_size_editor
+        self.unet_min_size_left_button = unet_min_size_left_button
+        self.unet_min_size_right_button = unet_min_size_right_button
 
     def init_seg3(self):
         segment_algorithm3 = QWidget()
@@ -365,6 +459,44 @@ class SegmentTools(QWidget):
                                      "font-family: Verdana;")
         dist_thresh_textline.textEdited.connect(self.text2sld32)
 
+        watershed_min_size_label = QLabel()
+        watershed_min_size_label.setText("Minimal size:")
+        watershed_min_size_label.setAlignment(Qt.AlignLeft)
+        watershed_min_size_label.setStyleSheet("font-family: Verdana;"
+                                          "color: white;")
+
+        watershed_min_size_editor = QLineEdit()
+        watershed_min_size_editor.setFixedSize(QSize(50, 20))
+        watershed_min_size_editor.setAlignment(Qt.AlignCenter)
+        watershed_min_size_editor.setText(str(0))
+        watershed_min_size_editor.setValidator(QIntValidator())
+        watershed_min_size_editor.setStyleSheet("background: #545454;"
+                                           "border: 0px;"
+                                           "border-radius: 3px;"
+                                           "color: white;")
+
+        watershed_min_size_left_button = QPushButton()
+        watershed_min_size_left_button.setIcon(QIcon((get_icon("left.png"))))
+        watershed_min_size_left_button.setIconSize(QSize(15, 15))
+        watershed_min_size_left_button.setFixedSize(QSize(15, 15))
+        watershed_min_size_left_button.setFlat(True)
+        watershed_min_size_left_button.setStyleSheet(self.qtooltips_stylesheet)
+        watershed_min_size_left_button.clicked.connect(self.min_size_left_fnc3)
+
+        watershed_min_size_right_button = QPushButton()
+        watershed_min_size_right_button.setIcon(QIcon((get_icon("right.png"))))
+        watershed_min_size_right_button.setIconSize(QSize(15, 15))
+        watershed_min_size_right_button.setFixedSize(QSize(15, 15))
+        watershed_min_size_right_button.setFlat(True)
+        watershed_min_size_right_button.setStyleSheet(self.qtooltips_stylesheet)
+        watershed_min_size_right_button.clicked.connect(self.min_size_right_fnc3)
+
+        watershed_min_size_layout = QHBoxLayout()
+        watershed_min_size_layout.addWidget(watershed_min_size_label)
+        watershed_min_size_layout.addWidget(watershed_min_size_left_button)
+        watershed_min_size_layout.addWidget(watershed_min_size_editor)
+        watershed_min_size_layout.addWidget(watershed_min_size_right_button)
+
         watershed_segment_button = QPushButton()
         watershed_segment_button.setFixedSize(180, 20)
         watershed_segment_button.setText("WaterShed")
@@ -390,6 +522,7 @@ class SegmentTools(QWidget):
         segment_algorithm3_layout.addLayout(segment_algorithm3_layout2)
         segment_algorithm3_layout.addLayout(segment_algorithm3_layout3)
         segment_algorithm3_layout.addLayout(segment_algorithm3_layout4)
+        segment_algorithm3_layout.addLayout(watershed_min_size_layout)
         segment_algorithm3_layout.addLayout(segment_algorithm3_layout5)
         segment_algorithm3_layout.setAlignment(Qt.AlignTop)
         segment_algorithm3_layout.setSpacing(5)
@@ -403,6 +536,9 @@ class SegmentTools(QWidget):
         self.dist_thresh_label    = dist_thresh_label
         self.dist_thresh_textline = dist_thresh_textline
         self.watershed_segment_button = watershed_segment_button
+        self.watershed_min_size_editor  = watershed_min_size_editor
+        self.watershed_min_size_left_button = watershed_min_size_left_button
+        self.watershed_min_size_right_button = watershed_min_size_right_button
 
     def init_seg4(self):
         segment_algorithm4 = QWidget()
@@ -612,6 +748,33 @@ class SegmentTools(QWidget):
                                                      "border: 0px;"
                                                      "text-align:left;"
                                                      "color: #FFFFFF")
+
+    def min_size_left_fnc1(self):
+        v = int(self.thresh_min_size_editor.text())
+        if v > 1:
+            self.thresh_min_size_editor.setText(str(v - 1))
+
+    def min_size_right_fnc1(self):
+        v = int(self.thresh_min_size_editor.text())
+        self.thresh_min_size_editor.setText(str(v + 1))
+
+    def min_size_left_fnc2(self):
+        v = int(self.unet_min_size_editor.text())
+        if v > 1:
+            self.unet_min_size_editor.setText(str(v - 1))
+
+    def min_size_right_fnc2(self):
+        v = int(self.unet_min_size_editor.text())
+        self.unet_min_size_editor.setText(str(v + 1))
+
+    def min_size_left_fnc3(self):
+        v = int(self.watershed_min_size_editor.text())
+        if v > 1:
+            self.watershed_min_size_editor.setText(str(v - 1))
+
+    def min_size_right_fnc3(self):
+        v = int(self.watershed_min_size_editor.text())
+        self.watershed_min_size_editor.setText(str(v + 1))
 
     def segment_algorithm2_tool_button_fnc(self):
         if self.segment_algorithm2.isVisible():
