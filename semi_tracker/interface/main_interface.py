@@ -222,7 +222,8 @@ class MainWindow(QMainWindow):
 
         # seg alg1
         self.tools.segment.thresh_segment_button.clicked.connect(
-            lambda: self.segment('binary_thresholding', threshold=self.tools.segment.thresh_sld1.value()))
+            lambda: self.segment('binary_thresholding', threshold=self.tools.segment.thresh_sld1.value(),
+                                 minimal_size=int(self.tools.segment.thresh_min_size_editor.text())))
 
         # seg alg2
         self.tools.segment.model_browse_button.clicked.connect(self.model_select_fnc)
@@ -230,12 +231,14 @@ class MainWindow(QMainWindow):
             lambda: self.segment('unet', model_path=self.unet_model_path,
                                  scale_img=self.scale_img_list[self.tools.segment.scale_img_select.currentIndex()],
                                  device=self.tools.segment.device_select.currentText().lower(),
-                                 threshold=self.tools.segment.thresh_sld2.value()/10))
+                                 threshold=self.tools.segment.thresh_sld2.value()/10,
+                                 minimal_size=int(self.tools.segment.thresh_min_size_editor.text())))
 
         # seg alg3
         self.tools.segment.watershed_segment_button.clicked.connect(
             lambda: self.segment('water_shed', noise_amplitude=self.tools.segment.noise_sld.value(),
-                                 dist_thresh=self.tools.segment.dist_thresh_sld.value()/10))
+                                 dist_thresh=self.tools.segment.dist_thresh_sld.value()/10,
+                                 minimal_size=int(self.tools.segment.thresh_min_size_editor.text())))
 
         # seg alg4
         self.tools.segment.select_roi_button.clicked.connect(self.select_roi_button_fnc)
@@ -759,6 +762,9 @@ class MainWindow(QMainWindow):
             self.brush_message_box = InformationMessageBox("Please do segmentation first!")
             self.brush_message_box.show()
         elif self.annotation_flag == 1 or self.annotation_flag == 2:
+            if self.bboxroi is not None:
+                self.visualize.main_frame.removeItem(self.bboxroi)
+                self.bboxroi = None
             self.brush_flag = 1
             ssv = int(self.correction.size_editor.text())
             pix = QPixmap(get_icon("circle.png"))
@@ -778,6 +784,9 @@ class MainWindow(QMainWindow):
                 self.brush_message_box = InformationMessageBox("Please select a cell first!")
                 self.brush_message_box.show()
         elif self.annotation_flag == 0:
+            if self.bboxroi is not None:
+                self.visualize.main_frame.removeItem(self.bboxroi)
+                self.bboxroi = None
             self.brush_flag = 1
             ssv = int(self.correction.size_editor.text())
             pix = QPixmap(get_icon("circle.png"))
@@ -819,6 +828,10 @@ class MainWindow(QMainWindow):
                 self.eraser_message_box.show()
         elif self.annotation_flag == 0:
             self.brush_flag = 0
+            self.brush_flag = 0
+            pix = QPixmap(get_icon("eraser1.png"))
+            cursor = QCursor(pix)
+            self.visualize_window.setCursor(cursor)
             self.show_flag = 4
             self.visualize.main_frame.getImageItem().mouseDragEvent = self.eraser_drag1
         else:
@@ -944,10 +957,11 @@ class MainWindow(QMainWindow):
         event.ignore()
 
     def size_editor_fnc(self):
-        if int(self.correction.size_editor.text()) > 10:
-            self.correction.size_editor.setText(str(10))
-        elif int(self.correction.size_editor.text()) < 1:
-            self.correction.size_editor.setText(str(1))
+        if not len(self.correction.size_editor.text()) == 0:
+            if int(self.correction.size_editor.text()) > 10:
+                self.correction.size_editor.setText(str(10))
+            elif int(self.correction.size_editor.text()) < 1:
+                self.correction.size_editor.setText(str(1))
 
     def size_left_fnc(self):
         v = int(self.correction.size_editor.text())
@@ -972,7 +986,8 @@ class MainWindow(QMainWindow):
                 self.visualize_window.setCursor(cursor)
 
     def add_instance_fnc(self):
-
+        if self.annotation_flag == 2:
+            self.timer_fnc()
         if self.annotation_flag == 0:
             self.instances_setting = InstanceSettings(self.my_colors, self.frames[self.visualize.main_sld.value()].raw_img,
                                                       self.frames[self.visualize.main_sld.value()].label_max+1,
@@ -1130,15 +1145,27 @@ class MainWindow(QMainWindow):
     # algorithm API
     def normalize(self, name):
         self.normalizer_name = name
+
         if not len(self.frames) == 0:
+            self.status.progressbar.setMaximum(self.frames_num)
             QApplication.processEvents()
             self.status.work_info_label.setText("Normalizing...")
+            QApplication.processEvents()
+            self.status.progressbar.setVisible(True)
+            QApplication.processEvents()
             normalizer = get_normalizer(name=name)
+            t = 1
             for key in self.frames.keys():
                 self.frames[key].norm_img = normalizer(self.frames[key].raw_img)
+                QApplication.processEvents()
+                self.status.update_progressbar(t)
+                t = t + 1
             self.visualize.main_frame.setImage(self.frames[self.visualize.main_sld.value()].norm_img)
             QApplication.processEvents()
             self.status.work_info_label.setText("")
+            QApplication.processEvents()
+            self.status.progressbar.setVisible(False)
+            QApplication.processEvents()
         else:
             self.normalize_message_box = InformationMessageBox("Please load images first!")
             self.normalize_message_box.show()
@@ -1169,6 +1196,7 @@ class MainWindow(QMainWindow):
             if name == 'unet':
                 QApplication.processEvents()
                 self.status.work_info_label.setText("Loading selected model...")
+                QApplication.processEvents()
             if self.unet_model_path is None and name == 'unet':
                 self.segment_message_box2 = InformationMessageBox("Please select a model first!")
                 self.segment_message_box2.show()
@@ -1177,26 +1205,37 @@ class MainWindow(QMainWindow):
                 segmenter = get_segmenter(name=name, **kwargs)
                 QApplication.processEvents()
                 self.status.work_info_label.setText("Segmenting...")
+                QApplication.processEvents()
                 self.status.progressbar.setVisible(True)
+                QApplication.processEvents()
                 for key in self.frames.keys():
                     label_img = segmenter(self.frames[key].norm_img)
                     self.frames[key].label_img = label_img
                     QApplication.processEvents()
+                    self.status.work_info_label.setText("Segmenting...")
                     self.status.update_progressbar(t)
+                    QApplication.processEvents()
                     t = t + 1
+                QApplication.processEvents()
                 self.status.progressbar.setVisible(False)
                 QApplication.processEvents()
                 self.status.work_info_label.setText("")
+                QApplication.processEvents()
                 sv = self.visualize.main_sld.value()
 
                 self.visualize.main_frame.setImage(np.sign(self.frames[sv].binary_mask[:, :, 0]))
                 self.show_flag = 2
-                self.annotation_flag = 0
+                if self.annotation_flag == 2:
+                    pass
+                else:
+                    self.annotation_flag = 0
 
                 self.get_label_fnc()
         else:
             segmenter = get_segmenter(name=name, **kwargs)
+            QApplication.processEvents()
             self.status.work_info_label.setText("Segmenting...")
+            QApplication.processEvents()
             if self.frames[self.visualize.main_sld.value()].label_img is None:
                 label_img = segmenter(img=self.frames[self.visualize.main_sld.value()].norm_img,
                                       rect=[int(self.grabcut_roi.state['pos'][0]),
@@ -1233,14 +1272,20 @@ class MainWindow(QMainWindow):
             self.track_message_box1 = InformationMessageBox("Please do segment first!")
             self.track_message_box1.show()
         elif not len(self.frames) == 0 and self.frames[0].label_img is not None and \
-            self.tools.track.tracker_select.currentIndex()==0:
+            self.tools.track.tracker_select.currentIndex() == 0:
+            self.status.progressbar.setMaximum(self.frames_num)
             QApplication.processEvents()
             self.status.work_info_label.setText("Tracking...")
+            QApplication.processEvents()
             tracker = get_tracker(name=name, **kwargs)
+            QApplication.processEvents()
+            self.status.work_info_label.setText("Tracking...")
+            QApplication.processEvents()
             self.frames = tracker(self.frames)
             self.get_label_fnc1()
             QApplication.processEvents()
             self.status.work_info_label.setText("")
+            QApplication.processEvents()
         elif not len(self.frames) == 0 and self.frames[0].label_img is not None and \
             self.tools.track.tracker_select.currentIndex()==1:
             pass
@@ -1257,10 +1302,13 @@ class MainWindow(QMainWindow):
             self.write_message_box1 = InformationMessageBox("Please do segment first!")
             self.write_message_box1.show()
         elif not len(self.frames) == 0 and self.frames[0].label_img is not None:
-
             QApplication.processEvents()
             self.status.work_info_label.setText("Exporting result...")
+            QApplication.processEvents()
             writer = get_writer(**kwargs)
+            QApplication.processEvents()
+            self.status.work_info_label.setText("Exporting result...")
+            QApplication.processEvents()
             writer(self.frames,
                    output_csv=self.tools.output.csv_checkbox.isChecked(),
                    output_html=self.tools.output.html_checkbox.isChecked(),
@@ -1268,6 +1316,8 @@ class MainWindow(QMainWindow):
             # self.status.progressbar.setVisible(True)
             QApplication.processEvents()
             self.status.work_info_label.setText("")
+            QApplication.processEvents()
+            self.status.progressbar.setVisible(False)
             self.tools.update_file_tree(self.project_path)
         else:
             self.write_message_box2 = InformationMessageBox("Please load images first!")
