@@ -173,18 +173,27 @@ class MainWindow(QMainWindow):
         self.menu.remove_act.triggered.connect(lambda: self.normalize('reset'))
 
         self.menu.threshold_act.triggered.connect(
-            lambda: self.segment('binary_thresholding', threshold=self.tools.segment.thresh_sld1.value()))
+            lambda: self.segment('binary_thresholding', 
+                                    threshold=self.tools.segment.thresh_sld1.value(),
+                                    minimal_size=int(self.tools.segment.thresh_min_size_editor.text())))
+
         self.menu.unet_act.triggered.connect(
-            lambda: self.segment('unet', model_path=self.unet_model_path,
+            lambda: self.segment('unet', 
+                                 model_path=self.unet_model_path,
                                  scale_img=self.scale_img_list[self.tools.segment.scale_img_select.currentIndex()],
                                  device=self.tools.segment.device_select.currentText().lower(),
-                                 threshold=self.tools.segment.thresh_sld2.value()/10))
+                                 threshold=self.tools.segment.thresh_sld2.value()/10,
+                                 minimal_size=int(self.tools.segment.thresh_min_size_editor.text())))
 
         self.menu.water_act.triggered.connect(
-            lambda: self.segment('water_shed', noise_amplitude=self.tools.segment.noise_sld.value(),
-                                 dist_thresh=self.tools.segment.dist_thresh_sld.value()/10))
+            lambda: self.segment('water_shed', 
+                                 noise_amplitude=self.tools.segment.noise_sld.value(),
+                                 dist_thresh=self.tools.segment.dist_thresh_sld.value()/10,
+                                 minimal_size=int(self.tools.segment.thresh_min_size_editor.text())))
+
         self.menu.grabcut_act.triggered.connect(
-            lambda: self.segment('grab_cut', iteration=self.tools.segment.iteration_sld.value()))
+            lambda: self.segment('grab_cut', 
+                                iteration=self.tools.segment.iteration_sld.value()))
 
         self.menu.track_act.triggered.connect(lambda: self.track(self.tracker_name))
         self.menu.output_act.triggered.connect(
@@ -222,13 +231,15 @@ class MainWindow(QMainWindow):
 
         # seg alg1
         self.tools.segment.thresh_segment_button.clicked.connect(
-            lambda: self.segment('binary_thresholding', threshold=self.tools.segment.thresh_sld1.value(),
+            lambda: self.segment('binary_thresholding', 
+                                 threshold=self.tools.segment.thresh_sld1.value(),
                                  minimal_size=int(self.tools.segment.thresh_min_size_editor.text())))
 
         # seg alg2
         self.tools.segment.model_browse_button.clicked.connect(self.model_select_fnc)
         self.tools.segment.unet_segment_button.clicked.connect(
-            lambda: self.segment('unet', model_path=self.unet_model_path,
+            lambda: self.segment('unet', 
+                                 model_path=self.unet_model_path,
                                  scale_img=self.scale_img_list[self.tools.segment.scale_img_select.currentIndex()],
                                  device=self.tools.segment.device_select.currentText().lower(),
                                  threshold=self.tools.segment.thresh_sld2.value()/10,
@@ -236,14 +247,16 @@ class MainWindow(QMainWindow):
 
         # seg alg3
         self.tools.segment.watershed_segment_button.clicked.connect(
-            lambda: self.segment('water_shed', noise_amplitude=self.tools.segment.noise_sld.value(),
+            lambda: self.segment('water_shed', 
+                                 noise_amplitude=self.tools.segment.noise_sld.value(),
                                  dist_thresh=self.tools.segment.dist_thresh_sld.value()/10,
                                  minimal_size=int(self.tools.segment.thresh_min_size_editor.text())))
 
         # seg alg4
         self.tools.segment.select_roi_button.clicked.connect(self.select_roi_button_fnc)
         self.tools.segment.grabcut_segment_button.clicked.connect(
-            lambda: self.segment('grab_cut', iteration=self.tools.segment.iteration_sld.value()))
+            lambda: self.segment('grab_cut', 
+                                 iteration=self.tools.segment.iteration_sld.value()))
 
         # normalization
         self.tools.normlize.equalize_hist_button.clicked.connect(lambda: self.normalize('equalize_hist'))

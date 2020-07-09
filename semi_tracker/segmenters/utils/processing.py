@@ -16,7 +16,9 @@ def gray_to_bgr(img):
 
 
 def instance_filtering(label_img, minimal_size=0):
-    for label in np.unique(label_img):
+    unique_label = np.unique(label_img)
+    for label in unique_label:
         if np.sum(label_img==label) < minimal_size:
             label_img[label_img==label] = 0
     return label_img
+    
