@@ -93,7 +93,7 @@ class DataLoader(QWidget):
         scale_img_layout.addWidget(scale_img_select)
 
         paraller_works_label = QLabel()
-        paraller_works_label.setText("Paraller works:")
+        paraller_works_label.setText("Parallel works:")
         paraller_works_label.setStyleSheet("font-family: Verdana;"
                                        "color: white;")
 

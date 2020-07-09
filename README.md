@@ -2,14 +2,18 @@
 
 By [Tao Hu](https://gitlab.com/ecart18) & [Shixiong Xu](https://gitlab.com/xsx1001).
 
-The code for the official implementation of **Semi-tracker**. 
+The code for the official implementation of **Semi-tracker**. You can find the **Tutorial** in doc folder.
 
 This codebase provides: 
-- GUI for cell image analysis
-- GUI correction and annotation tools
-- GUI for deep CNN model training 
-- Python API for deep CNN model training
-- Two demo dataset for training and analysis
+- A GUI for cell image normalization
+- A GUI for cell image segmentation
+- A GUI for cell image tracking
+- A GUI for manual correction 
+- A GUI for cell property profiling and intensity quantification
+- A GUI for training data annotation
+- A GUI for deep CNN model training
+- A Python API for deep CNN model training
+
 
 ## Contents
 1. [Introduction](#introduction)
