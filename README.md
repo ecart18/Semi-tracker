@@ -2,7 +2,7 @@
 
 By [Tao Hu](https://gitlab.com/ecart18) & [Shixiong Xu](https://gitlab.com/xsx1001).
 
-The code for the official implementation of **Semi-tracker**. 
+The code for the official implementation of **Semi-tracker**. You can find the tutorial in doc folder.
 
 This codebase provides: 
 - A GUI for cell image normalization
@@ -13,6 +13,7 @@ This codebase provides:
 - A GUI for training data annotation
 - A GUI for deep CNN model training
 - A Python API for deep CNN model training
+
 
 ## Contents
 1. [Introduction](#introduction)
