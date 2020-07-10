@@ -121,7 +121,7 @@ Semi-Tracker provides two methods to re-train deep CNN networks for your customi
 **Pretrained models download:** 
 
 Semi-Tracker provides two pretrained models for dataset of training_demo1 and training_demo2 respectively. Download them from the following link.
-- [demo1 pretrained model]()
+- [demo1 pretrained model](https://drive.google.com/file/d/1OtQJvpT6yFeSRJPV_MAmrSJnsQpywwxC/view?usp=sharing)
 - [demo2 pretrained model]()
 
 
