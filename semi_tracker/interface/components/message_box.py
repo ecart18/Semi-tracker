@@ -59,7 +59,7 @@ class QuestionMessageBox(QWidget):
         self.setLayout(layout3)
         self.setWindowIcon(QIcon(get_icon("cell.png")))
         self.setWindowTitle("Question")
-        self.setFixedSize(400, 100)
+        self.setFixedSize(400, 150)
         self.setStyleSheet("background: #323232;")
 
     def close_fnc(self):
@@ -120,7 +120,7 @@ class InformationMessageBox(QWidget):
         self.setLayout(layout3)
         self.setWindowIcon(QIcon(get_icon("cell.png")))
         self.setWindowTitle("Information")
-        self.setFixedSize(400, 100)
+        self.setFixedSize(400, 150)
         self.setStyleSheet("background: #323232;")
 
     def close_fnc(self):
@@ -169,7 +169,7 @@ class WarningMessageBox(QWidget):
         self.setLayout(layout3)
         self.setWindowIcon(QIcon(get_icon("cell.png")))
         self.setWindowTitle("Warning")
-        self.setFixedSize(400, 100)
+        self.setFixedSize(400, 150)
         self.setStyleSheet("background: #323232;")
 
     def close_fnc(self):
