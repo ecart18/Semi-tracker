@@ -1241,10 +1241,7 @@ class MainWindow(QMainWindow):
                 QApplication.processEvents()
                 self.status.work_info_label.setText("")
                 QApplication.processEvents()
-                sv = self.visualize.main_sld.value()
 
-                self.visualize.main_frame.setImage(np.sign(self.frames[sv].binary_mask[:, :, 0]))
-                self.show_flag = 2
                 if self.annotation_flag == 2:
                     pass
                 else:
@@ -1262,8 +1259,14 @@ class MainWindow(QMainWindow):
                                                                    " frame(s) is bigger than 100, continue?")
                     self.segment_message_box3.show()
                     self.segment_message_box3.yes_button.clicked.connect(self.get_label_and_close)
+
                 else:
+                    sv = self.visualize.main_sld.value()
+
+                    self.visualize.main_frame.setImage(np.sign(self.frames[sv].binary_mask[:, :, 0]))
+                    self.show_flag = 2
                     self.get_label_fnc()
+
         else:
             segmenter = get_segmenter(name=name, **kwargs)
             QApplication.processEvents()
