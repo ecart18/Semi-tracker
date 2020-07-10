@@ -132,7 +132,7 @@ Please consider citing our paper in your publications if the project helps your 
 @article{hu2020semi,
   title={Semi-tracker: An Automated Toolbox for Single-cell Segmentation and Tracking in Microscopy Images},
   author={Hu, Tao and Xu, Shixiong and Wang, Xiaowo},
-  journal={arXiv preprint arXiv:2003.02795},
+  journal={arXiv preprint arXiv:},
   year={2020}
 }
 ```
