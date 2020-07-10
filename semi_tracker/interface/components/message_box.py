@@ -22,6 +22,7 @@ class QuestionMessageBox(QWidget):
         message_label.setText(self.message)
         message_label.setStyleSheet("font-family: Verdana;"
                                     "color: rgb(245, 245, 245);")
+        message_label.setWordWrap(True)
 
         yes_button = QPushButton()
         yes_button.setText("Yes")
@@ -82,6 +83,7 @@ class InformationMessageBox(QWidget):
         message_label.setText(self.message)
         message_label.setStyleSheet("font-family: Verdana;"
                                     "color: rgb(245, 245, 245);")
+        message_label.setWordWrap(True)
 
         ok_button = QPushButton()
         ok_button.setText("Ok")
@@ -142,6 +144,7 @@ class WarningMessageBox(QWidget):
         message_label.setText(self.message)
         message_label.setStyleSheet("font-family: Verdana;"
                                     "color: rgb(245, 245, 245);")
+        message_label.setWordWrap(True)
 
         ok_button = QPushButton()
         ok_button.setText("Ok")

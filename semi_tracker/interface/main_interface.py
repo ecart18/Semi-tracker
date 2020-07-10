@@ -243,14 +243,14 @@ class MainWindow(QMainWindow):
                                  scale_img=self.scale_img_list[self.tools.segment.scale_img_select.currentIndex()],
                                  device=self.tools.segment.device_select.currentText().lower(),
                                  threshold=self.tools.segment.thresh_sld2.value()/10,
-                                 minimal_size=int(self.tools.segment.thresh_min_size_editor.text())))
+                                 minimal_size=int(self.tools.segment.unet_min_size_editor.text())))
 
         # seg alg3
         self.tools.segment.watershed_segment_button.clicked.connect(
             lambda: self.segment('water_shed', 
                                  noise_amplitude=self.tools.segment.noise_sld.value(),
                                  dist_thresh=self.tools.segment.dist_thresh_sld.value()/10,
-                                 minimal_size=int(self.tools.segment.thresh_min_size_editor.text())))
+                                 minimal_size=int(self.tools.segment.watershed_min_size_editor.text())))
 
         # seg alg4
         self.tools.segment.select_roi_button.clicked.connect(self.select_roi_button_fnc)
@@ -1221,9 +1221,16 @@ class MainWindow(QMainWindow):
                 QApplication.processEvents()
                 self.status.progressbar.setVisible(True)
                 QApplication.processEvents()
+                instance_zeros = []
+                instance_bigger = []
                 for key in self.frames.keys():
                     label_img = segmenter(self.frames[key].norm_img)
                     self.frames[key].label_img = label_img
+                    instance_num = len(np.unique(label_img)) - 1
+                    if instance_num == 0:
+                        instance_zeros.append(key)
+                    if instance_num > 100:
+                        instance_bigger.append(key)
                     QApplication.processEvents()
                     self.status.work_info_label.setText("Segmenting...")
                     self.status.update_progressbar(t)
@@ -1243,7 +1250,20 @@ class MainWindow(QMainWindow):
                 else:
                     self.annotation_flag = 0
 
-                self.get_label_fnc()
+                if len(instance_zeros) > 0:
+                    zeros_str = ",".join([str(x) for x in instance_zeros])
+                    self.segment_message_box4 = WarningMessageBox("The instance number of " + zeros_str
+                                                                  + " frame(s) is 0, please do re-segmentation.")
+                    self.segment_message_box4.show()
+                elif len(instance_bigger) > 0:
+                    bigger_str = ",".join([str(x) for x in instance_bigger])
+                    self.segment_message_box3 = QuestionMessageBox("The instance number of "
+                                                                   + bigger_str +
+                                                                   " frame(s) is bigger than 100, continue?")
+                    self.segment_message_box3.show()
+                    self.segment_message_box3.yes_button.clicked.connect(self.get_label_and_close)
+                else:
+                    self.get_label_fnc()
         else:
             segmenter = get_segmenter(name=name, **kwargs)
             QApplication.processEvents()
@@ -1279,6 +1299,10 @@ class MainWindow(QMainWindow):
                                                           self.frames[self.visualize.main_sld.value()].frame_id)
                 self.instances_setting.confirm_button.clicked.connect(self.add_instance_main)
                 self.instances_setting.show()
+
+    def get_label_and_close(self):
+        self.segment_message_box3.close()
+        self.get_label_fnc()
 
     def track(self, name, **kwargs):
         if not len(self.frames) == 0 and self.frames[0].label_img is None:
