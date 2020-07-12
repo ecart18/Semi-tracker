@@ -64,14 +64,14 @@ class MainWindow(QMainWindow):
         self.show_flag          = 1    # 1:raw raw 2.mask raw 3.color+raw raw 4.annotation: raw label_img
         self.segmenter_dict     = {0: 'binary_thresholding', 1: 'unet', 2: 'water_shed', 3: 'grab_cut', 4: 'User-defined'}
         self.segmenter_name     = 'binary_thresholding'
-        self.segment_flag        = 0
+        self.segment_flag        = 0    # which segmenter
         self.tracker_dict       = {0: 'none', 1: 'bipartite_tracker'}
         self.tracker_name       = 'bipartite_tracker'
         self.normalizer_dict    = {0: 'equalize_hist', 1: 'min_max', 2: 'retinex_MSRCP', 3: 'retinex_MSRCR', 4: 'reset'}
         self.normalizer_name    = 'equalize_hist'
         self.previous_frame     = 0
         self.previous_algorithm = 4
-        self.brush_flag         = 0
+        self.brush_flag         = 0 # 0:not using brush 1:using brush
 
         self.grabcut_pos_begin  = None
         self.grabcut_pos_finish = None
@@ -79,12 +79,12 @@ class MainWindow(QMainWindow):
         self.grabcut_rect       = None
 
         # annotation
-        self.annotation_flag    = -1        # -1 none 0 modify 1 modify annotation 2 annotation
-        self.frames_roi         = {}
+        self.annotation_flag    = -1        # -1 none 0 modify 1 modify and add instance 2 annotation and add instance
+        # self.frames_roi         = {}
         self.widget_list        = []       # CurrentRow->label_id
         self.changed_instances  = ChangedInstances()
         self.bboxroi            = None
-        self.color_roi          = []
+        # self.color_roi          = []
         self.drag_flag          = 0    # 0 ignore 1 dragging
         self.background_color   = [54, 54, 54]
         self.my_colors          = color_groups
@@ -402,7 +402,6 @@ class MainWindow(QMainWindow):
         self.status.progressbar.setVisible(False)
         QApplication.processEvents()
         self.status.work_info_label.setText("")
-        
 
     def load_model_button_fnc(self):
         model_path = QFileDialog.getOpenFileName(None, "Select a model file..",
@@ -1016,7 +1015,8 @@ class MainWindow(QMainWindow):
             self.instances_setting.confirm_button.clicked.connect(self.add_instance_main)
             self.instances_setting.show()
         else:
-            self.add_instance_message_box = InformationMessageBox("Please do segmentation first!")
+            self.add_instance_message_box = InformationMessageBox("Please do segmentation or "
+                                                                  "select an output path first!")
             self.add_instance_message_box.show()
 
     def add_instance_main(self):
