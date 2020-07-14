@@ -68,7 +68,10 @@ Semi-Tracker is a highly integrated graph user interfaces software for the cell 
     ```
     git clone https://gitlab.com/ecart18/semitracker.git
     ```
-
+    To boost download speeds, you could clone Semi-Tracker from the source in the mainland of China.
+    ```
+    git clone https://gitee.com/ecart18/SemiTracker.git
+    ```
 3. Extract files and put it in the virtual environment directory you defined. The directory of SemiTracker should have the following structure:
     
     ```
