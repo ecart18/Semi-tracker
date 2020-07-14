@@ -42,7 +42,7 @@ Semi-Tracker is a highly integrated graph user interfaces software for the cell 
 
     #### on macOS/Linux
     ```
-    pip install virtualenv
+    pip install virtualenv  # or pip install -i https://pypi.tuna.tsinghua.edu.cn/simple virtualenv 
     virtualenv --python=python3 SemiTrackerEnv
     cd SemiTrackerEnv
     source ./bin/activate
@@ -54,7 +54,7 @@ Semi-Tracker is a highly integrated graph user interfaces software for the cell 
 
     #### on Windows
     ```
-    pip install virtualenv
+    pip install virtualenv  # or pip install -i https://pypi.tuna.tsinghua.edu.cn/simple virtualenv 
     virtualenv --python=python3 SemiTrackerEnv 
     cd SemiTrackerEnv
     .\Scripts\activate.bat
@@ -96,7 +96,8 @@ Semi-Tracker is a highly integrated graph user interfaces software for the cell 
     ```
     To boost download speeds, you could setup pip mirror such as
     ```
-    pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+    pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt  # or
+    pip install -i https://mirrors.aliyun.com/pypi/simple  -r requirements.txt 
     ```
 
 5. Run Semi-Tracker with python and enjoy it. 
