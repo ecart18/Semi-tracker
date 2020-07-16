@@ -1381,6 +1381,7 @@ class MainWindow(QMainWindow):
 
         self.visualize.main_frame.setImage(current_frame.raw_color_img)
         self.widget_list = []
+        self.correction.instances_widget.clear()
         for key in self.frames[self.visualize.main_sld.value()].instances.keys():
             pix = QPixmap(30, 30)
             pix.fill(QColor(current_frame.instances[key].color[0],
