@@ -21,7 +21,7 @@ This codebase provides:
 3. [Bibtex](#bibtex)
 
 ## Introduction <a name="introduction">
-Semi-Tracker is a highly integrated graph user interfaces software for the cell segmentation and tracking of time-lapse microscopy image. It covers essential steps for full analyzing procedure of microscopy image, including project management, image pre-processing, cell segmentation and tracking, manual correction and downstream statistical analysis such as cell property profiling and intensity quantification. Semi-tracker supports data annotation and model training from scratch, which provides a more flexible and scalable solution for customized datasets.
+Semi-tracker is a highly integrated graphical user interface software for the cell segmentation and tracking of time-lapse microscopy images. It covers essential steps for the full analyzing procedure of microscopy image, including project management, image pre-processing, cell segmentation and tracking, manual correction, and downstream statistical analysis such as cell property proﬁling and intensity quantiﬁcation. Semi-tracker supports data annotation and model training from scratch, which provides a more ﬂexible and scalable solution for customized datasets.
 
 <div align='center'><img align="middle" src="imgs/interface.png" width="70%" /><br></div>
 
@@ -40,7 +40,7 @@ Semi-Tracker is a highly integrated graph user interfaces software for the cell 
 
 1. Install Semi-Tracker in virtualenv to keep your environment clean:
 
-    #### on macOS/Linux
+    ##### on macOS/Linux
     ```
     pip install virtualenv  # or pip install -i https://pypi.tuna.tsinghua.edu.cn/simple virtualenv 
     virtualenv --python=python3 SemiTrackerEnv
@@ -52,7 +52,7 @@ Semi-Tracker is a highly integrated graph user interfaces software for the cell 
     deactivate
     ```
 
-    #### on Windows
+    ##### on Windows
     ```
     pip install virtualenv  # or pip install -i https://pypi.tuna.tsinghua.edu.cn/simple virtualenv 
     virtualenv --python=python3 SemiTrackerEnv 
