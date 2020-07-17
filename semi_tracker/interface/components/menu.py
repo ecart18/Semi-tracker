@@ -1,7 +1,8 @@
 # -*- coding: UTF-8 -*-
 
 from PyQt5.QtWidgets import *
-
+from PyQt5.QtGui import QDesktopServices
+from PyQt5.QtCore import QFileInfo, QUrl
 
 class Menu(QWidget):
 
@@ -131,5 +132,20 @@ class Menu(QWidget):
 
     def init_help(self):
         help_menu = self.menu_bar.addMenu("&Help")
+
+        gitlab_act = QAction("Gitlab", self)
+        gitlab_act.triggered.connect(self.open_gitlab)
+        tutorial_act = QAction("Tutorial", self)
+        # tutorial_act.triggered.connect(self.open_tutorial)
+        help_menu.addAction(gitlab_act)
+        help_menu.addAction(tutorial_act)
+
         self.help_menu = help_menu
+        self.gitlab_act = gitlab_act
+        self.tutorial_act = tutorial_act
+
+    def open_gitlab(self):
+        QDesktopServices.openUrl(QUrl("https://gitlab.com/ecart18/semitracker.git"))
+
+
 
