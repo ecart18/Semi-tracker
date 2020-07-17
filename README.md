@@ -99,7 +99,8 @@ Semi-Tracker is a highly integrated graph user interfaces software for the cell 
     ```
     To boost download speeds, you could setup pip mirror such as
     ```
-    pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt  # or
+    pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt  
+    # or
     pip install -i https://mirrors.aliyun.com/pypi/simple  -r requirements.txt
     ```
     It is recommended to use the official website to install pytorch.
