@@ -28,6 +28,8 @@ from .components import ProjectWindow
 from .components import StatusBar
 from .components import VisualizeWindow
 from .components import QuestionMessageBox, InformationMessageBox, WarningMessageBox
+from PyQt5.QtGui import QDesktopServices
+from PyQt5.QtCore import QFileInfo, QUrl
 from .components import AnnotationTools
 from .utils import color_groups, annotation_colors
 from .utils import load_images
@@ -51,6 +53,7 @@ class MainWindow(QMainWindow):
 
         pg.setConfigOption('imageAxisOrder', 'row-major')
         default_output_folder = os.path.join(PACKAGEPATH, "../output")
+        self.tutorial_path = os.path.join(PACKAGEPATH, "../doc/Semi-Tracker tutorial.pdf")
         mkdir(default_output_folder)
         mkdir(os.path.join(PACKAGEPATH, "../checkpoint"))
         self.open_path = os.path.join(PACKAGEPATH, "../output")
@@ -212,6 +215,8 @@ class MainWindow(QMainWindow):
         self.menu.confirm_act.triggered.connect(self.confirm_fnc)
         self.menu.save_act.triggered.connect(self.save_annotation_fnc)
 
+        self.menu.tutorial_act.triggered.connect(self.open_tutorial)
+
         self.setMenuBar(self.menu_bar)
 
     def init_left_part(self):
@@ -321,6 +326,11 @@ class MainWindow(QMainWindow):
         self.status = StatusBar()
         self.status_bar = self.status.status_bar
 
+    def open_tutorial(self):
+        if os.path.exists(self.tutorial_path):
+            url = self.tutorial_path
+            QDesktopServices.openUrl(QUrl.fromLocalFile(url))
+
     def set_source_button_fnc(self):
         source_img_root = QFileDialog.getExistingDirectory()
         if self.has_chinese(source_img_root):
@@ -412,6 +422,9 @@ class MainWindow(QMainWindow):
 
     def default_fnc(self):
         self.tools.update_file_tree(self.project_path)
+        self.tools.file_tree_widget.create_button.clicked.connect(self.new_project_fnc)
+        self.tools.file_tree_widget.load_button.clicked.connect(self.load_fnc)
+        self.tools.file_tree_widget.default_button.clicked.connect(self.default_fnc)
 
     def reset_raw_button_fnc(self):
         if not len(self.frames) == 0:
@@ -563,6 +576,9 @@ class MainWindow(QMainWindow):
         else:
             self.project_path = dir_path
             self.tools.update_file_tree(self.project_path)
+            self.tools.file_tree_widget.create_button.clicked.connect(self.new_project_fnc)
+            self.tools.file_tree_widget.load_button.clicked.connect(self.load_fnc)
+            self.tools.file_tree_widget.default_button.clicked.connect(self.default_fnc)
 
     def result_path_fnc(self):
         if len(self.frames) == 0:

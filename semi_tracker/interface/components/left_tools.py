@@ -26,7 +26,7 @@ class LeftTools(QWidget):
         self.left_tools = QStackedWidget()
         self.left_tools.setStyleSheet("background: #323232;"
                                       "border: 0px;")
-        self.left_tools.setFixedWidth(250)
+        self.left_tools.setFixedWidth(260)
 
         self.project_path = "./output/untitled"
         self.open_path = open_path
@@ -275,11 +275,17 @@ class LeftTools(QWidget):
         self.out_layout1.addWidget(self.scroll1)
         self.left_tools.addWidget(self.out_widget1)
 
-
     def update_file_tree(self, project_path):
         self.project_path = project_path
         self.file_system_layout.removeWidget(self.file_tree_widget)
-        self.file_tree_widget = FileTree(self.project_path)
+        self.file_tree_widget = FileTree(self.project_path, view_flag=1)
+
+        # self.file_tree_widget1 = FileTree()
+
+        # self.tool_box = QToolBox()
+        # self.tool_box.setStyleSheet(left_tools_stylesheet)
+        # self.tool_box.addItem(self.file_tree_widget, "File system")
+        #self.tool_box.addItem(self.file_tree_widget1, "Basic settings")
         self.file_system_layout.addWidget(self.file_tree_widget)
 
     def normlize_button_fnc(self):

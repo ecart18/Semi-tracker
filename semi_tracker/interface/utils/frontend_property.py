@@ -142,7 +142,7 @@ left_tools_stylesheet = """
                     QToolBox::tab:selected 
                     { 
                         color: white;
-                        background: #323232;
+                        background: #454545;
                     }
                 """
 
