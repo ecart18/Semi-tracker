@@ -141,10 +141,10 @@ Semi-Tracker provides two pretrained models for dataset of training_demo1 and tr
 Please consider citing our paper in your publications if the project helps your research. BibTeX reference is as follows.
 
 ```
-@article{hu2020semi,
+@article{,
   title={Semi-tracker: An Automated Toolbox for Single-cell Segmentation and Tracking in Microscopy Images},
   author={Hu, Tao and Xu, Shixiong and Wang, Xiaowo},
-  journal={arXiv preprint arXiv:},
+  journal={},
   year={2020}
 }
 ```
