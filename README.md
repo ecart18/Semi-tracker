@@ -32,7 +32,7 @@ Semi-Tracker is a highly integrated graph user interfaces software for the cell 
 - MAC OS, Linux or Windows.
 - Python 3.5+.
 - PyTorch 1.4 or higher.
-- CUDA 9.0 or higher if you need train deep learning model with gpu.
+- CUDA 9.2 or higher if you need train deep learning model with gpu.
 
 **Steps of using Semi-Tracker:** 
 
@@ -92,7 +92,7 @@ Semi-Tracker is a highly integrated graph user interfaces software for the cell 
         |...
     ```
 
-4. After the extraction, download all dependency with one commend.
+4. After the extraction, download all dependencies with the following commend.
     ```
     cd semitracker
     pip install -r requirements.txt
@@ -100,7 +100,14 @@ Semi-Tracker is a highly integrated graph user interfaces software for the cell 
     To boost download speeds, you could setup pip mirror such as
     ```
     pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt  # or
-    pip install -i https://mirrors.aliyun.com/pypi/simple  -r requirements.txt 
+    pip install -i https://mirrors.aliyun.com/pypi/simple  -r requirements.txt
+    ```
+    It is recommended to use the official website to install pytorch.
+    ```
+    # CPU version
+    pip install torch==1.4.0+cpu torchvision==0.5.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+    # GPU version
+    pip install torch==1.4.0 torchvision==0.5.0 -f https://download.pytorch.org/whl/torch_stable.html
     ```
 
 5. Run Semi-Tracker with python and enjoy it. 
