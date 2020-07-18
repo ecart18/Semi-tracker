@@ -194,8 +194,8 @@ class FileTree(QWidget):
             self.widget2.setLayout(layout2)
 
             self.tree = tree
-            self.tool_box.addItem(self.widget1, "Basic settings")
             self.tool_box.addItem(self.widget2, "File system")
+            self.tool_box.addItem(self.widget1, "Basic settings")
             self.tool_box.setStyleSheet(left_tools_stylesheet)
             main_layout = QHBoxLayout()
             main_layout.addWidget(self.tool_box)

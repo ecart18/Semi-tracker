@@ -26,7 +26,7 @@ class LeftTools(QWidget):
         self.left_tools = QStackedWidget()
         self.left_tools.setStyleSheet("background: #323232;"
                                       "border: 0px;")
-        self.left_tools.setFixedWidth(260)
+        self.left_tools.setMinimumWidth(260)
 
         self.project_path = "./output/untitled"
         self.open_path = open_path
