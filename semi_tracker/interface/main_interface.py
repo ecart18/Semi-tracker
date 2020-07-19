@@ -100,7 +100,7 @@ class MainWindow(QMainWindow):
         self.scale_img = 1
         self.scale_img_list = [4.0, 2.0, 1.0, 0.5, 0.25, 0.125]
         self.weighted_type = 'edge_weighted'  # 'edge_weighted'，'sample_balance' and 'None'
-        self.aug_list = ['Flip', 'Rotate', 'GaussainNoise', 'GaussainBlur']
+        self.aug_list = ['Flip', 'Rotate', 'GaussianNoise', 'GaussianBlur']
         self.batch_size = 2
         self.workers = 2
         self.gpu_num = 0
@@ -370,9 +370,9 @@ class MainWindow(QMainWindow):
         if self.tools.data_loader.rotate_checkbox.isChecked():
             self.aug_list.append("Rotate")
         if self.tools.data_loader.gaussian_noise_checkbox.isChecked():
-            self.aug_list.append("GaussainNoise")
+            self.aug_list.append("GaussianNoise")
         if self.tools.data_loader.gaussian_blur_checkbox.isChecked():
-            self.aug_list.append("GaussainBlur")
+            self.aug_list.append("GaussianBlur")
         self.batch_size = int(self.tools.data_loader.batch_size_select.currentText())
         self.workers = int(self.tools.data_loader.paraller_works_select.currentText())
         self.gpu_num = int(self.tools.trainer.gpu_num_select.currentText())

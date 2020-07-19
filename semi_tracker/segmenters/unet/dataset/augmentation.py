@@ -39,7 +39,7 @@ class RandomRotate:
         return img, label
 
 
-class GaussainNoise:
+class GaussianNoise:
     def __init__(self, prob):
         self.prob = prob
         self.mean = 0
@@ -56,7 +56,7 @@ class GaussainNoise:
         return img, label
 
 
-class GaussainBlur:
+class GaussianBlur:
     def __init__(self, prob):
         self.prob = prob
         self.max_filter_size = 5
@@ -94,8 +94,8 @@ class Compose:
 __factory__ = {
     'Flip': RandomFlip,
     'Rotate': RandomRotate,
-    'GaussainNoise': GaussainNoise,
-    'GaussainBlur': GaussainBlur
+    'GaussianNoise': GaussianNoise,
+    'GaussianBlur': GaussianBlur
 }
 
 

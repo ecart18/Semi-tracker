@@ -18,7 +18,7 @@ if __name__ == "__main__":
     validation_ratio = 0.2
     scale_img = 1.0
     weighted_type = 'edge_weighted'  # 'edge_weighted'，'sample_balance' and 'None'
-    aug_list=['Flip', 'Rotate', 'GaussainNoise', 'GaussainBlur']
+    aug_list=['Flip', 'Rotate', 'GaussianNoise', 'GaussianBlur']
     batch_size = 2
     workers = 4 # wait modify
     gpu_num = 1

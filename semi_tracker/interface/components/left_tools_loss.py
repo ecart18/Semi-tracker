@@ -24,7 +24,7 @@ class Loss(QWidget):
                                         "font-family: Verdana;"
                                         "background: #353535;")
         loss_select.addItem("DiceLoss")
-        loss_select.addItem("WeightedSoftDiceLoss")
+        loss_select.addItem("WeightedSoftDice")
         loss_select.addItem("BCELoss")
         loss_select.addItem("WBCELoss")
         loss_select.addItem("MSELoss")

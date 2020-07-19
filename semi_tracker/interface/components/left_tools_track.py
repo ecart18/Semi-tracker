@@ -23,12 +23,12 @@ class TrackTools(QWidget):
                                            "color: white;")
 
         tracker_select = QComboBox()
-        tracker_select.setFixedSize(80, 20)
+        tracker_select.setFixedSize(100, 20)
         tracker_select.setStyleSheet("border: 0px;"
                                            "color: white;"
                                            "font-family: Verdana;"
                                            "background: #353535;")
-        tracker_select.addItem("Bipartite")
+        tracker_select.addItem("Bi-Graph")
         tracker_select.addItem("None")
 
         none_tracker_button = QPushButton()
@@ -40,7 +40,7 @@ class TrackTools(QWidget):
                                           "font-family: Verdana;")
 
         bipartite_tracker_button = QPushButton()
-        bipartite_tracker_button.setText("Bipartite")
+        bipartite_tracker_button.setText("Bi-Graph")
         bipartite_tracker_button.setFixedSize(70, 15)
         bipartite_tracker_button.setStyleSheet("background: #454545;"
                                                "color: white;"
