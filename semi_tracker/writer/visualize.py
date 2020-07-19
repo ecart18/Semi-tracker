@@ -36,7 +36,9 @@ def plot_double_line(frame_index, areas, intensity, instance_id, save_name):
                             label='Area')
     ax2.set_xlim([0, max(frame_index)])
     step = max(max(frame_index) // 10, 1)
-    ax2.set_xticklabels(list(range(0, max(frame_index)+step, step)), fontdict={'family':PlotFormat.fonttype, 'size':PlotFormat.label_size})
+    x_tick = list(range(0, max(frame_index)+step, step))
+    ax2.set_xticks(x_tick)
+    ax2.set_xticklabels(x_tick, fontdict={'family':PlotFormat.fonttype, 'size':PlotFormat.label_size})
     ax2.set_ylabel('Area (Pixel)', fontdict={'family':PlotFormat.fonttype, 'size':PlotFormat.label_size})
     
     lines = line_intensity + line_area
