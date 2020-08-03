@@ -6,7 +6,7 @@ import logging
 from logging import handlers
 from .utils import mkdir 
 import os.path as osp
-from semi_tracker import PACKAGEPATH
+from cell_tracker import PACKAGEPATH
 
 LOG_PATH = osp.join(PACKAGEPATH, '../log')
 mkdir(LOG_PATH)

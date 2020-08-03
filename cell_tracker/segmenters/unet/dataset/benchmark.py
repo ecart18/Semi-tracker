@@ -5,7 +5,7 @@ from __future__ import print_function, absolute_import
 import os.path as osp
 import numpy as np
 from ..utils import read_json, mkdir
-from semi_tracker.utils import logger
+from cell_tracker.utils import logger
 
 
 def _pluck(images, labels):

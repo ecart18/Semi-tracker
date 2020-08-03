@@ -5,7 +5,7 @@ from __future__ import absolute_import
 import cv2
 import numpy as np
 import os.path as osp
-from semi_tracker.utils import logger
+from cell_tracker.utils import logger
 from ..components.frame import Frame
 
 

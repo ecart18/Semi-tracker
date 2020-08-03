@@ -6,8 +6,8 @@ ABS_DIR = osp.dirname(osp.abspath(__file__))
 sys.path.append(CURRENT_DIR)
 sys.path.append(osp.join(CURRENT_DIR, '..'))
 
-from semi_tracker.segmenters.unet import TrainParameters
-from semi_tracker.segmenters.unet import TrainerWrapper
+from cell_tracker.segmenters.unet import TrainParameters
+from cell_tracker.segmenters.unet import TrainerWrapper
 
 
 if __name__ == "__main__":

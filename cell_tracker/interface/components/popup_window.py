@@ -8,7 +8,7 @@ from PyQt5.QtCore import QSize, Qt
 from PIL import Image
 from .frame import Instance
 from ..utils import get_icon
-from semi_tracker.utils import format_out
+from cell_tracker.utils import format_out
 
 
 class InstanceSettings(QWidget):

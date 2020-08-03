@@ -5,7 +5,7 @@ import collections
 import random
 import numpy as np
 import cv2
-from semi_tracker.utils.logger import logger
+from cell_tracker.utils.logger import logger
 
 
 class Instance(object):

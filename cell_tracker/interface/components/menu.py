@@ -145,7 +145,7 @@ class Menu(QWidget):
         self.tutorial_act = tutorial_act
 
     def open_gitlab(self):
-        QDesktopServices.openUrl(QUrl("https://gitlab.com/ecart18/semitracker.git"))
+        QDesktopServices.openUrl(QUrl("https://gitlab.com/ecart18/cell-tracker.git"))
 
 
 

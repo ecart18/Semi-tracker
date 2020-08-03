@@ -40,8 +40,8 @@ from ..trackers import get_tracker
 from ..writer import get_writer
 from .utils import get_icon, slide_stylesheet, general_qss
 from ..utils import logger
-from semi_tracker import PACKAGEPATH
-from semi_tracker.segmenters.unet import TrainParameters, TrainerWrapper
+from cell_tracker import PACKAGEPATH
+from cell_tracker.segmenters.unet import TrainParameters, TrainerWrapper
 
 
 class MainWindow(QMainWindow):
@@ -53,7 +53,7 @@ class MainWindow(QMainWindow):
 
         pg.setConfigOption('imageAxisOrder', 'row-major')
         default_output_folder = os.path.join(PACKAGEPATH, "../output")
-        self.tutorial_path = os.path.join(PACKAGEPATH, "../doc/Semi-Tracker tutorial.pdf")
+        self.tutorial_path = os.path.join(PACKAGEPATH, "../doc/Cell-Tracker tutorial.pdf")
         mkdir(default_output_folder)
         mkdir(os.path.join(PACKAGEPATH, "../checkpoint"))
         self.open_path = os.path.join(PACKAGEPATH, "../output")
@@ -150,7 +150,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(main_widget)
 
         self.setGeometry(300, 300, 1500, 800)
-        self.setWindowTitle("SemiTracker")
+        self.setWindowTitle("CellTracker")
         self.setWindowIcon(QIcon(get_icon("cell.png")))
         self.setStatusBar(self.status_bar)
         self.center()
