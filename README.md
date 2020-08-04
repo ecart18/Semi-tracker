@@ -1,8 +1,8 @@
-# Cell-Tracker, a User-friendly Cell-automatic Software for Multiple Cell Segmentation and Tracking
+# CellTracker, a User-friendly Cell-automatic Software for Multiple Cell Segmentation and Tracking
 
 By [Tao Hu](https://gitlab.com/ecart18) & [Shixiong Xu](https://gitlab.com/xsx1001).
 
-The code for the official implementation of **Cell-Tracker**. You can find the **Tutorial** in doc folder.
+The code for the official implementation of **CellTracker**. You can find the [Tutorial](doc/CellTrackerTutorial.pdf) in doc folder.
 
 This codebase provides: 
 - A GUI for cell image normalization
@@ -21,7 +21,7 @@ This codebase provides:
 3. [Bibtex](#bibtex)
 
 ## Introduction <a name="introduction">
-Cell-Tracker is a highly integrated graphical user interface software for the cell segmentation and tracking of time-lapse microscopy images. It covers essential steps for the full analyzing procedure of microscopy image, including project management, image pre-processing, cell segmentation and tracking, manual correction, and downstream statistical analysis such as cell property proﬁling and intensity quantiﬁcation. Cell-Tracker supports data annotation and model training from scratch, which provides a more ﬂexible and scalable solution for customized datasets.
+CellTracker is a highly integrated graphical user interface software, for automated cell segmentation and tracking of time-lapse microscopy images. It covers essential steps in image analysis, including project management, image pre-processing, cell segmentation, cell tracking, manual correction, and statistical analysis such as the quantification of cell size and fluorescence intensity. Furthermore, CellTracker provides an auxiliary annotation tool and supports model training from scratch, thus providing a flexible and scalable solution for customized datasets.
 
 <div align='center'><img align="middle" src="imgs/interface.png" width="70%" /><br></div>
 
@@ -34,11 +34,11 @@ Cell-Tracker is a highly integrated graphical user interface software for the ce
 - PyTorch 1.4 or higher.
 - CUDA 9.2 or higher if you need train deep learning model with gpu.
 
-**Steps of using Cell-Tracker:** 
+**Steps of using CellTracker:** 
 
 0. Install Python ref to [Download Python](https://www.python.org/downloads/)
 
-1. Install Cell-Tracker in virtualenv to keep your environment clean:
+1. Install CellTracker in virtualenv to keep your environment clean:
 
     ##### on macOS/Linux
     ```
@@ -68,7 +68,7 @@ Cell-Tracker is a highly integrated graphical user interface software for the ce
     ```
     git clone https://gitlab.com/ecart18/cell-tracker.git
     ```
-    To boost download speeds, you could clone Cell-Tracker from the source in the mainland of China.
+    To boost download speeds, you could clone CellTracker from the source in the mainland of China.
     ```
     git clone https://gitee.com/ecart18/cell-tracker.git
     ```
@@ -111,20 +111,20 @@ Cell-Tracker is a highly integrated graphical user interface software for the ce
     pip install torch==1.4.0 torchvision==0.5.0 -f https://download.pytorch.org/whl/torch_stable.html
     ```
 
-5. Run Cell-Tracker with python and enjoy it. 
+5. Run CelTracker with python and enjoy it. 
     ```
     python main.py
     ```
 
 **Steps of re-training deep learning model:** 
 
-Cell-Tracker provides two methods to re-train deep CNN networks for your customized datasets. 
+CellTracker provides two methods to re-train deep CNN networks for your customized datasets. 
 
 **Warning:** Linux is strongly recommended for training deep learning model. Re-training with the Python API in a Linux terminal can avoid some unexpected environment dependency errors.
 
 0. re-training with User Interface.
 
-1. re-training with Python API in terminal.  Cell-Tracker provides two demo datasets and codes to help you get familiar with this feature, such as: 
+1. re-training with Python API in terminal.  CellTracker provides two demo datasets and codes to help you get familiar with this feature, such as: 
     ```
     cd training_demo1  # or cd training_demo2
     python retraining.py
@@ -132,7 +132,7 @@ Cell-Tracker provides two methods to re-train deep CNN networks for your customi
 
 **Pretrained models download:** 
 
-Cell-Tracker provides two pretrained models for dataset of training_demo1 and training_demo2 respectively. Download them from the following link.
+CellTracker provides two pretrained models for dataset of training_demo1 and training_demo2 respectively. Download them from the following link.
 - [demo1 pretrained model](https://drive.google.com/file/d/1OtQJvpT6yFeSRJPV_MAmrSJnsQpywwxC/view?usp=sharing)
 - [demo2 pretrained model]()
 
@@ -142,7 +142,7 @@ Please consider citing our paper in your publications if the project helps your 
 
 ```
 @article{,
-  title={Cell-tracker: An Automated Toolbox for Single-cell Segmentation and Tracking in Microscopy Images},
+  title={Celltracker: An Automated Toolbox for Single-cell Segmentation and Tracking in Microscopy Images},
   author={Hu, Tao and Xu, Shixiong and Wang, Xiaowo},
   journal={},
   year={2020}
