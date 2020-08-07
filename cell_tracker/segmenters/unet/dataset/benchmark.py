@@ -46,8 +46,8 @@ class Benchmark(object):
         train_labels = self.train_val_splits['train_labels']
         validate_images = self.train_val_splits['validate_images']
         validate_labels = self.train_val_splits['validate_labels']
-        mean = self.train_val_splits['mean']
-        std = self.train_val_splits['std']
+        mean = self.train_val_splits['dataset_std']
+        std = self.train_val_splits['dataset_std']
 
         self.train = DatasetWrapper(_pluck(train_images, train_labels), mean, std)
         self.val = DatasetWrapper(_pluck(validate_images, validate_labels), mean, std)

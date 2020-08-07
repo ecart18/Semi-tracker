@@ -41,8 +41,8 @@ class Unet:
     def _load_mean_std(self):
         log_root = osp.dirname(self._model_path)
         train_val_splits = read_json(osp.join(log_root, 'train_val_splits.json'))
-        self.mean = train_val_splits['mean']
-        self.std = train_val_splits['std']
+        self.mean = train_val_splits['dataset_std']
+        self.std = train_val_splits['dataset_std']
         
     @staticmethod
     def _scaling_img(img, scale_img):
