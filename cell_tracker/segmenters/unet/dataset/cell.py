@@ -6,6 +6,7 @@ import os.path as osp
 from glob import glob
 import numpy as np
 from .benchmark import Benchmark
+from .utils import dataset_mean_std
 from ..utils import mkdir, write_json
 
 
@@ -35,6 +36,9 @@ class Cells(Benchmark):
         except:
             raise ValueError('The number of train image is not equal to the number of label image.') 
         
+        # Calculate dataset mean and std for every channels
+        mean, std = dataset_mean_std(images)
+        
         num = len(images)
         num_val = int(round(num * self.validation_ratio))
         ids = np.random.permutation(num).tolist()
@@ -42,7 +46,10 @@ class Cells(Benchmark):
         val_ids = sorted(ids[-num_val:]) 
 
         # Save meta information into a json file
-        split = {'train_images': [images[idx] for idx in train_ids], 
+        split = {
+                    'dataset_mean': mean,
+                    'dataset_std' : std,
+                    'train_images': [images[idx] for idx in train_ids], 
                     'train_labels': [labels[idx] for idx in train_ids],
                     'validate_images': [images[idx] for idx in val_ids],
                     'validate_labels': [labels[idx] for idx in val_ids]

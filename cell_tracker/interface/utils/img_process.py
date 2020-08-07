@@ -19,6 +19,7 @@ def unit16b2uint8(img):
         logger.error('No such of image transfer type: {} for image/'.format(img.dtype))
         raise TypeError('No such of image transfer type: {} for image/'.format(img.dtype))
 
+
 def img_standardization(img):
     img = cv2.convertScaleAbs(img)
     if len(img.shape) == 2:

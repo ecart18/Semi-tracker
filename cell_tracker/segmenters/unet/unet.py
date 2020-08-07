@@ -2,6 +2,7 @@
 
 from __future__ import absolute_import
 
+import os.path as osp
 import cv2
 import numpy as np
 import torch
@@ -11,6 +12,8 @@ from torchvision.transforms import ToTensor
 from .backbone import get_backbone
 from .utils import mkdir
 from .utils import load_params
+from .utils import read_json
+from .dataset.utils import image_norm
 from ..utils import bgr_to_gray
 from ..utils import gray_to_bgr
 from ..utils import instance_filtering
@@ -27,13 +30,20 @@ class Unet:
         self._threshold = threshold
         self._minimal_size = minimal_size
         self._model = self._load_model(device=self._device)
+        self._load_mean_std()
 
     def _load_model(self, device):
         # Create the model
         model = get_backbone(name='unet', n_channels=3, n_classes=1).to(device).eval()
         model = load_params(model, self._model_path)
         return model
-
+    
+    def _load_mean_std(self):
+        log_root = osp.dirname(self._model_path)
+        train_val_splits = read_json(osp.join(log_root, 'train_val_splits.json'))
+        self.mean = train_val_splits['mean']
+        self.std = train_val_splits['std']
+        
     @staticmethod
     def _scaling_img(img, scale_img):
         height, width = img.shape[0:2]
@@ -43,7 +53,8 @@ class Unet:
 
     def _pre_process(self, img):
         img = self._scaling_img(img, scale_img=self._scale_img)
-        img = img.astype(np.float32) / 255.0
+        img = image_norm(img)
+        img = (img - self.mean) / self.std
         img = torch.from_numpy(img.copy())
         return img.permute(2,0,1).unsqueeze(0)
 
