@@ -25,7 +25,7 @@ class DatasetWrapper(object):
         return len(self._data)
 
     def __getitem__(self, index):
-        return self._data(index)
+        return self._data[index]
 
 
 class Benchmark(object):
