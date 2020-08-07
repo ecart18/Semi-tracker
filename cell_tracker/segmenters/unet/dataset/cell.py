@@ -34,28 +34,28 @@ class Cells(Benchmark):
         try:
             assert len(images) == len(labels)
         except:
-            raise ValueError('The number of train image is not equal to the number of label image.') 
-        
+            raise ValueError(
+                'The number of train image is not equal to the number of label image.')
+
         # Calculate dataset mean and std for every channels
         mean, std = dataset_mean_std(images)
-        
+
         num = len(images)
         num_val = int(round(num * self.validation_ratio))
         ids = np.random.permutation(num).tolist()
         train_ids = sorted(ids[:-num_val])
-        val_ids = sorted(ids[-num_val:]) 
+        val_ids = sorted(ids[-num_val:])
 
         # Save meta information into a json file
         split = {
-                    'dataset_mean': mean,
-                    'dataset_std' : std,
-                    'train_images': [images[idx] for idx in train_ids], 
-                    'train_labels': [labels[idx] for idx in train_ids],
-                    'validate_images': [images[idx] for idx in val_ids],
-                    'validate_labels': [labels[idx] for idx in val_ids]
-                    }
+            'dataset_mean': mean,
+            'dataset_std': std,
+            'train_images': [images[idx] for idx in train_ids],
+            'train_labels': [labels[idx] for idx in train_ids],
+            'validate_images': [images[idx] for idx in val_ids],
+            'validate_labels': [labels[idx] for idx in val_ids]
+        }
         write_json(split, osp.join(self.log_root, 'train_val_splits.json'))
-
 
 
 __factory = {

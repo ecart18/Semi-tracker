@@ -42,7 +42,8 @@ class LeftNavigation(QWidget):
         self.left_navigation.setViewMode(QListView.IconMode)
         self.left_navigation.setFixedWidth(50)
         self.left_navigation.setItemAlignment(Qt.AlignCenter)
-        self.left_navigation.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.left_navigation.setHorizontalScrollBarPolicy(
+            Qt.ScrollBarAlwaysOff)
         self.left_navigation.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.left_navigation.setFrameShape(QListWidget.NoFrame)
         self.left_navigation.setAcceptDrops(False)
@@ -68,7 +69,8 @@ class LeftNavigation(QWidget):
 
             navigation_icon_label.setFixedSize(50, 50)
             navigation_icon_pix = QPixmap(icon_list[i])
-            navigation_icon_pix = navigation_icon_pix.scaled(QSize(30, 30), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            navigation_icon_pix = navigation_icon_pix.scaled(
+                QSize(30, 30), Qt.KeepAspectRatio, Qt.SmoothTransformation)
             navigation_icon_label.setPixmap(navigation_icon_pix)
             navigation_icon_layout.addWidget(navigation_icon_label)
             navigation_icon_widget.setLayout(navigation_icon_layout)

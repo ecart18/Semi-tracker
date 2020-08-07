@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 import os.path as osp
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *

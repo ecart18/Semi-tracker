@@ -61,11 +61,11 @@ class StatusBar(QWidget):
         self.status_bar.addPermanentWidget(frame_info_label)
         self.status_bar.addPermanentWidget(total_frame_label)
 
-        self.work_info_label    = work_info_label
-        self.progressbar        = progressbar
-        self.frame_info_label   = frame_info_label
-        self.frame_editor       = frame_editor
-        self.total_frame_label  = total_frame_label
+        self.work_info_label = work_info_label
+        self.progressbar = progressbar
+        self.frame_info_label = frame_info_label
+        self.frame_editor = frame_editor
+        self.total_frame_label = total_frame_label
 
     def update_progressbar(self, val):
         self.progressbar.setValue(val)

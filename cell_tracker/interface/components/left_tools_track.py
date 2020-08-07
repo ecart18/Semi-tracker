@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
+
 class TrackTools(QWidget):
 
     def __init__(self):
@@ -25,9 +26,9 @@ class TrackTools(QWidget):
         tracker_select = QComboBox()
         tracker_select.setFixedSize(100, 20)
         tracker_select.setStyleSheet("border: 0px;"
-                                           "color: white;"
-                                           "font-family: Verdana;"
-                                           "background: #353535;")
+                                     "color: white;"
+                                     "font-family: Verdana;"
+                                     "background: #353535;")
         tracker_select.addItem("Bi-Graph")
         tracker_select.addItem("None")
 
@@ -71,7 +72,7 @@ class TrackTools(QWidget):
         track_layout.setSpacing(5)
         self.track_tools.setLayout(track_layout)
 
-        self.none_tracker_button        = none_tracker_button
-        self.bipartite_tracker_button   = bipartite_tracker_button
-        self.tracker_select             = tracker_select
-        self.run_button                 = run_button
+        self.none_tracker_button = none_tracker_button
+        self.bipartite_tracker_button = bipartite_tracker_button
+        self.tracker_select = tracker_select
+        self.run_button = run_button

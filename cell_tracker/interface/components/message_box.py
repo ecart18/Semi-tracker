@@ -7,6 +7,7 @@ from ..utils import get_icon
 
 class QuestionMessageBox(QWidget):
     """question warning infomation"""
+
     def __init__(self, message):
         super().__init__()
         self.message = message
@@ -68,6 +69,7 @@ class QuestionMessageBox(QWidget):
 
 class InformationMessageBox(QWidget):
     """question warning information"""
+
     def __init__(self, message):
         super().__init__()
         self.message = message
@@ -129,6 +131,7 @@ class InformationMessageBox(QWidget):
 
 class WarningMessageBox(QWidget):
     """question warning information"""
+
     def __init__(self, message):
         super().__init__()
         self.message = message

@@ -57,10 +57,10 @@ class VisualizeWindow(QWidget):
         self.visualize_window_layout.setContentsMargins(1, 1, 1, 1)
         self.visualize_window.setLayout(self.visualize_window_layout)
 
-        self.main_frame     = main_frame
-        self.main_sld       = main_sld
-        self.main_left      = main_left_button
-        self.main_right     = main_right_button
+        self.main_frame = main_frame
+        self.main_sld = main_sld
+        self.main_left = main_left_button
+        self.main_right = main_right_button
 
     def my_mouse_click_event(self, ev):
         if ev.button() == Qt.RightButton:

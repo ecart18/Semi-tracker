@@ -16,7 +16,7 @@ class Region():
     def __init__(self, bbox, mask):
         self._bbox = bbox
         self._mask = mask
-    
+
     @property
     def bbox(self):
         return self._bbox
@@ -24,7 +24,6 @@ class Region():
     @property
     def mask(self):
         return self._mask
-
 
 
 class Node:
@@ -72,10 +71,9 @@ class Track:
 
         self.parent = 0
         self.child = None
-    
+
         self._id = Track._id_pool
         Track._id_pool += 1
-        
 
         # kalman mean and covariance
         self._mean, self._covariance = kf.initiate(measurement=init_node.bbox)
@@ -110,7 +108,8 @@ class Track:
         else:
             raise ValueError('nodes should be a list')
 
-    def smooth_trajectory(self, max_missed_frame):  # TODO using kalman prediction or smooth
+    # TODO using kalman prediction or smooth
+    def smooth_trajectory(self, max_missed_frame):
         nodes = []
         for index in range(len(self._nodes)-1):
             node_pre, node_post = self._nodes[index:index+2]
@@ -126,23 +125,30 @@ class Track:
                 num = frame_index_post - frame_index_pre + 1
                 c_x_ref = (node_pre.bbox[0] + node_pre.bbox[2]) / 2.
                 c_y_ref = (node_pre.bbox[1] + node_pre.bbox[3]) / 2.
-                l = np.linspace(node_pre.bbox[0], node_post.bbox[0], num=num)[1:-1]
-                t = np.linspace(node_pre.bbox[1], node_post.bbox[1], num=num)[1:-1]
-                r = np.linspace(node_pre.bbox[2], node_post.bbox[2], num=num)[1:-1]
-                b = np.linspace(node_pre.bbox[3], node_post.bbox[3], num=num)[1:-1]
+                l = np.linspace(node_pre.bbox[0],
+                                node_post.bbox[0], num=num)[1:-1]
+                t = np.linspace(node_pre.bbox[1],
+                                node_post.bbox[1], num=num)[1:-1]
+                r = np.linspace(node_pre.bbox[2],
+                                node_post.bbox[2], num=num)[1:-1]
+                b = np.linspace(node_pre.bbox[3],
+                                node_post.bbox[3], num=num)[1:-1]
                 delta_c_x = (l + r) / 2. - c_x_ref
                 delta_c_y = (t + b) / 2. - c_y_ref
                 mask_ref = node_pre.region.mask
                 height, width = mask_ref.shape
-                coor_y_ref  = np.where(mask_ref > 0)[0]
-                coor_x_ref  = np.where(mask_ref > 0)[1]
+                coor_y_ref = np.where(mask_ref > 0)[0]
+                coor_x_ref = np.where(mask_ref > 0)[1]
                 for idx, (ll, tt, rr, bb, d_x, d_y) in enumerate(zip(l, t, r, b, delta_c_x, delta_c_y)):
-                    coor_x = np.minimum(np.maximum(0, (coor_x_ref + d_x).astype(np.int64)), width-1)
-                    coor_y = np.minimum(np.maximum(0, (coor_y_ref + d_y).astype(np.int64)), height-1)
+                    coor_x = np.minimum(np.maximum(
+                        0, (coor_x_ref + d_x).astype(np.int64)), width-1)
+                    coor_y = np.minimum(np.maximum(
+                        0, (coor_y_ref + d_y).astype(np.int64)), height-1)
                     mask = np.zeros_like(mask_ref)
                     mask[coor_y, coor_x] = 1
                     region = Region(np.array([ll, tt, rr, bb, 1.]), mask)
-                    nodes.append(Node(frame_index_pre + idx + 1, -1, region=region))
+                    nodes.append(
+                        Node(frame_index_pre + idx + 1, -1, region=region))
         nodes.append(self._nodes[-1])
         self._nodes = nodes
 
@@ -173,16 +179,19 @@ class Track:
             if len(self._nodes) < 1:
                 self._mean, self._covariance = kalman_filter.initiate(bbox)
             else:
-                self._mean, self._covariance = kalman_filter.update(self._mean, self._covariance, bbox)
-            self._mean, self._covariance = kalman_filter.predict(self._mean, self._covariance)
+                self._mean, self._covariance = kalman_filter.update(
+                    self._mean, self._covariance, bbox)
+            self._mean, self._covariance = kalman_filter.predict(
+                self._mean, self._covariance)
             self.predicted_bbox = kalman_filter.predict_bbox(self._mean)
         else:
-            self._mean, self._covariance = kalman_filter.predict(self._mean, self._covariance)
+            self._mean, self._covariance = kalman_filter.predict(
+                self._mean, self._covariance)
             self.predicted_bbox = kalman_filter.predict_bbox(self._mean)
 
     # fast
     def get_distance(self, frame_index, detections, regions,
-                       kf=None, dis_th=1e6, using_kfgating=True):
+                     kf=None, dis_th=1e6, using_kfgating=True):
         pick = []
         dis = np.zeros(len(detections)) + self._missed_detection_score
         ious = np.zeros(len(detections))
@@ -204,17 +213,19 @@ class Track:
 
     def _get_seg_ious(self, regs):
         ref_mask = self._nodes[-1].region.mask
-        ref_mask_size = np.sum(ref_mask>0)
+        ref_mask_size = np.sum(ref_mask > 0)
         seg_ious = []
         for reg in regs:
             inter = ref_mask * reg.mask
-            seg_iou = np.sum(inter>0) / (ref_mask_size + np.sum(reg.mask>0))
+            seg_iou = np.sum(inter > 0) / \
+                (ref_mask_size + np.sum(reg.mask > 0))
             seg_ious.append(seg_iou)
         return np.array(seg_ious)
 
     def _get_distance(self, detections, kf):
         mean, covariance = kf.predict(self._mean, self._covariance)
-        distances = kf.gating_distance(mean, covariance, detections, only_position=False)
+        distances = kf.gating_distance(
+            mean, covariance, detections, only_position=False)
         return distances
 
     def _gate(self, frame_index, bbox, history=1, kf=None, using_kfgating=True):
@@ -248,7 +259,8 @@ class Track:
             delta_f = frame_index - n.frame_index
             if delta_f < TrackerHyperParams.max_frame_gap:
                 iou = n.get_iou(frame_index, recorder, box_id)
-                if iou is None: continue
+                if iou is None:
+                    continue
                 if iou < pow(TrackerHyperParams.iou_base, delta_f):
                     return False
         return True
@@ -268,6 +280,7 @@ class Tracks:
     1) tracks. the set of tracks
     2) keep the previous tracks
     """
+
     def __init__(self, max_draw_track_node=20):
         self.tracks = list()  # the set of tracks
         self.saved_tracks = list()
@@ -295,11 +308,14 @@ class Tracks:
 
     def get_all_tracks(self, minimal_len=1):
         self.tracks = [t for t in self.tracks if len(t.nodes) >= minimal_len]
-        self.saved_tracks = [t for t in self.saved_tracks if len(t.nodes) >= minimal_len]
+        self.saved_tracks = [
+            t for t in self.saved_tracks if len(t.nodes) >= minimal_len]
         for t in self.tracks:
-            t.smooth_trajectory(max_missed_frame=TrackerHyperParams.max_missed_frame)
+            t.smooth_trajectory(
+                max_missed_frame=TrackerHyperParams.max_missed_frame)
         for t in self.saved_tracks:
-            t.smooth_trajectory(max_missed_frame=TrackerHyperParams.max_missed_frame)
+            t.smooth_trajectory(
+                max_missed_frame=TrackerHyperParams.max_missed_frame)
         tracks = self.tracks + self.saved_tracks
         # tracks = MergeUtils.merge(tracks,min_merge_threshold=TrackerHyperParams.min_merge_threshold)
         return tracks
@@ -308,7 +324,8 @@ class Tracks:
         if len(self.tracks) > TrackerHyperParams.max_object:
             all_missed_frames = [t.missed_frame for t in self.tracks]
             oldest_track_index = np.argmax(all_missed_frames)
-            self.saved_tracks = self.saved_tracks + [self.tracks[oldest_track_index]]
+            self.saved_tracks = self.saved_tracks + \
+                [self.tracks[oldest_track_index]]
             del self.tracks[oldest_track_index]
 
     def one_frame_pass(self, saved_ids=[]):
@@ -322,6 +339,6 @@ class Tracks:
                 saved_track_set.append(i)
                 continue
             keep_track_set.append(i)
-        self.saved_tracks = self.saved_tracks + [self.tracks[i] for i in saved_track_set]
+        self.saved_tracks = self.saved_tracks + \
+            [self.tracks[i] for i in saved_track_set]
         self.tracks = [self.tracks[i] for i in keep_track_set]
-

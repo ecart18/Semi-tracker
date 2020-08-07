@@ -21,7 +21,7 @@ from ..utils import instance_filtering
 
 class Unet:
     def __init__(self, model_path, minimal_size=0, threshold=0.5, scale_img=0.5, device='cpu'):
-        if torch.cuda.is_available() and device=='gpu':
+        if torch.cuda.is_available() and device == 'gpu':
             self._device = 'cuda'
         else:
             self._device = 'cpu'
@@ -34,16 +34,18 @@ class Unet:
 
     def _load_model(self, device):
         # Create the model
-        model = get_backbone(name='unet', n_channels=3, n_classes=1).to(device).eval()
+        model = get_backbone(name='unet', n_channels=3,
+                             n_classes=1).to(device).eval()
         model = load_params(model, self._model_path)
         return model
-    
+
     def _load_mean_std(self):
         log_root = osp.dirname(self._model_path)
-        train_val_splits = read_json(osp.join(log_root, 'train_val_splits.json'))
+        train_val_splits = read_json(
+            osp.join(log_root, 'train_val_splits.json'))
         self.mean = train_val_splits['dataset_std']
         self.std = train_val_splits['dataset_std']
-        
+
     @staticmethod
     def _scaling_img(img, scale_img):
         height, width = img.shape[0:2]
@@ -57,21 +59,26 @@ class Unet:
         img = (img - self.mean) / self.std
         img = img.astype(np.float32)
         img = torch.from_numpy(img.copy())
-        return img.permute(2,0,1).unsqueeze(0)
+        return img.permute(2, 0, 1).unsqueeze(0)
 
     def __call__(self, img):
         with torch.no_grad():
             img = self._pre_process(img)
             img = img.to(self._device)
-            binary_mask = torch.sigmoid(self._model(img)).squeeze(dim=0).permute(dims=[1,2,0]).cpu().numpy()
-            binary_mask = cv2.medianBlur((255 * binary_mask).astype(np.uint8), 3)
-            binary_mask = self._scaling_img(binary_mask, scale_img= 1.0 / self._scale_img)
+            binary_mask = torch.sigmoid(self._model(img)).squeeze(
+                dim=0).permute(dims=[1, 2, 0]).cpu().numpy()
+            binary_mask = cv2.medianBlur(
+                (255 * binary_mask).astype(np.uint8), 3)
+            binary_mask = self._scaling_img(
+                binary_mask, scale_img=1.0 / self._scale_img)
             binary_mask = binary_mask.astype(np.float) / 255
             binary_mask[binary_mask < self._threshold] = 0
             binary_mask[binary_mask >= self._threshold] = 1
             binary_mask = (255 * binary_mask).astype(np.uint8)
             binary_mask = np.expand_dims(binary_mask, 2)
-            _, label_img, _, _ = cv2.connectedComponentsWithStats(binary_mask, connectivity=4, ltype=cv2.CV_32S)
+            _, label_img, _, _ = cv2.connectedComponentsWithStats(
+                binary_mask, connectivity=4, ltype=cv2.CV_32S)
             label_img = np.expand_dims(label_img, axis=2)
-            label_img = instance_filtering(label_img, minimal_size=self._minimal_size)        
+            label_img = instance_filtering(
+                label_img, minimal_size=self._minimal_size)
         return label_img

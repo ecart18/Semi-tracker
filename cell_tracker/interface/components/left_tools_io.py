@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -17,7 +19,7 @@ class InputOutput(QWidget):
         set_source_button = QPushButton()
         set_source_button.setText("Set source folder")
         set_source_button.setStyleSheet("background: #454545;"
-                                  "color: rgb(245, 245, 245);")
+                                        "color: rgb(245, 245, 245);")
         set_source_button.setContentsMargins(0, 0, 0, 0)
         set_source_button.setFixedHeight(25)
 
@@ -29,11 +31,11 @@ class InputOutput(QWidget):
         source_folder_show_lineedit.setPlaceholderText("Source folder")
         source_folder_show_lineedit.setEnabled(False)
         source_folder_show_lineedit.setStyleSheet("background: #454545;"
-                                                "border: 0px;"
-                                                "color: white;"
-                                                "border-radius: 5px;"
-                                                "font-family: Verdana;"
-                                                "font-size: 10px;")
+                                                  "border: 0px;"
+                                                  "color: white;"
+                                                  "border-radius: 5px;"
+                                                  "font-family: Verdana;"
+                                                  "font-size: 10px;")
 
         set_source_folder_layout.addWidget(source_img_label)
         set_source_folder_layout.addWidget(set_source_button)
@@ -73,7 +75,7 @@ class InputOutput(QWidget):
         set_label_button = QPushButton()
         set_label_button.setText("Set label folder")
         set_label_button.setStyleSheet("background: #454545;"
-                                        "color: rgb(245, 245, 245);")
+                                       "color: rgb(245, 245, 245);")
         set_label_button.setContentsMargins(0, 0, 0, 0)
         set_label_button.setFixedHeight(25)
 
@@ -85,11 +87,11 @@ class InputOutput(QWidget):
         label_folder_show_lineedit.setPlaceholderText("Label folder")
         label_folder_show_lineedit.setEnabled(False)
         label_folder_show_lineedit.setStyleSheet("background: #454545;"
-                                                  "border: 0px;"
-                                                  "color: white;"
-                                                  "border-radius: 5px;"
-                                                  "font-family: Verdana;"
-                                                  "font-size: 10px;")
+                                                 "border: 0px;"
+                                                 "color: white;"
+                                                 "border-radius: 5px;"
+                                                 "font-family: Verdana;"
+                                                 "font-size: 10px;")
 
         set_label_folder_layout.addWidget(label_img_label)
         set_label_folder_layout.addWidget(set_label_button)
@@ -101,7 +103,7 @@ class InputOutput(QWidget):
         set_log_button = QPushButton()
         set_log_button.setText("Set log folder")
         set_log_button.setStyleSheet("background: #454545;"
-                                       "color: rgb(245, 245, 245);")
+                                     "color: rgb(245, 245, 245);")
         set_log_button.setContentsMargins(0, 0, 0, 0)
         set_log_button.setFixedHeight(25)
 
@@ -113,11 +115,11 @@ class InputOutput(QWidget):
         log_folder_show_lineedit.setPlaceholderText("Label folder")
         log_folder_show_lineedit.setEnabled(False)
         log_folder_show_lineedit.setStyleSheet("background: #454545;"
-                                                 "border: 0px;"
-                                                 "color: white;"
-                                                 "border-radius: 5px;"
-                                                 "font-family: Verdana;"
-                                                 "font-size: 10px;")
+                                               "border: 0px;"
+                                               "color: white;"
+                                               "border-radius: 5px;"
+                                               "font-family: Verdana;"
+                                               "font-size: 10px;")
 
         set_log_folder_layout.addWidget(set_log_label)
         set_log_folder_layout.addWidget(set_log_button)
@@ -139,6 +141,3 @@ class InputOutput(QWidget):
         self.label_folder_show_lineedit = label_folder_show_lineedit
         self.set_log_button = set_log_button
         self.log_folder_show_lineedit = log_folder_show_lineedit
-
-
-

@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtCore import QFileInfo, QUrl
 
+
 class Menu(QWidget):
 
     def __init__(self, parent=None):
@@ -52,14 +53,14 @@ class Menu(QWidget):
         exit_act.setShortcut('Ctrl+Q')
         file_menu.addAction(exit_act)
 
-        self.file_menu          = file_menu
-        self.new_project_act    = new_project_act
+        self.file_menu = file_menu
+        self.new_project_act = new_project_act
         self.default_project_act = default_project_act
-        self.load_act           = load_act
-        self.source_folder_act  = source_folder_act
+        self.load_act = load_act
+        self.source_folder_act = source_folder_act
         self.label_folder_act = label_folder_act
         self.log_folder_act = log_folder_act
-        self.exit_act           = exit_act
+        self.exit_act = exit_act
 
     def init_edit(self):
         edit_menu = self.menu_bar.addMenu("&Edit")
@@ -145,7 +146,6 @@ class Menu(QWidget):
         self.tutorial_act = tutorial_act
 
     def open_gitlab(self):
-        QDesktopServices.openUrl(QUrl("https://gitlab.com/ecart18/cell-tracker.git"))
-
-
+        QDesktopServices.openUrl(
+            QUrl("https://gitlab.com/ecart18/cell-tracker.git"))
 

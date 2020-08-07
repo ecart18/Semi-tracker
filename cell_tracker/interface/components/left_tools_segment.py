@@ -18,7 +18,7 @@ class SegmentTools(QWidget):
         self.segment_tools.setContentsMargins(20, 0, 0, 0)
         self.segment_tools.setStyleSheet("background: #323232")
 
-        self.qtooltips_stylesheet =  """
+        self.qtooltips_stylesheet = """
         QPushButton {border:0px;}
         QToolTip
             {
@@ -49,62 +49,77 @@ class SegmentTools(QWidget):
                                                           "text-align:left;")
         self.segment_algorithm1_tool_button.setFixedHeight(20)
         self.segment_algorithm1_tool_button.setText("Threshold")
-        self.segment_algorithm1_tool_button.clicked.connect(self.segment_algorithm1_tool_button_fnc)
-        self.segment_algorithm1_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+        self.segment_algorithm1_tool_button.clicked.connect(
+            self.segment_algorithm1_tool_button_fnc)
+        self.segment_algorithm1_tool_button.setIcon(
+            QIcon(get_icon("Arrow_right.png")))
 
         self.segment_algorithm2_tool_button = QPushButton()
         self.segment_algorithm2_tool_button.setStyleSheet("background: #454545;"
-                                               "font-family: Verdana;"
-                                               "border: 0px;"
-                                               "text-align:left;")
+                                                          "font-family: Verdana;"
+                                                          "border: 0px;"
+                                                          "text-align:left;")
         self.segment_algorithm2_tool_button.setFixedHeight(20)
         self.segment_algorithm2_tool_button.setText("U-net")
-        self.segment_algorithm2_tool_button.clicked.connect(self.segment_algorithm2_tool_button_fnc)
-        self.segment_algorithm2_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+        self.segment_algorithm2_tool_button.clicked.connect(
+            self.segment_algorithm2_tool_button_fnc)
+        self.segment_algorithm2_tool_button.setIcon(
+            QIcon(get_icon("Arrow_right.png")))
 
         self.segment_algorithm3_tool_button = QPushButton()
         self.segment_algorithm3_tool_button.setStyleSheet("background: #454545;"
-                                                     "font-family: Verdana;"
-                                                     "border: 0px;"
-                                                     "text-align:left;")
+                                                          "font-family: Verdana;"
+                                                          "border: 0px;"
+                                                          "text-align:left;")
         self.segment_algorithm3_tool_button.setFixedHeight(20)
         self.segment_algorithm3_tool_button.setText("WaterShed")
-        self.segment_algorithm3_tool_button.clicked.connect(self.segment_algorithm3_tool_button_fnc)
-        self.segment_algorithm3_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+        self.segment_algorithm3_tool_button.clicked.connect(
+            self.segment_algorithm3_tool_button_fnc)
+        self.segment_algorithm3_tool_button.setIcon(
+            QIcon(get_icon("Arrow_right.png")))
 
         self.segment_algorithm4_tool_button = QPushButton()
         self.segment_algorithm4_tool_button.setStyleSheet("background: #454545;"
-                                                     "font-family: Verdana;"
-                                                     "border: 0px;"
-                                                     "text-align:left;")
+                                                          "font-family: Verdana;"
+                                                          "border: 0px;"
+                                                          "text-align:left;")
         self.segment_algorithm4_tool_button.setFixedHeight(20)
         self.segment_algorithm4_tool_button.setText("CrabCut")
-        self.segment_algorithm4_tool_button.clicked.connect(self.segment_algorithm4_tool_button_fnc)
-        self.segment_algorithm4_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+        self.segment_algorithm4_tool_button.clicked.connect(
+            self.segment_algorithm4_tool_button_fnc)
+        self.segment_algorithm4_tool_button.setIcon(
+            QIcon(get_icon("Arrow_right.png")))
 
         self.segment_algorithm5_tool_button = QPushButton()
         self.segment_algorithm5_tool_button.setStyleSheet("background: #454545;"
-                                                 "font-family: Verdana;"
-                                                 "border: 0px;"
-                                                 "text-align:left;")
+                                                          "font-family: Verdana;"
+                                                          "border: 0px;"
+                                                          "text-align:left;")
         self.segment_algorithm5_tool_button.setFixedHeight(20)
         self.segment_algorithm5_tool_button.setText("User-defined")
-        self.segment_algorithm5_tool_button.clicked.connect(self.segment_algorithm5_tool_button_fnc)
-        self.segment_algorithm5_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+        self.segment_algorithm5_tool_button.clicked.connect(
+            self.segment_algorithm5_tool_button_fnc)
+        self.segment_algorithm5_tool_button.setIcon(
+            QIcon(get_icon("Arrow_right.png")))
 
-        self.segment_tools_layout.addWidget(self.segment_algorithm1_tool_button)
+        self.segment_tools_layout.addWidget(
+            self.segment_algorithm1_tool_button)
         self.segment_tools_layout.addWidget(self.segment_algorithm1)
         self.segment_algorithm1.setVisible(False)
-        self.segment_tools_layout.addWidget(self.segment_algorithm2_tool_button)
+        self.segment_tools_layout.addWidget(
+            self.segment_algorithm2_tool_button)
         self.segment_tools_layout.addWidget(self.segment_algorithm2)
         self.segment_algorithm2.setVisible(False)
-        self.segment_tools_layout.addWidget(self.segment_algorithm3_tool_button)
+        self.segment_tools_layout.addWidget(
+            self.segment_algorithm3_tool_button)
         self.segment_tools_layout.addWidget(self.segment_algorithm3)
         self.segment_algorithm3.setVisible(False)
-        self.segment_tools_layout.addWidget(self.segment_algorithm4_tool_button)
+        self.segment_tools_layout.addWidget(
+            self.segment_algorithm4_tool_button)
         self.segment_tools_layout.addWidget(self.segment_algorithm4)
         self.segment_algorithm4.setVisible(False)
-        self.segment_tools_layout.addWidget(self.segment_algorithm5_tool_button)
+        self.segment_tools_layout.addWidget(
+            self.segment_algorithm5_tool_button)
         self.segment_tools_layout.addWidget(self.segment_algorithm5)
         self.segment_algorithm5.setVisible(False)
 
@@ -149,7 +164,7 @@ class SegmentTools(QWidget):
         thresh_min_size_label.setText("Minimal size:")
         thresh_min_size_label.setAlignment(Qt.AlignLeft)
         thresh_min_size_label.setStyleSheet("font-family: Verdana;"
-                                          "color: white;")
+                                            "color: white;")
 
         thresh_min_size_editor = QLineEdit()
         thresh_min_size_editor.setFixedSize(QSize(50, 20))
@@ -157,9 +172,9 @@ class SegmentTools(QWidget):
         thresh_min_size_editor.setText(str(0))
         thresh_min_size_editor.setValidator(QIntValidator())
         thresh_min_size_editor.setStyleSheet("background: #545454;"
-                                           "border: 0px;"
-                                           "border-radius: 3px;"
-                                           "color: white;")
+                                             "border: 0px;"
+                                             "border-radius: 3px;"
+                                             "color: white;")
 
         thresh_min_size_left_button = QPushButton()
         thresh_min_size_left_button.setIcon(QIcon((get_icon("left.png"))))
@@ -205,11 +220,11 @@ class SegmentTools(QWidget):
         segment_algorithm1_layout.addLayout(segment_algorithm1_layout3)
         segment_algorithm1_layout.setAlignment(Qt.AlignTop)
 
-        self.segment_algorithm1     = segment_algorithm1
-        self.thresh_sld1            = thresh_sld1
-        self.thresh_label1          = thresh_label1
-        self.thresh_textline1       = thresh_textline1
-        self.thresh_segment_button  = thresh_segment_button
+        self.segment_algorithm1 = segment_algorithm1
+        self.thresh_sld1 = thresh_sld1
+        self.thresh_label1 = thresh_label1
+        self.thresh_textline1 = thresh_textline1
+        self.thresh_segment_button = thresh_segment_button
         self.thresh_min_size_editor = thresh_min_size_editor
         self.thresh_min_size_left_button = thresh_min_size_left_button
         self.thresh_min_size_right_button = thresh_min_size_right_button
@@ -253,13 +268,13 @@ class SegmentTools(QWidget):
         device_label = QLabel()
         device_label.setText("GPU number:")
         device_label.setStyleSheet("font-family: Verdana;"
-                                    "color: white;")
+                                   "color: white;")
 
         device_select = QComboBox()
         device_select.setStyleSheet("border: 0px;"
-                                     "color: white;"
-                                     "font-family: Verdana;"
-                                     "background: #353535;")
+                                    "color: white;"
+                                    "font-family: Verdana;"
+                                    "background: #353535;")
         device_select.addItem("CPU")
         device_select.addItem("GPU")
         device_select.setCurrentIndex(0)
@@ -319,7 +334,7 @@ class SegmentTools(QWidget):
         unet_min_size_label.setText("Minimal size:")
         unet_min_size_label.setAlignment(Qt.AlignLeft)
         unet_min_size_label.setStyleSheet("font-family: Verdana;"
-                                    "color: white;")
+                                          "color: white;")
 
         unet_min_size_editor = QLineEdit()
         unet_min_size_editor.setFixedSize(QSize(50, 20))
@@ -327,9 +342,9 @@ class SegmentTools(QWidget):
         unet_min_size_editor.setText(str(0))
         unet_min_size_editor.setValidator(QIntValidator())
         unet_min_size_editor.setStyleSheet("background: #545454;"
-                                  "border: 0px;"
-                                  "border-radius: 3px;"
-                                  "color: white;")
+                                           "border: 0px;"
+                                           "border-radius: 3px;"
+                                           "color: white;")
 
         unet_min_size_left_button = QPushButton()
         unet_min_size_left_button.setIcon(QIcon((get_icon("left.png"))))
@@ -384,17 +399,17 @@ class SegmentTools(QWidget):
         segment_algorithm2_layout.setSpacing(5)
         segment_algorithm2_layout.setContentsMargins(5, 5, 5, 5)
 
-        self.segment_algorithm2     = segment_algorithm2
-        self.device_select          = device_select
-        self.model_select_label     = model_select_label
-        self.model_path_label       = model_path_label
-        self.model_browse_button    = model_browse_button
-        self.thresh_label2          = thresh_label2
-        self.thresh_sld2            = thresh_sld2
-        self.thresh_textline2       = thresh_textline2
-        self.unet_segment_button    = unet_segment_button
+        self.segment_algorithm2 = segment_algorithm2
+        self.device_select = device_select
+        self.model_select_label = model_select_label
+        self.model_path_label = model_path_label
+        self.model_browse_button = model_browse_button
+        self.thresh_label2 = thresh_label2
+        self.thresh_sld2 = thresh_sld2
+        self.thresh_textline2 = thresh_textline2
+        self.unet_segment_button = unet_segment_button
         self.scale_img_select = scale_img_select
-        self.unet_min_size_editor   = unet_min_size_editor
+        self.unet_min_size_editor = unet_min_size_editor
         self.unet_min_size_left_button = unet_min_size_left_button
         self.unet_min_size_right_button = unet_min_size_right_button
 
@@ -429,10 +444,10 @@ class SegmentTools(QWidget):
         noise_textline.setValidator(QIntValidator())
         noise_textline.setText("5")
         noise_textline.setStyleSheet("background: #454545;"
-                                       "border: 0px;"
-                                       "color: white;"
-                                       "border-radius: 5px;"
-                                       "font-family: Verdana;")
+                                     "border: 0px;"
+                                     "color: white;"
+                                     "border-radius: 5px;"
+                                     "font-family: Verdana;")
         noise_textline.textEdited.connect(self.text2sld31)
 
         dist_thresh_sld = QSlider(Qt.Horizontal)
@@ -446,24 +461,24 @@ class SegmentTools(QWidget):
         dist_thresh_label.setText("Dist thresh(0~1)")
         dist_thresh_label.setAlignment(Qt.AlignCenter)
         dist_thresh_label.setStyleSheet("font-family: Verdana;"
-                                  "color: white;")
+                                        "color: white;")
 
         dist_thresh_textline = QLineEdit()
         dist_thresh_textline.setAlignment(Qt.AlignCenter)
         dist_thresh_textline.setFixedSize(50, 15)
         dist_thresh_textline.setText("0.5")
         dist_thresh_textline.setStyleSheet("background: #454545;"
-                                     "border: 0px;"
-                                     "color: white;"
-                                     "border-radius: 5px;"
-                                     "font-family: Verdana;")
+                                           "border: 0px;"
+                                           "color: white;"
+                                           "border-radius: 5px;"
+                                           "font-family: Verdana;")
         dist_thresh_textline.textEdited.connect(self.text2sld32)
 
         watershed_min_size_label = QLabel()
         watershed_min_size_label.setText("Minimal size:")
         watershed_min_size_label.setAlignment(Qt.AlignLeft)
         watershed_min_size_label.setStyleSheet("font-family: Verdana;"
-                                          "color: white;")
+                                               "color: white;")
 
         watershed_min_size_editor = QLineEdit()
         watershed_min_size_editor.setFixedSize(QSize(50, 20))
@@ -471,9 +486,9 @@ class SegmentTools(QWidget):
         watershed_min_size_editor.setText(str(0))
         watershed_min_size_editor.setValidator(QIntValidator())
         watershed_min_size_editor.setStyleSheet("background: #545454;"
-                                           "border: 0px;"
-                                           "border-radius: 3px;"
-                                           "color: white;")
+                                                "border: 0px;"
+                                                "border-radius: 3px;"
+                                                "color: white;")
 
         watershed_min_size_left_button = QPushButton()
         watershed_min_size_left_button.setIcon(QIcon((get_icon("left.png"))))
@@ -488,8 +503,10 @@ class SegmentTools(QWidget):
         watershed_min_size_right_button.setIconSize(QSize(15, 15))
         watershed_min_size_right_button.setFixedSize(QSize(15, 15))
         watershed_min_size_right_button.setFlat(True)
-        watershed_min_size_right_button.setStyleSheet(self.qtooltips_stylesheet)
-        watershed_min_size_right_button.clicked.connect(self.min_size_right_fnc3)
+        watershed_min_size_right_button.setStyleSheet(
+            self.qtooltips_stylesheet)
+        watershed_min_size_right_button.clicked.connect(
+            self.min_size_right_fnc3)
 
         watershed_min_size_layout = QHBoxLayout()
         watershed_min_size_layout.addWidget(watershed_min_size_label)
@@ -501,9 +518,9 @@ class SegmentTools(QWidget):
         watershed_segment_button.setFixedSize(180, 20)
         watershed_segment_button.setText("WaterShed")
         watershed_segment_button.setStyleSheet("background: #454545;"
-                                             "color: white;"
-                                             "border-radius: 5px;"
-                                             "font-family: Verdana;")
+                                               "color: white;"
+                                               "border-radius: 5px;"
+                                               "font-family: Verdana;")
 
         segment_algorithm3_layout1.addWidget(noise_label)
         segment_algorithm3_layout1.setAlignment(Qt.AlignLeft)
@@ -528,15 +545,15 @@ class SegmentTools(QWidget):
         segment_algorithm3_layout.setSpacing(5)
         segment_algorithm3_layout.setContentsMargins(5, 5, 5, 5)
 
-        self.segment_algorithm3     = segment_algorithm3
-        self.noise_sld            = noise_sld
-        self.noise_label          = noise_label
-        self.noise_textline       = noise_textline
-        self.dist_thresh_sld      = dist_thresh_sld
-        self.dist_thresh_label    = dist_thresh_label
+        self.segment_algorithm3 = segment_algorithm3
+        self.noise_sld = noise_sld
+        self.noise_label = noise_label
+        self.noise_textline = noise_textline
+        self.dist_thresh_sld = dist_thresh_sld
+        self.dist_thresh_label = dist_thresh_label
         self.dist_thresh_textline = dist_thresh_textline
         self.watershed_segment_button = watershed_segment_button
-        self.watershed_min_size_editor  = watershed_min_size_editor
+        self.watershed_min_size_editor = watershed_min_size_editor
         self.watershed_min_size_left_button = watershed_min_size_left_button
         self.watershed_min_size_right_button = watershed_min_size_right_button
 
@@ -575,7 +592,7 @@ class SegmentTools(QWidget):
         iteration_label.setText("Iteration")
         iteration_label.setAlignment(Qt.AlignCenter)
         iteration_label.setStyleSheet("font-family: Verdana;"
-                                    "color: white;")
+                                      "color: white;")
 
         iteration_textline = QLineEdit()
         iteration_textline.setAlignment(Qt.AlignCenter)
@@ -584,10 +601,10 @@ class SegmentTools(QWidget):
         iteration_textline.setValidator(QIntValidator())
         iteration_textline.setText("3")
         iteration_textline.setStyleSheet("background: #454545;"
-                                       "border: 0px;"
-                                       "color: white;"
-                                       "border-radius: 5px;"
-                                       "font-family: Verdana;")
+                                         "border: 0px;"
+                                         "color: white;"
+                                         "border-radius: 5px;"
+                                         "font-family: Verdana;")
         iteration_textline.textEdited.connect(self.text2sld4)
 
         grabcut_segment_label = QLabel()
@@ -734,20 +751,22 @@ class SegmentTools(QWidget):
     def segment_algorithm1_tool_button_fnc(self):
         if self.segment_algorithm1.isVisible():
             self.segment_algorithm1.setVisible(False)
-            self.segment_algorithm1_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.segment_algorithm1_tool_button.setIcon(
+                QIcon(get_icon("Arrow_right.png")))
             self.segment_algorithm1_tool_button.setStyleSheet("background: #454545;"
-                                                     "font-family: Verdana;"
-                                                     "border: 0px;"
-                                                     "text-align:left;"
-                                                     "color: #000000")
+                                                              "font-family: Verdana;"
+                                                              "border: 0px;"
+                                                              "text-align:left;"
+                                                              "color: #000000")
         else:
             self.segment_algorithm1.setVisible(True)
-            self.segment_algorithm1_tool_button.setIcon(QIcon(get_icon("Arrow_down.png")))
+            self.segment_algorithm1_tool_button.setIcon(
+                QIcon(get_icon("Arrow_down.png")))
             self.segment_algorithm1_tool_button.setStyleSheet("background: #454545;"
-                                                     "font-family: Verdana;"
-                                                     "border: 0px;"
-                                                     "text-align:left;"
-                                                     "color: #FFFFFF")
+                                                              "font-family: Verdana;"
+                                                              "border: 0px;"
+                                                              "text-align:left;"
+                                                              "color: #FFFFFF")
 
     def min_size_left_fnc1(self):
         v = int(self.thresh_min_size_editor.text())
@@ -779,71 +798,79 @@ class SegmentTools(QWidget):
     def segment_algorithm2_tool_button_fnc(self):
         if self.segment_algorithm2.isVisible():
             self.segment_algorithm2.setVisible(False)
-            self.segment_algorithm2_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.segment_algorithm2_tool_button.setIcon(
+                QIcon(get_icon("Arrow_right.png")))
             self.segment_algorithm2_tool_button.setStyleSheet("background: #454545;"
-                                                     "font-family: Verdana;"
-                                                     "border: 0px;"
-                                                     "text-align:left;"
-                                                     "color: #000000")
+                                                              "font-family: Verdana;"
+                                                              "border: 0px;"
+                                                              "text-align:left;"
+                                                              "color: #000000")
         else:
             self.segment_algorithm2.setVisible(True)
-            self.segment_algorithm2_tool_button.setIcon(QIcon(get_icon("Arrow_down.png")))
+            self.segment_algorithm2_tool_button.setIcon(
+                QIcon(get_icon("Arrow_down.png")))
             self.segment_algorithm2_tool_button.setStyleSheet("background: #454545;"
-                                                     "font-family: Verdana;"
-                                                     "border: 0px;"
-                                                     "text-align:left;"
-                                                     "color: #FFFFFF")
+                                                              "font-family: Verdana;"
+                                                              "border: 0px;"
+                                                              "text-align:left;"
+                                                              "color: #FFFFFF")
 
     def segment_algorithm3_tool_button_fnc(self):
         if self.segment_algorithm3.isVisible():
             self.segment_algorithm3.setVisible(False)
-            self.segment_algorithm3_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.segment_algorithm3_tool_button.setIcon(
+                QIcon(get_icon("Arrow_right.png")))
             self.segment_algorithm3_tool_button.setStyleSheet("background: #454545;"
-                                                     "font-family: Verdana;"
-                                                     "border: 0px;"
-                                                     "text-align:left;"
-                                                     "color: #000000")
+                                                              "font-family: Verdana;"
+                                                              "border: 0px;"
+                                                              "text-align:left;"
+                                                              "color: #000000")
         else:
             self.segment_algorithm3.setVisible(True)
-            self.segment_algorithm3_tool_button.setIcon(QIcon(get_icon("Arrow_down.png")))
+            self.segment_algorithm3_tool_button.setIcon(
+                QIcon(get_icon("Arrow_down.png")))
             self.segment_algorithm3_tool_button.setStyleSheet("background: #454545;"
-                                                     "font-family: Verdana;"
-                                                     "border: 0px;"
-                                                     "text-align:left;"
-                                                     "color: #FFFFFF")
+                                                              "font-family: Verdana;"
+                                                              "border: 0px;"
+                                                              "text-align:left;"
+                                                              "color: #FFFFFF")
 
     def segment_algorithm4_tool_button_fnc(self):
         if self.segment_algorithm4.isVisible():
             self.segment_algorithm4.setVisible(False)
-            self.segment_algorithm4_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.segment_algorithm4_tool_button.setIcon(
+                QIcon(get_icon("Arrow_right.png")))
             self.segment_algorithm4_tool_button.setStyleSheet("background: #454545;"
-                                                     "font-family: Verdana;"
-                                                     "border: 0px;"
-                                                     "text-align:left;"
-                                                     "color: #000000")
+                                                              "font-family: Verdana;"
+                                                              "border: 0px;"
+                                                              "text-align:left;"
+                                                              "color: #000000")
         else:
             self.segment_algorithm4.setVisible(True)
-            self.segment_algorithm4_tool_button.setIcon(QIcon(get_icon("Arrow_down.png")))
+            self.segment_algorithm4_tool_button.setIcon(
+                QIcon(get_icon("Arrow_down.png")))
             self.segment_algorithm4_tool_button.setStyleSheet("background: #454545;"
-                                                     "font-family: Verdana;"
-                                                     "border: 0px;"
-                                                     "text-align:left;"
-                                                     "color: #FFFFFF")
+                                                              "font-family: Verdana;"
+                                                              "border: 0px;"
+                                                              "text-align:left;"
+                                                              "color: #FFFFFF")
 
     def segment_algorithm5_tool_button_fnc(self):
         if self.segment_algorithm5.isVisible():
             self.segment_algorithm5.setVisible(False)
-            self.segment_algorithm5_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.segment_algorithm5_tool_button.setIcon(
+                QIcon(get_icon("Arrow_right.png")))
             self.segment_algorithm5_tool_button.setStyleSheet("background: #454545;"
-                                                     "font-family: Verdana;"
-                                                     "border: 0px;"
-                                                     "text-align:left;"
-                                                     "color: #000000")
+                                                              "font-family: Verdana;"
+                                                              "border: 0px;"
+                                                              "text-align:left;"
+                                                              "color: #000000")
         else:
             self.segment_algorithm5.setVisible(True)
-            self.segment_algorithm5_tool_button.setIcon(QIcon(get_icon("Arrow_down.png")))
+            self.segment_algorithm5_tool_button.setIcon(
+                QIcon(get_icon("Arrow_down.png")))
             self.segment_algorithm5_tool_button.setStyleSheet("background: #454545;"
-                                                     "font-family: Verdana;"
-                                                     "border: 0px;"
-                                                     "text-align:left;"
-                                                     "color: #FFFFFF")
+                                                              "font-family: Verdana;"
+                                                              "border: 0px;"
+                                                              "text-align:left;"
+                                                              "color: #FFFFFF")

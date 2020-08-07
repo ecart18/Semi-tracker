@@ -23,4 +23,4 @@ def get_icon(name):
     if isfile(icon):
         return icon
     else:
-        raise Exception("Invalid icon!", name) 
+        raise Exception("Invalid icon!", name)

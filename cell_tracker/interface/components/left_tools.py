@@ -49,10 +49,10 @@ class LeftTools(QWidget):
         self.left_tools.addWidget(self.file_system)
 
     def init_algorithms(self):
-        self.normlize  = NormalizeTools()
-        self.segment   = SegmentTools()
-        self.track     = TrackTools()
-        self.output    = OutputTools()
+        self.normlize = NormalizeTools()
+        self.segment = SegmentTools()
+        self.track = TrackTools()
+        self.output = OutputTools()
 
         self.left_tools_stylesheet = left_tools_stylesheet
 
@@ -78,10 +78,10 @@ class LeftTools(QWidget):
 
         self.normlize_button = QPushButton()
         self.normlize_button.setStyleSheet("background: #454545;"
-                                                     "font-family: Verdana;"
+                                           "font-family: Verdana;"
                                            "font-size: 14px;"
-                                                     "border: 0px;"
-                                                     "text-align:left;")
+                                           "border: 0px;"
+                                           "text-align:left;")
         self.normlize_button.setFixedHeight(25)
         self.normlize_button.setText("Normalization")
         self.normlize_button.clicked.connect(self.normlize_button_fnc)
@@ -89,10 +89,10 @@ class LeftTools(QWidget):
 
         self.segment_button = QPushButton()
         self.segment_button.setStyleSheet("background: #454545;"
-                                               "font-family: Verdana;"
+                                          "font-family: Verdana;"
                                           "font-size: 14px;"
-                                               "border: 0px;"
-                                               "text-align:left;")
+                                          "border: 0px;"
+                                          "text-align:left;")
         self.segment_button.setFixedHeight(25)
         self.segment_button.setText("Segmentation")
         self.segment_button.clicked.connect(self.segment_button_fnc)
@@ -100,10 +100,10 @@ class LeftTools(QWidget):
 
         self.track_button = QPushButton()
         self.track_button.setStyleSheet("background: #454545;"
-                                                     "font-family: Verdana;"
+                                        "font-family: Verdana;"
                                         "font-size: 14px;"
-                                                     "border: 0px;"
-                                                     "text-align:left;")
+                                        "border: 0px;"
+                                        "text-align:left;")
         self.track_button.setFixedHeight(25)
         self.track_button.setText("Track")
         self.track_button.clicked.connect(self.track_button_fnc)
@@ -111,10 +111,10 @@ class LeftTools(QWidget):
 
         self.output_button = QPushButton()
         self.output_button.setStyleSheet("background: #454545;"
-                                                     "font-family: Verdana;"
+                                         "font-family: Verdana;"
                                          "font-size: 14px;"
-                                                     "border: 0px;"
-                                                     "text-align:left;")
+                                         "border: 0px;"
+                                         "text-align:left;")
         self.output_button.setFixedHeight(25)
         self.output_button.setText("Output")
         self.output_button.clicked.connect(self.output_button_fnc)
@@ -174,10 +174,10 @@ class LeftTools(QWidget):
 
         self.input_output_button = QPushButton()
         self.input_output_button.setStyleSheet("background: #454545;"
-                                           "font-family: Verdana;"
-                                           "font-size: 14px;"
-                                           "border: 0px;"
-                                           "text-align:left;")
+                                               "font-family: Verdana;"
+                                               "font-size: 14px;"
+                                               "border: 0px;"
+                                               "text-align:left;")
         self.input_output_button.setFixedHeight(25)
         self.input_output_button.setText("IO")
         self.input_output_button.clicked.connect(self.input_output_button_fnc)
@@ -185,10 +185,10 @@ class LeftTools(QWidget):
 
         self.data_loader_button = QPushButton()
         self.data_loader_button.setStyleSheet("background: #454545;"
-                                          "font-family: Verdana;"
-                                          "font-size: 14px;"
-                                          "border: 0px;"
-                                          "text-align:left;")
+                                              "font-family: Verdana;"
+                                              "font-size: 14px;"
+                                              "border: 0px;"
+                                              "text-align:left;")
         self.data_loader_button.setFixedHeight(25)
         self.data_loader_button.setText("DataLoader")
         self.data_loader_button.clicked.connect(self.data_loader_button_fnc)
@@ -196,10 +196,10 @@ class LeftTools(QWidget):
 
         self.loss_button = QPushButton()
         self.loss_button.setStyleSheet("background: #454545;"
-                                        "font-family: Verdana;"
-                                        "font-size: 14px;"
-                                        "border: 0px;"
-                                        "text-align:left;")
+                                       "font-family: Verdana;"
+                                       "font-size: 14px;"
+                                       "border: 0px;"
+                                       "text-align:left;")
         self.loss_button.setFixedHeight(25)
         self.loss_button.setText("Loss")
         self.loss_button.clicked.connect(self.loss_button_fnc)
@@ -207,21 +207,22 @@ class LeftTools(QWidget):
 
         self.weighted_loss_button = QPushButton()
         self.weighted_loss_button.setStyleSheet("background: #454545;"
-                                         "font-family: Verdana;"
-                                         "font-size: 14px;"
-                                         "border: 0px;"
-                                         "text-align:left;")
-        self.weighted_loss_button.setFixedHeight(25)
-        self.weighted_loss_button.setText("Loss Weighted")
-        self.weighted_loss_button.clicked.connect(self.weighted_loss_button_fnc)
-        self.weighted_loss_button.setIcon(QIcon(get_icon("Arrow_right.png")))
-
-        self.optimizer_button = QPushButton()
-        self.optimizer_button.setStyleSheet("background: #454545;"
                                                 "font-family: Verdana;"
                                                 "font-size: 14px;"
                                                 "border: 0px;"
                                                 "text-align:left;")
+        self.weighted_loss_button.setFixedHeight(25)
+        self.weighted_loss_button.setText("Loss Weighted")
+        self.weighted_loss_button.clicked.connect(
+            self.weighted_loss_button_fnc)
+        self.weighted_loss_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+
+        self.optimizer_button = QPushButton()
+        self.optimizer_button.setStyleSheet("background: #454545;"
+                                            "font-family: Verdana;"
+                                            "font-size: 14px;"
+                                            "border: 0px;"
+                                            "text-align:left;")
         self.optimizer_button.setFixedHeight(25)
         self.optimizer_button.setText("Optimizer")
         self.optimizer_button.clicked.connect(self.optimizer_button_fnc)
@@ -229,10 +230,10 @@ class LeftTools(QWidget):
 
         self.trainer_button = QPushButton()
         self.trainer_button.setStyleSheet("background: #454545;"
-                                                "font-family: Verdana;"
-                                                "font-size: 14px;"
-                                                "border: 0px;"
-                                                "text-align:left;")
+                                          "font-family: Verdana;"
+                                          "font-size: 14px;"
+                                          "border: 0px;"
+                                          "text-align:left;")
         self.trainer_button.setFixedHeight(25)
         self.trainer_button.setText("Trainer")
         self.trainer_button.clicked.connect(self.trainer_button_fnc)
@@ -240,10 +241,10 @@ class LeftTools(QWidget):
 
         self.run_train_button = QPushButton()
         self.run_train_button.setStyleSheet("background: #454545;"
-                                          "font-family: Verdana;"
-                                          "font-size: 14px;"
-                                          "border: 0px;"
-                                          "text-align:left;")
+                                            "font-family: Verdana;"
+                                            "font-size: 14px;"
+                                            "border: 0px;"
+                                            "text-align:left;")
         self.run_train_button.setFixedHeight(25)
         self.run_train_button.setText("Run")
         self.run_train_button.clicked.connect(self.run_train_button_fnc)
@@ -290,40 +291,40 @@ class LeftTools(QWidget):
             self.normlize.normalize_tools.setVisible(False)
             self.normlize_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.normlize_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
+                                               "font-family: Verdana;"
                                                "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #000000")
+                                               "border: 0px;"
+                                               "text-align:left;"
+                                               "color: #000000")
         else:
             self.normlize.normalize_tools.setVisible(True)
             self.normlize_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.normlize_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
+                                               "font-family: Verdana;"
                                                "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #FFFFFF")
+                                               "border: 0px;"
+                                               "text-align:left;"
+                                               "color: #FFFFFF")
 
     def segment_button_fnc(self):
         if self.segment.segment_tools.isVisible():
             self.segment.segment_tools.setVisible(False)
             self.segment_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.segment_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
+                                              "font-family: Verdana;"
                                               "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #000000")
+                                              "border: 0px;"
+                                              "text-align:left;"
+                                              "color: #000000")
         else:
             self.segment.segment_tools.setVisible(True)
             self.segment_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.segment_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
+                                              "font-family: Verdana;"
                                               "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #FFFFFF")
+                                              "border: 0px;"
+                                              "text-align:left;"
+                                              "color: #FFFFFF")
 
     def track_button_fnc(self):
         if self.track.track_tools.isVisible():
@@ -331,19 +332,19 @@ class LeftTools(QWidget):
             self.track_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.track_button.setStyleSheet("background: #454545;"
                                             "font-size: 14px;"
-                                                         "font-family: Verdana;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #000000")
+                                            "font-family: Verdana;"
+                                            "border: 0px;"
+                                            "text-align:left;"
+                                            "color: #000000")
         else:
             self.track.track_tools.setVisible(True)
             self.track_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.track_button.setStyleSheet("background: #454545;"
                                             "font-size: 14px;"
-                                                         "font-family: Verdana;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #FFFFFF")
+                                            "font-family: Verdana;"
+                                            "border: 0px;"
+                                            "text-align:left;"
+                                            "color: #FFFFFF")
 
     def output_button_fnc(self):
         if self.output.output_tools.isVisible():
@@ -351,160 +352,160 @@ class LeftTools(QWidget):
             self.output_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.output_button.setStyleSheet("background: #454545;"
                                              "font-size: 14px;"
-                                                         "font-family: Verdana;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #000000")
+                                             "font-family: Verdana;"
+                                             "border: 0px;"
+                                             "text-align:left;"
+                                             "color: #000000")
         else:
             self.output.output_tools.setVisible(True)
             self.output_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.output_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
+                                             "font-family: Verdana;"
                                              "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #FFFFFF")
+                                             "border: 0px;"
+                                             "text-align:left;"
+                                             "color: #FFFFFF")
 
     def input_output_button_fnc(self):
         if self.io.input_output.isVisible():
             self.io.input_output.setVisible(False)
-            self.input_output_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.input_output_button.setIcon(
+                QIcon(get_icon("Arrow_right.png")))
             self.input_output_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                               "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #000000")
+                                                   "font-family: Verdana;"
+                                                   "font-size: 14px;"
+                                                   "border: 0px;"
+                                                   "text-align:left;"
+                                                   "color: #000000")
         else:
             self.io.input_output.setVisible(True)
             self.input_output_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.input_output_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                               "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #FFFFFF")
+                                                   "font-family: Verdana;"
+                                                   "font-size: 14px;"
+                                                   "border: 0px;"
+                                                   "text-align:left;"
+                                                   "color: #FFFFFF")
 
     def data_loader_button_fnc(self):
         if self.data_loader.data_loader.isVisible():
             self.data_loader.data_loader.setVisible(False)
             self.data_loader_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.data_loader_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                               "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #000000")
+                                                  "font-family: Verdana;"
+                                                  "font-size: 14px;"
+                                                  "border: 0px;"
+                                                  "text-align:left;"
+                                                  "color: #000000")
         else:
             self.data_loader.data_loader.setVisible(True)
             self.data_loader_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.data_loader_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                               "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #FFFFFF")
+                                                  "font-family: Verdana;"
+                                                  "font-size: 14px;"
+                                                  "border: 0px;"
+                                                  "text-align:left;"
+                                                  "color: #FFFFFF")
 
     def loss_button_fnc(self):
         if self.loss.loss.isVisible():
             self.loss.loss.setVisible(False)
             self.loss_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.loss_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                               "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #000000")
+                                           "font-family: Verdana;"
+                                           "font-size: 14px;"
+                                           "border: 0px;"
+                                           "text-align:left;"
+                                           "color: #000000")
         else:
             self.loss.loss.setVisible(True)
             self.loss_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.loss_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                               "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #FFFFFF")
+                                           "font-family: Verdana;"
+                                           "font-size: 14px;"
+                                           "border: 0px;"
+                                           "text-align:left;"
+                                           "color: #FFFFFF")
 
     def weighted_loss_button_fnc(self):
         if self.weighted_loss.weighted_loss.isVisible():
             self.weighted_loss.weighted_loss.setVisible(False)
-            self.weighted_loss_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.weighted_loss_button.setIcon(
+                QIcon(get_icon("Arrow_right.png")))
             self.weighted_loss_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                               "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #000000")
+                                                    "font-family: Verdana;"
+                                                    "font-size: 14px;"
+                                                    "border: 0px;"
+                                                    "text-align:left;"
+                                                    "color: #000000")
         else:
             self.weighted_loss.weighted_loss.setVisible(True)
-            self.weighted_loss_button.setIcon(QIcon(get_icon("Arrow_down.png")))
+            self.weighted_loss_button.setIcon(
+                QIcon(get_icon("Arrow_down.png")))
             self.weighted_loss_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                               "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #FFFFFF")
+                                                    "font-family: Verdana;"
+                                                    "font-size: 14px;"
+                                                    "border: 0px;"
+                                                    "text-align:left;"
+                                                    "color: #FFFFFF")
 
     def optimizer_button_fnc(self):
         if self.optimizer.optimizer.isVisible():
             self.optimizer.optimizer.setVisible(False)
             self.optimizer_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.optimizer_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                               "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #000000")
+                                                "font-family: Verdana;"
+                                                "font-size: 14px;"
+                                                "border: 0px;"
+                                                "text-align:left;"
+                                                "color: #000000")
         else:
             self.optimizer.optimizer.setVisible(True)
             self.optimizer_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.optimizer_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                               "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #FFFFFF")
+                                                "font-family: Verdana;"
+                                                "font-size: 14px;"
+                                                "border: 0px;"
+                                                "text-align:left;"
+                                                "color: #FFFFFF")
 
     def run_train_button_fnc(self):
         if self.run_train.run_train.isVisible():
             self.run_train.run_train.setVisible(False)
             self.run_train_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.run_train_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                               "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #000000")
+                                                "font-family: Verdana;"
+                                                "font-size: 14px;"
+                                                "border: 0px;"
+                                                "text-align:left;"
+                                                "color: #000000")
         else:
             self.run_train.run_train.setVisible(True)
             self.run_train_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.run_train_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                               "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #FFFFFF")
+                                                "font-family: Verdana;"
+                                                "font-size: 14px;"
+                                                "border: 0px;"
+                                                "text-align:left;"
+                                                "color: #FFFFFF")
 
     def trainer_button_fnc(self):
         if self.trainer.trainer.isVisible():
             self.trainer.trainer.setVisible(False)
             self.trainer_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.trainer_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                               "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #000000")
+                                              "font-family: Verdana;"
+                                              "font-size: 14px;"
+                                              "border: 0px;"
+                                              "text-align:left;"
+                                              "color: #000000")
         else:
             self.trainer.trainer.setVisible(True)
             self.trainer_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.trainer_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                               "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #FFFFFF")
-
-
-
+                                              "font-family: Verdana;"
+                                              "font-size: 14px;"
+                                              "border: 0px;"
+                                              "text-align:left;"
+                                              "color: #FFFFFF")
 

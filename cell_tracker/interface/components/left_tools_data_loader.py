@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -16,7 +18,7 @@ class DataLoader(QWidget):
         batch_size_label = QLabel()
         batch_size_label.setText("Batch size:")
         batch_size_label.setStyleSheet("font-family: Verdana;"
-                                        "color: white;")
+                                       "color: white;")
 
         batch_size_select = QComboBox()
         batch_size_select.setFixedSize(80, 20)
@@ -48,7 +50,7 @@ class DataLoader(QWidget):
         validation_ratio_label.setText("Validation ratio(0.1~0.5)")
         validation_ratio_label.setAlignment(Qt.AlignLeft)
         validation_ratio_label.setStyleSheet("font-family: Verdana;"
-                                    "color: white;")
+                                             "color: white;")
 
         validation_ratio_textline = QLineEdit()
         validation_ratio_textline.setAlignment(Qt.AlignCenter)
@@ -56,10 +58,10 @@ class DataLoader(QWidget):
         validation_ratio_textline.setValidator(QIntValidator())
         validation_ratio_textline.setText("0.2")
         validation_ratio_textline.setStyleSheet("background: #454545;"
-                                       "border: 0px;"
-                                       "color: white;"
-                                       "border-radius: 5px;"
-                                       "font-family: Verdana;")
+                                                "border: 0px;"
+                                                "color: white;"
+                                                "border-radius: 5px;"
+                                                "font-family: Verdana;")
         validation_ratio_textline.textEdited.connect(self.text2sld)
 
         validation_ratio_layout = QVBoxLayout()
@@ -72,14 +74,14 @@ class DataLoader(QWidget):
         scale_img_label = QLabel()
         scale_img_label.setText("Scale image:")
         scale_img_label.setStyleSheet("font-family: Verdana;"
-                                       "color: white;")
+                                      "color: white;")
 
         scale_img_select = QComboBox()
         scale_img_select.setFixedSize(80, 20)
         scale_img_select.setStyleSheet("border: 0px;"
-                                        "color: white;"
-                                        "font-family: Verdana;"
-                                        "background: #353535;")
+                                       "color: white;"
+                                       "font-family: Verdana;"
+                                       "background: #353535;")
         scale_img_select.addItem("4")
         scale_img_select.addItem("2")
         scale_img_select.addItem("1")
@@ -95,14 +97,14 @@ class DataLoader(QWidget):
         paraller_works_label = QLabel()
         paraller_works_label.setText("Parallel works:")
         paraller_works_label.setStyleSheet("font-family: Verdana;"
-                                       "color: white;")
+                                           "color: white;")
 
         paraller_works_select = QComboBox()
         paraller_works_select.setFixedSize(80, 20)
         paraller_works_select.setStyleSheet("border: 0px;"
-                                        "color: white;"
-                                        "font-family: Verdana;"
-                                        "background: #353535;")
+                                            "color: white;"
+                                            "font-family: Verdana;"
+                                            "background: #353535;")
         paraller_works_select.addItem("0")
         paraller_works_select.addItem("1")
         paraller_works_select.addItem("2")
@@ -117,31 +119,31 @@ class DataLoader(QWidget):
         augmentation_label = QLabel()
         augmentation_label.setText("Augmentation:")
         augmentation_label.setStyleSheet("font-family: Verdana;"
-                                           "color: white;")
+                                         "color: white;")
 
         flip_checkbox = QCheckBox()
         flip_checkbox.setText("Flip")
         flip_checkbox.setStyleSheet("font-family: Verdana;"
-                                                   "font-size: 12px;"
-                                                   "color: white;")
+                                    "font-size: 12px;"
+                                    "color: white;")
 
         rotate_checkbox = QCheckBox()
         rotate_checkbox.setText("Rotate")
         rotate_checkbox.setStyleSheet("font-family: Verdana;"
-                                    "font-size: 12px;"
-                                    "color: white;")
+                                      "font-size: 12px;"
+                                      "color: white;")
 
         gaussian_noise_checkbox = QCheckBox()
         gaussian_noise_checkbox.setText("Gaussian noise")
         gaussian_noise_checkbox.setStyleSheet("font-family: Verdana;"
-                                    "font-size: 12px;"
-                                    "color: white;")
+                                              "font-size: 12px;"
+                                              "color: white;")
 
         gaussian_blur_checkbox = QCheckBox()
         gaussian_blur_checkbox.setText("Gaussian blur")
         gaussian_blur_checkbox.setStyleSheet("font-family: Verdana;"
-                                              "font-size: 12px;"
-                                              "color: white;")
+                                             "font-size: 12px;"
+                                             "color: white;")
 
         augmentation_layout = QVBoxLayout()
         augmentation_layout1 = QVBoxLayout()
@@ -179,4 +181,3 @@ class DataLoader(QWidget):
     def text2sld(self):
         t = self.validation_radio_textline.text()
         self.validation_radio_sld.setValue(int(t) * 10)
-

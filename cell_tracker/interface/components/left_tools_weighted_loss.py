@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -15,14 +17,14 @@ class WeightedLoss(QWidget):
         weighted_loss_label = QLabel()
         weighted_loss_label.setText("Weight:")
         weighted_loss_label.setStyleSheet("font-family: Verdana;"
-                                       "color: white;")
+                                          "color: white;")
 
         weighted_loss_select = QComboBox()
         weighted_loss_select.setMinimumWidth(160)
         weighted_loss_select.setStyleSheet("border: 0px;"
-                                        "color: white;"
-                                        "font-family: Verdana;"
-                                        "background: #353535;")
+                                           "color: white;"
+                                           "font-family: Verdana;"
+                                           "background: #353535;")
         weighted_loss_select.addItem("Edge Enhance")
         weighted_loss_select.addItem("Sample balance")
         weighted_loss_select.addItem("No")

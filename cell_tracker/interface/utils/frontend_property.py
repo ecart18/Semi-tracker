@@ -223,5 +223,3 @@ button_stylesheet = """"""
 
 lineedit_stylesheet = """"""
 
-
-

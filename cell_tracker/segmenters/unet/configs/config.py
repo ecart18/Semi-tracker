@@ -6,27 +6,30 @@ import os.path as osp
 from ..utils import mkdir
 
 
-
 class TrainParameters:
 
-    def __init__(self, source_img_root, label_img_root, log_root, 
-                    validation_ratio, scale_img, weighted_type,
-                    aug_list, batch_size, workers, gpu_num, resume, epochs,
-                    lr, weight_decay, loss_type, **kwargs):
+    def __init__(self, source_img_root, label_img_root, log_root,
+                 validation_ratio, scale_img, weighted_type,
+                 aug_list, batch_size, workers, gpu_num, resume, epochs,
+                 lr, weight_decay, loss_type, **kwargs):
 
         # train
-        self.train_seed = 0        
+        self.train_seed = 0
         self.resume = resume
-        self.epochs, self.gpu_num, self.device = self._check_train(epochs, gpu_num)
-        
-        #IO
-        self.source_img_root, self.label_img_root, self.log_root = self._check_io(source_img_root, label_img_root, log_root)
+        self.epochs, self.gpu_num, self.device = self._check_train(
+            epochs, gpu_num)
+
+        # IO
+        self.source_img_root, self.label_img_root, self.log_root = self._check_io(
+            source_img_root, label_img_root, log_root)
 
         # dataloader
         self.aug_list = self._check_aug_list(aug_list)
-        self.weighted_type, self.loss_type = self._check_weighted_type(weighted_type, loss_type)
+        self.weighted_type, self.loss_type = self._check_weighted_type(
+            weighted_type, loss_type)
         self.batch_size, self.validation_ratio, self.workers, self.scale_img = \
-            self._check_dataloader(batch_size, validation_ratio, workers, scale_img)
+            self._check_dataloader(
+                batch_size, validation_ratio, workers, scale_img)
         self.dataloader_params = {
             'source_img_root': self.source_img_root,
             'label_img_root': self.label_img_root,
@@ -42,13 +45,12 @@ class TrainParameters:
         # optimizer
         self.lr, self.weight_decay = self._check_optimizer(lr, weight_decay)
         self.optimizer_params = {
-            'weight_decay' : self.weight_decay,
-            'lr' : self.lr
+            'weight_decay': self.weight_decay,
+            'lr': self.lr
         }
 
         # loss
         self.loss_type = self._check_loss(self.loss_type)
-
 
     def _check_aug_list(self, aug_list):
         if aug_list:
@@ -58,21 +60,21 @@ class TrainParameters:
                 raise ValueError('augmentation should be selected.')
         return aug_list
 
-
     def _check_weighted_type(self, weighted_type, loss_type):
         if loss_type in ['WeightedSoftDiceLoss', 'WBCELoss']:
             try:
                 assert weighted_type in ['edge_weighted', 'sample_balance']
             except:
-                raise ValueError('weighted type should be selected for loss type WeightedSoftDiceLoss or WCELoss')
+                raise ValueError(
+                    'weighted type should be selected for loss type WeightedSoftDiceLoss or WCELoss')
         if loss_type in ['DiceLoss', 'BCELoss', 'MSELoss', 'MAELoss']:
             try:
                 assert weighted_type is None
             except:
-                raise ValueError('weighted type should not be selected for Non-weighted loss')
+                raise ValueError(
+                    'weighted type should not be selected for Non-weighted loss')
         return weighted_type, loss_type
 
-    
     def _check_dataloader(self, batch_size, validation_ratio, workers, scale_img):
         if batch_size:
             try:
@@ -108,7 +110,6 @@ class TrainParameters:
 
         return batch_size, validation_ratio, workers, scale_img
 
-
     def _check_train(self, epochs, gpu_num):
         if epochs:
             try:
@@ -117,7 +118,7 @@ class TrainParameters:
                 raise TypeError('epochs should be int type.')
         else:
             epochs = 100
-        
+
         if gpu_num:
             try:
                 assert isinstance(gpu_num, int)
@@ -126,7 +127,8 @@ class TrainParameters:
             try:
                 assert gpu_num <= torch.cuda.device_count()
             except AssertionError:
-                raise ValueError('The aviliable gpu detected in your device is smaller than {}'.format(gpu_num))
+                raise ValueError(
+                    'The aviliable gpu detected in your device is smaller than {}'.format(gpu_num))
             device = 'cpu'
             if gpu_num > 0 and torch.cuda.is_available():
                 device = 'cuda'
@@ -138,7 +140,6 @@ class TrainParameters:
             device = 'cpu'
 
         return epochs, gpu_num, device
-
 
     def _check_optimizer(self, lr, weight_decay):
         if lr and weight_decay:
@@ -154,7 +155,6 @@ class TrainParameters:
             lr = 0.001
             weight_decay = 0.0005
         return lr, weight_decay
-        
 
     def _check_loss(self, loss_type):
         if loss_type:
@@ -167,7 +167,6 @@ class TrainParameters:
             loss_type = 'WeightedSoftDiceLoss'
 
         return loss_type
-            
 
     def _check_io(self, source_img_root, label_img_root, log_root):
         try:
@@ -180,6 +179,4 @@ class TrainParameters:
             raise ValueError('Path {} is not exist.'.format(label_img_root))
         mkdir(log_root)
         return source_img_root, label_img_root, log_root
-        
-
 

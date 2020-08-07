@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -24,7 +26,7 @@ class Trainer(QWidget):
         epoch_label.setText("epoch(20~400)")
         epoch_label.setAlignment(Qt.AlignLeft)
         epoch_label.setStyleSheet("font-family: Verdana;"
-                                             "color: white;")
+                                  "color: white;")
 
         epoch_textline = QLineEdit()
         epoch_textline.setAlignment(Qt.AlignCenter)
@@ -32,10 +34,10 @@ class Trainer(QWidget):
         epoch_textline.setValidator(QIntValidator())
         epoch_textline.setText("100")
         epoch_textline.setStyleSheet("background: #454545;"
-                                                "border: 0px;"
-                                                "color: white;"
-                                                "border-radius: 5px;"
-                                                "font-family: Verdana;")
+                                     "border: 0px;"
+                                     "color: white;"
+                                     "border-radius: 5px;"
+                                     "font-family: Verdana;")
         epoch_textline.textEdited.connect(self.text2sld)
 
         epoch_layout = QVBoxLayout()
@@ -48,13 +50,13 @@ class Trainer(QWidget):
         gpu_num_label = QLabel()
         gpu_num_label.setText("GPU number:")
         gpu_num_label.setStyleSheet("font-family: Verdana;"
-                                         "color: white;")
+                                    "color: white;")
 
         gpu_num_select = QComboBox()
         gpu_num_select.setStyleSheet("border: 0px;"
-                                          "color: white;"
-                                          "font-family: Verdana;"
-                                          "background: #353535;")
+                                     "color: white;"
+                                     "font-family: Verdana;"
+                                     "background: #353535;")
         gpu_num_select.addItem("0")
         gpu_num_select.addItem("1")
         gpu_num_select.addItem("2")

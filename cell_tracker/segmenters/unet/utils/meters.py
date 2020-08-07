@@ -29,7 +29,6 @@ class AverageMeter(object):
         self.avg = self.sum / self.count
 
 
-
 """ 
     Export data to csv format. Creates new file if doesn't exist,
     otherwise update it.
@@ -38,6 +37,8 @@ class AverageMeter(object):
         value (list): values of correspoding column
         file_path: file name with path
 """
+
+
 def export_history(header, value, file_path):
 
     file_existence = os.path.isfile(file_path)

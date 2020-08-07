@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -15,14 +17,14 @@ class Loss(QWidget):
         loss_label = QLabel()
         loss_label.setText("Loss:")
         loss_label.setStyleSheet("font-family: Verdana;"
-                                       "color: white;")
+                                 "color: white;")
 
         loss_select = QComboBox()
         loss_select.setMinimumWidth(160)
         loss_select.setStyleSheet("border: 0px;"
-                                        "color: white;"
-                                        "font-family: Verdana;"
-                                        "background: #353535;")
+                                  "color: white;"
+                                  "font-family: Verdana;"
+                                  "background: #353535;")
         loss_select.addItem("DiceLoss")
         loss_select.addItem("WeightedSoftDice")
         loss_select.addItem("BCELoss")
