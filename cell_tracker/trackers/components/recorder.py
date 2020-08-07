@@ -75,7 +75,6 @@ class Recorder:
             return None
         return regions
 
-
     def get_boxes(self, frame_index):
         if frame_index in self.all_frame_index:
             boxes = self.all_boxes[frame_index]
@@ -85,4 +84,3 @@ class Recorder:
             return None
 
         return boxes
-

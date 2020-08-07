@@ -12,12 +12,13 @@ class CustomizedSegmentor:
     ----------
     img : numpy array
         Input array or original image.
-        
+
     Returns
     -------
     res : label_image
         Instance Id numpy array. same shape as image. zeros for background
     """
+
     def __init__(self):
         pass
 

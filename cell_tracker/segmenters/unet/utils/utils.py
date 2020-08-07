@@ -41,7 +41,6 @@ def save_checkpoint(state, is_best, fpath='checkpoint.pth.tar'):
         shutil.copy(fpath, osp.join(osp.dirname(fpath), 'model_best.pth.tar'))
 
 
-
 def load_checkpoint(fpath):
     if osp.isfile(fpath):
         checkpoint = torch.load(fpath)
@@ -92,7 +91,6 @@ def to_torch(ndarray):
     return ndarray
 
 
-
 def check_keys(model, pretrained_state_dict):
     ckpt_keys = set(pretrained_state_dict.keys())
     model_keys = set(model.state_dict().keys())
@@ -105,7 +103,8 @@ def check_keys(model, pretrained_state_dict):
     if len(missing_keys) > 0:
         print('[Warning] missing keys: {}'.format(missing_keys))
     if len(unused_pretrained_keys) > 0:
-        print('[Warning] unused_pretrained_keys: {}'.format(unused_pretrained_keys))
+        print('[Warning] unused_pretrained_keys: {}'.format(
+            unused_pretrained_keys))
     assert len(used_pretrained_keys) > 0, \
         'load NONE from pretrained checkpoint'
     return True
@@ -115,7 +114,7 @@ def remove_prefix(state_dict, prefix):
     ''' Old style model is stored with all names of parameters
     share common prefix 'module.' '''
     print('remove prefix \'{}\''.format(prefix))
-    f = lambda x: x.split(prefix, 1)[-1] if x.startswith(prefix) else x
+    def f(x): return x.split(prefix, 1)[-1] if x.startswith(prefix) else x
     return {f(key): value for key, value in state_dict.items()}
 
 
@@ -124,14 +123,16 @@ def load_params(model, pretrained_path):
     if torch.cuda.is_available():
         device = torch.cuda.current_device()
         pretrained_dict = torch.load(pretrained_path,
-            map_location=lambda storage, loc: storage.cuda(device))
+                                     map_location=lambda storage, loc: storage.cuda(device))
     else:
-        pretrained_dict = torch.load(pretrained_path,  map_location=torch.device('cpu'))
+        pretrained_dict = torch.load(
+            pretrained_path,  map_location=torch.device('cpu'))
     if "state_dict" in pretrained_dict.keys():
         pretrained_dict = remove_prefix(pretrained_dict['state_dict'],
                                         'module.')
     else:
         pretrained_dict = remove_prefix(pretrained_dict, 'module.')
-    assert check_keys(model, pretrained_dict), 'load NONE from pretrained checkpoint'
+    assert check_keys(
+        model, pretrained_dict), 'load NONE from pretrained checkpoint'
     model.load_state_dict(pretrained_dict, strict=False)
     return model

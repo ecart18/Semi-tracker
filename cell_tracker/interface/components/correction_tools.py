@@ -159,19 +159,19 @@ class CorrectionTools(QWidget):
         right_widget.setFixedWidth(250)
         right_widget.setLayout(self.right_layout)
 
-        self.assist_frame           = assist_frame
-        self.brush_button           = brush_button
-        self.confirm_button         = confirm_button
-        self.eraser_button          = eraser_button
-        self.add_instance_button    = add_instance_button
-        self.instances_widget       = instances_widget
-        self.delete_button          = delete_button
-        self.ins_label              = ins_label
-        self.right_widget           = right_widget
-        self.size_editor            = size_editor
-        self.size_left_button       = size_left_button
-        self.size_right_button      = size_right_button
-        self.drag_button            = drag_button
+        self.assist_frame = assist_frame
+        self.brush_button = brush_button
+        self.confirm_button = confirm_button
+        self.eraser_button = eraser_button
+        self.add_instance_button = add_instance_button
+        self.instances_widget = instances_widget
+        self.delete_button = delete_button
+        self.ins_label = ins_label
+        self.right_widget = right_widget
+        self.size_editor = size_editor
+        self.size_left_button = size_left_button
+        self.size_right_button = size_right_button
+        self.drag_button = drag_button
 
     def my_mouse_click_event(self, ev):
         if ev.button() == Qt.RightButton:

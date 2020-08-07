@@ -7,6 +7,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
 class DoubleConv(nn.Module):
     ''' Applies (conv => BN => ReLU) two times. '''
 
@@ -80,7 +81,7 @@ class Up(nn.Module):
         input1 = F.pad(input1, [diffX // 2, diffX - diffX // 2,
                                 diffY // 2, diffY - diffY // 2])
         input1 = F.interpolate(input1, size=input2.size()[2:],
-                            mode='bilinear', align_corners=True)
+                               mode='bilinear', align_corners=True)
         output = torch.cat([input2, input1], dim=1)
         output = self.conv(output)
         return output

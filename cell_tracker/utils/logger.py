@@ -4,12 +4,13 @@ import os
 import sys
 import logging
 from logging import handlers
-from .utils import mkdir 
+from .utils import mkdir
 import os.path as osp
 from cell_tracker import PACKAGEPATH
 
 LOG_PATH = osp.join(PACKAGEPATH, '../log')
 mkdir(LOG_PATH)
+
 
 def _logging(**kwargs):
     level = kwargs.pop('level', None)
@@ -31,7 +32,8 @@ def _logging(**kwargs):
     def namer(filename):
         return filename.split('default.')[1]
 
-    th = handlers.TimedRotatingFileHandler(filename=filename, when='D', backupCount=3, encoding='utf-8')
+    th = handlers.TimedRotatingFileHandler(
+        filename=filename, when='D', backupCount=3, encoding='utf-8')
     # th.namer = namer
     th.suffix = "%Y-%m-%d.log"
     th.setFormatter(format_str)
@@ -40,8 +42,8 @@ def _logging(**kwargs):
     log.setLevel(level)
     return log
 
-logger = _logging(filename=osp.join(LOG_PATH, 'default.log'))
 
+logger = _logging(filename=osp.join(LOG_PATH, 'default.log'))
 
 
 class Logger(object):
@@ -76,4 +78,3 @@ class Logger(object):
         self.console.close()
         if self.file is not None:
             self.file.close()
-

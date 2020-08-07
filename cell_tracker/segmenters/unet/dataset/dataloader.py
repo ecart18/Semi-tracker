@@ -23,7 +23,7 @@ class Preprocessor(Augmentation):
         self.source_img_root = source_img_root
         self.label_img_root = label_img_root
         self.weighted_type = weighted_type
-        
+
         self.mean = self.dataset.mean
         self.std = self.dataset.std
 
@@ -35,19 +35,18 @@ class Preprocessor(Augmentation):
             return [self._get_single_item(index) for index in indices]
         return self._get_single_item(indices)
 
-
     def _scale_img(self, img, label, scale_img):
         try:
             assert img.shape[0:2] == label.shape[0:2]
         except:
-            raise ValueError('The size of source image is not equal to label image.')
+            raise ValueError(
+                'The size of source image is not equal to label image.')
         if scale_img != 1:
             height, width = img.shape[0:2]
             size = (int(width*scale_img), int(height*scale_img))
             img = cv2.resize(img, size, interpolation=cv2.INTER_NEAREST)
             label = cv2.resize(label, size, interpolation=cv2.INTER_NEAREST)
         return img, label
-
 
     def _get_single_item(self, index):
         image_path, label_path = self.dataset[index]
@@ -70,7 +69,6 @@ class Preprocessor(Augmentation):
         if self.weighted_type == 'sample_balance':
             weight = make_balance_weight_map(label)
 
-
         label[label > 0] = 1.0
         label = label.astype(np.float32)
         image = image_norm(image)
@@ -79,46 +77,45 @@ class Preprocessor(Augmentation):
 
         image = torch.from_numpy(image.copy())
         label = torch.from_numpy(label.copy())
-    
-        return {"image": image.permute(2,0,1),
+
+        return {"image": image.permute(2, 0, 1),
                 "label": label,
                 "weight": weight}
 
 
 def build_dataloader(name, source_img_root, label_img_root, log_root, validation_ratio, scale_img,
-                        weighted_type, aug_list, batch_size, workers, **kwargs):
+                     weighted_type, aug_list, batch_size, workers, **kwargs):
 
-    dataset = create(name=name, source_img_root=source_img_root, label_img_root=label_img_root, 
-                        log_root=log_root, validation_ratio=validation_ratio)
+    dataset = create(name=name, source_img_root=source_img_root, label_img_root=label_img_root,
+                     log_root=log_root, validation_ratio=validation_ratio)
 
     train_set = dataset.train
     val_set = dataset.val
 
     train_loader = DataLoader(
-        Preprocessor(dataset=train_set, mode='train', 
-                        source_img_root=source_img_root,
-                        label_img_root=label_img_root,
-                        scale_img=scale_img,
-                        weighted_type=weighted_type,
-                        aug_list=aug_list),
-        batch_size=batch_size, 
-        num_workers=workers, 
+        Preprocessor(dataset=train_set, mode='train',
+                     source_img_root=source_img_root,
+                     label_img_root=label_img_root,
+                     scale_img=scale_img,
+                     weighted_type=weighted_type,
+                     aug_list=aug_list),
+        batch_size=batch_size,
+        num_workers=workers,
         shuffle=True,
-        pin_memory=True, 
+        pin_memory=True,
         drop_last=True)
 
     val_loader = DataLoader(
-        Preprocessor(dataset=val_set, mode='val', 
-                        source_img_root=source_img_root,
-                        label_img_root=label_img_root,
-                        scale_img=scale_img,
-                        weighted_type=weighted_type,
-                        aug_list=None),
-        batch_size=batch_size, 
+        Preprocessor(dataset=val_set, mode='val',
+                     source_img_root=source_img_root,
+                     label_img_root=label_img_root,
+                     scale_img=scale_img,
+                     weighted_type=weighted_type,
+                     aug_list=None),
+        batch_size=batch_size,
         num_workers=workers,
-        shuffle=False, 
+        shuffle=False,
         pin_memory=True)
 
     return train_loader, val_loader
-
 

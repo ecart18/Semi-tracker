@@ -16,8 +16,10 @@ def unit16b2uint8(img):
         img = img.astype(np.float32) / 65535.0 * 255.0
         return img.astype(np.uint8)
     else:
-        logger.error('No such of image transfer type: {} for image/'.format(img.dtype))
-        raise TypeError('No such of image transfer type: {} for image/'.format(img.dtype))
+        logger.error(
+            'No such of image transfer type: {} for image/'.format(img.dtype))
+        raise TypeError(
+            'No such of image transfer type: {} for image/'.format(img.dtype))
 
 
 def img_standardization(img):
@@ -47,8 +49,10 @@ def load_images(file_names):
 
     elif extentions in ['mp4', 'avi', 'mpg']:
         if len(file_names) > 1:
-            logger.error('The number of selected video ({}) file larger than one.'.format(';'.join(file_names)))
-            raise ValueError('The number of selected video ({}) file larger than one.'.format(';'.join(file_names)))
+            logger.error('The number of selected video ({}) file larger than one.'.format(
+                ';'.join(file_names)))
+            raise ValueError('The number of selected video ({}) file larger than one.'.format(
+                ';'.join(file_names)))
         capture = cv2.VideoCapture(file_names[0])
         dirname = osp.dirname(file_names[0])
         idx = 0
@@ -70,11 +74,13 @@ def load_images(file_names):
         capture.release()
 
     else:
-        logger.error('No supported images format with extentions: {}.'.format(extentions))
-        raise TypeError('No supported images format with extentions: {}.'.format(extentions))
-    
+        logger.error(
+            'No supported images format with extentions: {}.'.format(extentions))
+        raise TypeError(
+            'No supported images format with extentions: {}.'.format(extentions))
+
     if not len(frames) >= 1:
         logger.error('Load images failure, image number less than 1.')
         raise ValueError('Load images failure, image number less than 1.')
-    
+
     return frames

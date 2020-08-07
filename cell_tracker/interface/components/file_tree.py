@@ -14,7 +14,7 @@ class FileTree(QWidget):
         super(FileTree, self).__init__()
         self.dir_path = dir_path
         self.view_flag = view_flag
-        
+
         self.setup_ui()
 
     def setup_ui(self):
@@ -38,33 +38,33 @@ class FileTree(QWidget):
             label1 = QLabel()
             label1.setText("Otherwise the default folder is:")
             label1.setStyleSheet("color: rgb(245, 245, 245);"
-                                "font-size: 12px;"
-                                "font-family: Verdana;")
+                                 "font-size: 12px;"
+                                 "font-family: Verdana;")
             label1.setContentsMargins(0, 0, 0, 0)
 
             default_button = QPushButton()
             default_button.setText("Use .output/untitled")
             default_button.setStyleSheet("background: #454545;"
-                                        "color: rgb(245, 245, 245);"
-                                        "font-size: 12px;"
-                                        "font-family: Verdana;")
+                                         "color: rgb(245, 245, 245);"
+                                         "font-size: 12px;"
+                                         "font-family: Verdana;")
             default_button.setContentsMargins(0, 0, 0, 0)
             default_button.setFixedHeight(25)
 
             load_button = QPushButton()
             load_button.setText("Load images")
             load_button.setStyleSheet("background: #454545;"
-                                        "color: rgb(245, 245, 245);"
-                                        "font-size: 12px;"
-                                        "font-family: Verdana;")
+                                      "color: rgb(245, 245, 245);"
+                                      "font-size: 12px;"
+                                      "font-family: Verdana;")
             load_button.setContentsMargins(0, 0, 0, 0)
             load_button.setFixedHeight(25)
 
             label2 = QLabel()
             label2.setText("Load images or set image files folder.")
             label2.setStyleSheet("color: rgb(245, 245, 245);"
-                                "font-size: 12px;"
-                                "font-family: Verdana;")
+                                 "font-size: 12px;"
+                                 "font-family: Verdana;")
             label2.setContentsMargins(0, 0, 0, 0)
 
             layout1 = QVBoxLayout()
@@ -96,8 +96,10 @@ class FileTree(QWidget):
                                                      "text-align:left;")
             self.basic_settings_button.setFixedHeight(25)
             self.basic_settings_button.setText("Basic settings")
-            self.basic_settings_button.clicked.connect(self.basic_settings_button_fnc)
-            self.basic_settings_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.basic_settings_button.clicked.connect(
+                self.basic_settings_button_fnc)
+            self.basic_settings_button.setIcon(
+                QIcon(get_icon("Arrow_right.png")))
 
             widget1 = QWidget()
 
@@ -164,7 +166,7 @@ class FileTree(QWidget):
 
             widget1.setLayout(layout1)
             widget1.setStyleSheet("background: #323232;"
-                                       "padding: 0px;")
+                                  "padding: 0px;")
 
             self.file_system_button = QPushButton()
             self.file_system_button.setStyleSheet("background: #454545;"
@@ -174,7 +176,8 @@ class FileTree(QWidget):
                                                   "text-align:left;")
             self.file_system_button.setFixedHeight(25)
             self.file_system_button.setText("File system")
-            self.file_system_button.clicked.connect(self.file_system_button_fnc)
+            self.file_system_button.clicked.connect(
+                self.file_system_button_fnc)
             self.file_system_button.setIcon(QIcon(get_icon("Arrow_right.png")))
 
             self.create_button = create_button
@@ -300,37 +303,39 @@ class FileTree(QWidget):
             self.widget2.setVisible(False)
             self.file_system_button.setIcon(QIcon(get_icon("Arrow_right.png")))
             self.file_system_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                               "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #000000")
+                                                  "font-family: Verdana;"
+                                                  "font-size: 14px;"
+                                                  "border: 0px;"
+                                                  "text-align:left;"
+                                                  "color: #000000")
         else:
             self.widget2.setVisible(True)
             self.file_system_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.file_system_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                               "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #FFFFFF")
+                                                  "font-family: Verdana;"
+                                                  "font-size: 14px;"
+                                                  "border: 0px;"
+                                                  "text-align:left;"
+                                                  "color: #FFFFFF")
 
     def basic_settings_button_fnc(self):
         if self.widget1.isVisible():
             self.widget1.setVisible(False)
-            self.basic_settings_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.basic_settings_button.setIcon(
+                QIcon(get_icon("Arrow_right.png")))
             self.basic_settings_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                               "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #000000")
+                                                     "font-family: Verdana;"
+                                                     "font-size: 14px;"
+                                                     "border: 0px;"
+                                                     "text-align:left;"
+                                                     "color: #000000")
         else:
             self.widget1.setVisible(True)
-            self.basic_settings_button.setIcon(QIcon(get_icon("Arrow_down.png")))
+            self.basic_settings_button.setIcon(
+                QIcon(get_icon("Arrow_down.png")))
             self.basic_settings_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                               "font-size: 14px;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #FFFFFF")
+                                                     "font-family: Verdana;"
+                                                     "font-size: 14px;"
+                                                     "border: 0px;"
+                                                     "text-align:left;"
+                                                     "color: #FFFFFF")

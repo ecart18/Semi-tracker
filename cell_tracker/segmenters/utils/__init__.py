@@ -6,6 +6,6 @@ from .processing import bgr_to_gray, gray_to_bgr, instance_filtering
 
 __all__ = [
     'bgr_to_gray',
-    'gray_to_bgr', 
+    'gray_to_bgr',
     'instance_filtering'
 ]

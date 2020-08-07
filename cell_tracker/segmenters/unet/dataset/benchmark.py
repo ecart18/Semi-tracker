@@ -20,7 +20,7 @@ class DatasetWrapper(object):
         self._data = data
         self.mean = mean
         self.std = std
-        
+
     def __len__(self):
         return len(self._data)
 
@@ -41,7 +41,8 @@ class Benchmark(object):
         self.log_root
 
     def load(self,  verbose=True):
-        self.train_val_splits = read_json(osp.join(self.log_root, 'train_val_splits.json'))
+        self.train_val_splits = read_json(
+            osp.join(self.log_root, 'train_val_splits.json'))
         train_images = self.train_val_splits['train_images']
         train_labels = self.train_val_splits['train_labels']
         validate_images = self.train_val_splits['validate_images']
@@ -49,8 +50,10 @@ class Benchmark(object):
         mean = self.train_val_splits['dataset_std']
         std = self.train_val_splits['dataset_std']
 
-        self.train = DatasetWrapper(_pluck(train_images, train_labels), mean, std)
-        self.val = DatasetWrapper(_pluck(validate_images, validate_labels), mean, std)
+        self.train = DatasetWrapper(
+            _pluck(train_images, train_labels), mean, std)
+        self.val = DatasetWrapper(
+            _pluck(validate_images, validate_labels), mean, std)
 
         num_train = len(self.train)
         num_val = len(self.val)
@@ -68,9 +71,9 @@ class Benchmark(object):
             logger.info("  subset   | # images")
             logger.info("  ---------------------------")
             logger.info("  train    | {:8d}"
-                  .format(num_train))
+                        .format(num_train))
             logger.info("  val      | {:8d}"
-                  .format(num_val))
+                        .format(num_val))
 
     def _check_integrity(self):
         return osp.isfile(osp.join(self.log_root, 'train_val_splits.json'))

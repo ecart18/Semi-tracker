@@ -80,7 +80,6 @@ class BaseTrainer(object):
 
         return losses.avg
 
-
     def _forward(self, inputs, device):
         raise NotImplementedError
 
@@ -100,5 +99,6 @@ class UnetTrainer(BaseTrainer):
         inputs = self._parse_data(inputs, device)
         batch_size = inputs["label"].size(0)
         predictions = self.model(inputs["data"])
-        loss = self.criterion(y_pred=predictions, y_true=inputs["label"], weights=inputs["weight"])
+        loss = self.criterion(y_pred=predictions,
+                              y_true=inputs["label"], weights=inputs["weight"])
         return loss, batch_size

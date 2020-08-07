@@ -2,7 +2,8 @@
 
 from __future__ import absolute_import
 
-from .loss import (DiceLoss, WeightedSoftDiceLoss, BCELoss, WBCELoss, MSELoss, MAELoss)
+from .loss import (DiceLoss, WeightedSoftDiceLoss,
+                   BCELoss, WBCELoss, MSELoss, MAELoss)
 
 __all__ = [
     'DiceLoss',
@@ -29,6 +30,4 @@ def build_loss(name, *args, **kwargs):
     if name not in __LOSS:
         raise KeyError("Unknown loss:", name)
     return __LOSS[name](*args, **kwargs)
-
-
 

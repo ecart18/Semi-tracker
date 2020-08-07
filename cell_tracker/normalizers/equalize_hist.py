@@ -13,7 +13,7 @@ class EqualizeHist:
     def __call__(self, img):
         img = cv2.cvtColor(img, cv2.COLOR_BGR2YUV)
         # equalize the histogram of the Y channel
-        img[:,:,0] = cv2.equalizeHist(img[:,:,0])
+        img[:, :, 0] = cv2.equalizeHist(img[:, :, 0])
         # convert the YUV image back to RGB format
         img = cv2.cvtColor(img, cv2.COLOR_YUV2BGR)
         return img

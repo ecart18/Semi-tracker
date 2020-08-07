@@ -35,7 +35,7 @@ __all__ = [
     'Instance',
     'InstanceSettings',
     'LeftTools',
-    'LeftNavigation', 
+    'LeftNavigation',
     'Menu',
     'ProjectWindow',
     'StatusBar',

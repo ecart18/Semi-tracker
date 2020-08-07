@@ -11,7 +11,7 @@ class Bipartite:
 
     def __init__(self):
         self.tracker = BiTracker()
-        
+
     def _frame2instance(self, frame):
         instances = frame.instances
         label_img = frame.label_img
@@ -37,16 +37,16 @@ class Bipartite:
                 for n in nodes:
                     if n.frame_index == frame_index:
                         mask = n.region.mask
-                        label_img[mask>0] = track_id
+                        label_img[mask > 0] = track_id
             frame.label_img = np.expand_dims(label_img, 2)
         return frames
 
-    
     def __call__(self, frames):
         """
         label_imgs: list: N * label_image
         """
         for frame_index, frame in frames.items():
             detections, masks, img_size = self._frame2instance(frame)
-            _ = self.tracker.update_track(frame_index, img_size, detections, masks)
+            _ = self.tracker.update_track(
+                frame_index, img_size, detections, masks)
         return self._get_track_label(frames)

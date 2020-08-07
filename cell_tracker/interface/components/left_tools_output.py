@@ -36,25 +36,25 @@ class OutputTools(QWidget):
         visualization_color_checkbox = QCheckBox()
         visualization_color_checkbox.setText("Color")
         visualization_color_checkbox.setStyleSheet("font-family: Verdana;"
-                                             "font-size: 12px;"
+                                                   "font-size: 12px;"
                                                    "color: white;")
 
         visualization_box_checkbox = QCheckBox()
         visualization_box_checkbox.setText("Bounding box")
         visualization_box_checkbox.setStyleSheet("font-family: Verdana;"
-                                                   "font-size: 12px;"
+                                                 "font-size: 12px;"
                                                  "color: white;")
 
         visualization_edge_checkbox = QCheckBox()
         visualization_edge_checkbox.setText("Edge")
         visualization_edge_checkbox.setStyleSheet("font-family: Verdana;"
-                                                   "font-size: 12px;"
+                                                  "font-size: 12px;"
                                                   "color: white;")
 
         visualization_trajectory_checkbox = QCheckBox()
         visualization_trajectory_checkbox.setText("Trajectory")
         visualization_trajectory_checkbox.setStyleSheet("font-family: Verdana;"
-                                                   "font-size: 12px;"
+                                                        "font-size: 12px;"
                                                         "color: white;")
 
         visualization_label_checkbox = QCheckBox()
@@ -67,7 +67,8 @@ class OutputTools(QWidget):
         visualization_trajectory_length_label.setText("Trajectory length")
 
         visualization_trajectory_length_left = QPushButton()
-        visualization_trajectory_length_left.setIcon(QIcon((get_icon("left.png"))))
+        visualization_trajectory_length_left.setIcon(
+            QIcon((get_icon("left.png"))))
         visualization_trajectory_length_left.setIconSize(QSize(15, 15))
         visualization_trajectory_length_left.setFixedSize(QSize(15, 15))
         visualization_trajectory_length_left.setFlat(True)
@@ -80,17 +81,19 @@ class OutputTools(QWidget):
         visualization_trajectory_length.setText(str(3))
         visualization_trajectory_length.setValidator(QIntValidator())
         visualization_trajectory_length.setStyleSheet("background: #545454;"
-                                  "border: 0px;"
-                                  "border-radius: 3px;"
-                                  "color: white;")
+                                                      "border: 0px;"
+                                                      "border-radius: 3px;"
+                                                      "color: white;")
 
         visualization_trajectory_length_right = QPushButton()
-        visualization_trajectory_length_right.setIcon(QIcon((get_icon("right.png"))))
+        visualization_trajectory_length_right.setIcon(
+            QIcon((get_icon("right.png"))))
         visualization_trajectory_length_right.setIconSize(QSize(15, 15))
         visualization_trajectory_length_right.setFixedSize(QSize(15, 15))
         visualization_trajectory_length_right.setFlat(True)
         visualization_trajectory_length_right.setStyleSheet("border: 0px")
-        visualization_trajectory_length_right.clicked.connect(self.length_right)
+        visualization_trajectory_length_right.clicked.connect(
+            self.length_right)
 
         visualization_video_fps_left_label = QLabel()
         visualization_video_fps_left_label.setText("Video FPS")
@@ -109,9 +112,9 @@ class OutputTools(QWidget):
         visualization_video_fps.setText(str(3))
         visualization_video_fps.setValidator(QIntValidator())
         visualization_video_fps.setStyleSheet("background: #545454;"
-                                                      "border: 0px;"
-                                                      "border-radius: 3px;"
-                                                      "color: white;")
+                                              "border: 0px;"
+                                              "border-radius: 3px;"
+                                              "color: white;")
 
         visualization_video_fps_right = QPushButton()
         visualization_video_fps_right.setIcon(QIcon((get_icon("right.png"))))
@@ -124,7 +127,7 @@ class OutputTools(QWidget):
         csv_checkbox = QCheckBox()
         csv_checkbox.setText("CSV")
         csv_checkbox.setStyleSheet("font-family: Verdana;"
-                                             "font-size: 15px;"
+                                   "font-size: 15px;"
                                    "color: white;")
 
         html_checkbox = QCheckBox()
@@ -144,14 +147,20 @@ class OutputTools(QWidget):
         output_visualization_layout1.addWidget(visualization_color_checkbox)
         output_visualization_layout1.addWidget(visualization_box_checkbox)
         output_visualization_layout1.addWidget(visualization_edge_checkbox)
-        output_visualization_layout1.addWidget(visualization_trajectory_checkbox)
+        output_visualization_layout1.addWidget(
+            visualization_trajectory_checkbox)
         output_visualization_layout1.addWidget(visualization_label_checkbox)
-        output_visualization_layout11.addWidget(visualization_trajectory_length_label)
-        output_visualization_layout11.addWidget(visualization_trajectory_length_left)
-        output_visualization_layout11.addWidget(visualization_trajectory_length)
-        output_visualization_layout11.addWidget(visualization_trajectory_length_right)
+        output_visualization_layout11.addWidget(
+            visualization_trajectory_length_label)
+        output_visualization_layout11.addWidget(
+            visualization_trajectory_length_left)
+        output_visualization_layout11.addWidget(
+            visualization_trajectory_length)
+        output_visualization_layout11.addWidget(
+            visualization_trajectory_length_right)
         output_visualization_layout1.addLayout(output_visualization_layout11)
-        output_visualization_layout12.addWidget(visualization_video_fps_left_label)
+        output_visualization_layout12.addWidget(
+            visualization_video_fps_left_label)
         output_visualization_layout12.addWidget(visualization_video_fps_left)
         output_visualization_layout12.addWidget(visualization_video_fps)
         output_visualization_layout12.addWidget(visualization_video_fps_right)
@@ -178,7 +187,7 @@ class OutputTools(QWidget):
 
         self.output_tools.setLayout(output_layout)
 
-        self.output_button          = output_button
+        self.output_button = output_button
         self.visualization_checkbox = visualization_checkbox
         self.visualization_color_checkbox = visualization_color_checkbox
         self.visualization_box_checkbox = visualization_box_checkbox

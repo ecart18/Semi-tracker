@@ -38,8 +38,10 @@ class NormalizeTools(QWidget):
                                                      "text-align:left;")
         self.equalize_hist_tool_button.setFixedHeight(20)
         self.equalize_hist_tool_button.setText("Equalize Histogram")
-        self.equalize_hist_tool_button.clicked.connect(self.equalize_hist_tool_button_fnc)
-        self.equalize_hist_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+        self.equalize_hist_tool_button.clicked.connect(
+            self.equalize_hist_tool_button_fnc)
+        self.equalize_hist_tool_button.setIcon(
+            QIcon(get_icon("Arrow_right.png")))
 
         self.min_max_tool_button = QPushButton()
         self.min_max_tool_button.setStyleSheet("background: #454545;"
@@ -58,8 +60,10 @@ class NormalizeTools(QWidget):
                                                      "text-align:left;")
         self.retinex_MSRCP_tool_button.setFixedHeight(20)
         self.retinex_MSRCP_tool_button.setText("Retinex-MSRCP")
-        self.retinex_MSRCP_tool_button.clicked.connect(self.retinex_MSRCP_tool_button_fnc)
-        self.retinex_MSRCP_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+        self.retinex_MSRCP_tool_button.clicked.connect(
+            self.retinex_MSRCP_tool_button_fnc)
+        self.retinex_MSRCP_tool_button.setIcon(
+            QIcon(get_icon("Arrow_right.png")))
 
         self.retinex_MSRCR_tool_button = QPushButton()
         self.retinex_MSRCR_tool_button.setStyleSheet("background: #454545;"
@@ -68,8 +72,10 @@ class NormalizeTools(QWidget):
                                                      "text-align:left;")
         self.retinex_MSRCR_tool_button.setFixedHeight(20)
         self.retinex_MSRCR_tool_button.setText("Retinex-MSRCR")
-        self.retinex_MSRCR_tool_button.clicked.connect(self.retinex_MSRCR_tool_button_fnc)
-        self.retinex_MSRCR_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+        self.retinex_MSRCR_tool_button.clicked.connect(
+            self.retinex_MSRCR_tool_button_fnc)
+        self.retinex_MSRCR_tool_button.setIcon(
+            QIcon(get_icon("Arrow_right.png")))
 
         self.reset_raw_tool_button = QPushButton()
         self.reset_raw_tool_button.setStyleSheet("background: #454545;"
@@ -78,7 +84,8 @@ class NormalizeTools(QWidget):
                                                  "text-align:left;")
         self.reset_raw_tool_button.setFixedHeight(20)
         self.reset_raw_tool_button.setText("Remove Norm")
-        self.reset_raw_tool_button.clicked.connect(self.reset_raw_tool_button_fnc)
+        self.reset_raw_tool_button.clicked.connect(
+            self.reset_raw_tool_button_fnc)
         self.reset_raw_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
 
         self.normalize_tools_layout.addWidget(self.equalize_hist_tool_button)
@@ -141,15 +148,15 @@ class NormalizeTools(QWidget):
         min_max_label.setText("Min-Max: ")
         min_max_label.setAlignment(Qt.AlignLeft)
         min_max_label.setStyleSheet("font-family: Verdana;"
-                                          "color: white;")
+                                    "color: white;")
 
         min_max_button = QPushButton()
         min_max_button.setFixedSize(50, 20)
         min_max_button.setText("Run")
         min_max_button.setStyleSheet("background: #454545;"
-                                           "color: white;"
-                                           "border-radius: 5px;"
-                                           "font-family: Verdana;")
+                                     "color: white;"
+                                     "border-radius: 5px;"
+                                     "font-family: Verdana;")
 
         min_max_layout.addWidget(min_max_label)
         min_max_layout.addWidget(min_max_button)
@@ -172,15 +179,15 @@ class NormalizeTools(QWidget):
         retinex_MSRCP_label.setText("Retinex-MSRCP: ")
         retinex_MSRCP_label.setAlignment(Qt.AlignLeft)
         retinex_MSRCP_label.setStyleSheet("font-family: Verdana;"
-                                            "color: white;")
+                                          "color: white;")
 
         retinex_MSRCP_button = QPushButton()
         retinex_MSRCP_button.setFixedSize(50, 20)
         retinex_MSRCP_button.setText("Run")
         retinex_MSRCP_button.setStyleSheet("background: #454545;"
-                                     "color: white;"
-                                     "border-radius: 5px;"
-                                     "font-family: Verdana;")
+                                           "color: white;"
+                                           "border-radius: 5px;"
+                                           "font-family: Verdana;")
 
         retinex_MSRCP_layout.addWidget(retinex_MSRCP_label)
         retinex_MSRCP_layout.addWidget(retinex_MSRCP_button)
@@ -195,7 +202,7 @@ class NormalizeTools(QWidget):
     def init_retinex_MSRCR(self):
         retinex_MSRCR = QWidget()
         retinex_MSRCR.setStyleSheet("border: 0px;"
-                              "background: #323232;")
+                                    "background: #323232;")
         retinex_MSRCR_layout_main = QVBoxLayout()
         retinex_MSRCR_layout = QHBoxLayout()
 
@@ -203,15 +210,15 @@ class NormalizeTools(QWidget):
         retinex_MSRCR_label.setText("Retinex-MSRCR: ")
         retinex_MSRCR_label.setAlignment(Qt.AlignLeft)
         retinex_MSRCR_label.setStyleSheet("font-family: Verdana;"
-                                    "color: white;")
+                                          "color: white;")
 
         retinex_MSRCR_button = QPushButton()
         retinex_MSRCR_button.setFixedSize(60, 20)
         retinex_MSRCR_button.setText("Run")
         retinex_MSRCR_button.setStyleSheet("background: #454545;"
-                                     "color: white;"
-                                     "border-radius: 5px;"
-                                     "font-family: Verdana;")
+                                           "color: white;"
+                                           "border-radius: 5px;"
+                                           "font-family: Verdana;")
 
         retinex_MSRCR_layout.addWidget(retinex_MSRCR_label)
         retinex_MSRCR_layout.addWidget(retinex_MSRCR_button)
@@ -226,7 +233,7 @@ class NormalizeTools(QWidget):
     def init_reset_raw(self):
         reset_raw = QWidget()
         reset_raw.setStyleSheet("border: 0px;"
-                              "background: #323232;")
+                                "background: #323232;")
         reset_raw_layout_main = QVBoxLayout()
         reset_raw_layout = QHBoxLayout()
 
@@ -234,15 +241,15 @@ class NormalizeTools(QWidget):
         reset_raw_label.setText("Remove normalization: ")
         reset_raw_label.setAlignment(Qt.AlignLeft)
         reset_raw_label.setStyleSheet("font-family: Verdana;"
-                                    "color: white;")
+                                      "color: white;")
 
         reset_raw_button = QPushButton()
         reset_raw_button.setFixedSize(50, 20)
         reset_raw_button.setText("Run")
         reset_raw_button.setStyleSheet("background: #454545;"
-                                     "color: white;"
-                                     "border-radius: 5px;"
-                                     "font-family: Verdana;")
+                                       "color: white;"
+                                       "border-radius: 5px;"
+                                       "font-family: Verdana;")
 
         reset_raw_layout.addWidget(reset_raw_label)
         reset_raw_layout.addWidget(reset_raw_button)
@@ -257,7 +264,8 @@ class NormalizeTools(QWidget):
     def equalize_hist_tool_button_fnc(self):
         if self.equalize_hist.isVisible():
             self.equalize_hist.setVisible(False)
-            self.equalize_hist_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.equalize_hist_tool_button.setIcon(
+                QIcon(get_icon("Arrow_right.png")))
             self.equalize_hist_tool_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
                                                          "border: 0px;"
@@ -265,7 +273,8 @@ class NormalizeTools(QWidget):
                                                          "color: #000000")
         else:
             self.equalize_hist.setVisible(True)
-            self.equalize_hist_tool_button.setIcon(QIcon(get_icon("Arrow_down.png")))
+            self.equalize_hist_tool_button.setIcon(
+                QIcon(get_icon("Arrow_down.png")))
             self.equalize_hist_tool_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
                                                          "border: 0px;"
@@ -275,25 +284,27 @@ class NormalizeTools(QWidget):
     def min_max_tool_button_fnc(self):
         if self.min_max.isVisible():
             self.min_max.setVisible(False)
-            self.min_max_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.min_max_tool_button.setIcon(
+                QIcon(get_icon("Arrow_right.png")))
             self.min_max_tool_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #000000")
+                                                   "font-family: Verdana;"
+                                                   "border: 0px;"
+                                                   "text-align:left;"
+                                                   "color: #000000")
         else:
             self.min_max.setVisible(True)
             self.min_max_tool_button.setIcon(QIcon(get_icon("Arrow_down.png")))
             self.min_max_tool_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #FFFFFF")
+                                                   "font-family: Verdana;"
+                                                   "border: 0px;"
+                                                   "text-align:left;"
+                                                   "color: #FFFFFF")
 
     def retinex_MSRCP_tool_button_fnc(self):
         if self.retinex_MSRCP.isVisible():
             self.retinex_MSRCP.setVisible(False)
-            self.retinex_MSRCP_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.retinex_MSRCP_tool_button.setIcon(
+                QIcon(get_icon("Arrow_right.png")))
             self.retinex_MSRCP_tool_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
                                                          "border: 0px;"
@@ -301,7 +312,8 @@ class NormalizeTools(QWidget):
                                                          "color: #000000")
         else:
             self.retinex_MSRCP.setVisible(True)
-            self.retinex_MSRCP_tool_button.setIcon(QIcon(get_icon("Arrow_down.png")))
+            self.retinex_MSRCP_tool_button.setIcon(
+                QIcon(get_icon("Arrow_down.png")))
             self.retinex_MSRCP_tool_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
                                                          "border: 0px;"
@@ -311,7 +323,8 @@ class NormalizeTools(QWidget):
     def retinex_MSRCR_tool_button_fnc(self):
         if self.retinex_MSRCR.isVisible():
             self.retinex_MSRCR.setVisible(False)
-            self.retinex_MSRCR_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.retinex_MSRCR_tool_button.setIcon(
+                QIcon(get_icon("Arrow_right.png")))
             self.retinex_MSRCR_tool_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
                                                          "border: 0px;"
@@ -319,7 +332,8 @@ class NormalizeTools(QWidget):
                                                          "color: #000000")
         else:
             self.retinex_MSRCR.setVisible(True)
-            self.retinex_MSRCR_tool_button.setIcon(QIcon(get_icon("Arrow_down.png")))
+            self.retinex_MSRCR_tool_button.setIcon(
+                QIcon(get_icon("Arrow_down.png")))
             self.retinex_MSRCR_tool_button.setStyleSheet("background: #454545;"
                                                          "font-family: Verdana;"
                                                          "border: 0px;"
@@ -329,17 +343,19 @@ class NormalizeTools(QWidget):
     def reset_raw_tool_button_fnc(self):
         if self.reset_raw.isVisible():
             self.reset_raw.setVisible(False)
-            self.reset_raw_tool_button.setIcon(QIcon(get_icon("Arrow_right.png")))
+            self.reset_raw_tool_button.setIcon(
+                QIcon(get_icon("Arrow_right.png")))
             self.reset_raw_tool_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #000000")
+                                                     "font-family: Verdana;"
+                                                     "border: 0px;"
+                                                     "text-align:left;"
+                                                     "color: #000000")
         else:
             self.reset_raw.setVisible(True)
-            self.reset_raw_tool_button.setIcon(QIcon(get_icon("Arrow_down.png")))
+            self.reset_raw_tool_button.setIcon(
+                QIcon(get_icon("Arrow_down.png")))
             self.reset_raw_tool_button.setStyleSheet("background: #454545;"
-                                                         "font-family: Verdana;"
-                                                         "border: 0px;"
-                                                         "text-align:left;"
-                                                         "color: #FFFFFF")
+                                                     "font-family: Verdana;"
+                                                     "border: 0px;"
+                                                     "text-align:left;"
+                                                     "color: #FFFFFF")

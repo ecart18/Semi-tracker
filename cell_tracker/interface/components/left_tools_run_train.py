@@ -30,7 +30,7 @@ class RunTrain(QWidget):
         load_model_button = QPushButton()
         load_model_button.setText("Load model")
         load_model_button.setStyleSheet("background: #454545;"
-                                  "color: rgb(245, 245, 245);")
+                                        "color: rgb(245, 245, 245);")
         load_model_button.setContentsMargins(0, 0, 0, 0)
         load_model_button.setFixedHeight(25)
 
@@ -42,16 +42,16 @@ class RunTrain(QWidget):
         model_path_show_lineedit.setPlaceholderText("No select model")
         model_path_show_lineedit.setEnabled(False)
         model_path_show_lineedit.setStyleSheet("background: #454545;"
-                                                "border: 0px;"
-                                                "color: white;"
-                                                "border-radius: 5px;"
-                                                "font-family: Verdana;"
-                                                "font-size: 10px;")
+                                               "border: 0px;"
+                                               "color: white;"
+                                               "border-radius: 5px;"
+                                               "font-family: Verdana;"
+                                               "font-size: 10px;")
 
         train_model_button = QPushButton()
         train_model_button.setText("Train model")
         train_model_button.setStyleSheet("background: #1E90FF;"
-                                        "color: rgb(245, 245, 245);")
+                                         "color: rgb(245, 245, 245);")
         train_model_button.setContentsMargins(0, 0, 0, 0)
         train_model_button.setFixedHeight(25)
 

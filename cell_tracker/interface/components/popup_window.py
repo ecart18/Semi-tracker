@@ -15,6 +15,7 @@ class InstanceSettings(QWidget):
     """
     The InstanceSettings is the popup windows when add cell button is clicked.
     """
+
     def __init__(self, colors, raw_img, cell_id, frame_id):
         QWidget.__init__(self)
 
@@ -37,7 +38,8 @@ class InstanceSettings(QWidget):
 
         color_label = QLabel()
         color_label.setFixedSize(QSize(30, 30))
-        cl_s = "background: rgb(" + str(self.color[0]) + ", " + str(self.color[1]) + ", " + str(self.color[2]) + ");"
+        cl_s = "background: rgb(" + str(self.color[0]) + ", " + str(
+            self.color[1]) + ", " + str(self.color[2]) + ");"
         color_label.setStyleSheet(cl_s)
 
         name_editer = QLineEdit()
@@ -122,10 +124,11 @@ class InstanceSettings(QWidget):
     def color_widget_fnc(self):
         y = self.color_widget.currentColumn()
         x = self.color_widget.currentRow()
-        ind = x* 5 + y
+        ind = x * 5 + y
         sub_c = self.colors[ind]
         self.color = sub_c[self.sample_id[ind]]
-        cl_s = "background: rgb(" + str(self.color[0]) + ", " + str(self.color[1]) + ", " + str(self.color[2]) + ");"
+        cl_s = "background: rgb(" + str(self.color[0]) + ", " + str(
+            self.color[1]) + ", " + str(self.color[2]) + ");"
         self.color_label.setStyleSheet(cl_s)
 
     def confirm_button_fnc(self):
@@ -139,6 +142,7 @@ class ChangedInstances(object):
     """
     The ChangeInstances is class for a set of updating data
     """
+
     def __init__(self):
         self.update_ins_id = []
         self._update_ins_label = []
@@ -184,6 +188,7 @@ class ProjectWindow(QWidget):
     """
     The ProjectWindow is the popup window when new project button is clicked.
     """
+
     def __init__(self, default_path):
         QWidget.__init__(self)
         self.path = default_path
@@ -276,6 +281,7 @@ class CellAttributeWindow(QWidget):
     """
     The CellAttributeWindow is for displaying more details of cells.
     """
+
     def __init__(self, ins):
         QWidget.__init__(self)
 
@@ -317,7 +323,8 @@ class CellAttributeWindow(QWidget):
         cell_show = QLabel()
         cell_show.setFixedSize(170, 170)
         cell_show_pix = self.get_cell_icon()
-        cell_show_pix = cell_show_pix.scaled(QSize(170, 170), Qt.KeepAspectRatio)
+        cell_show_pix = cell_show_pix.scaled(
+            QSize(170, 170), Qt.KeepAspectRatio)
         cell_show.setPixmap(cell_show_pix)
 
         colon_label = QLabel()
@@ -388,7 +395,8 @@ class CellAttributeWindow(QWidget):
         cell_centroid_label.adjustSize()
 
         cell_centroid = QLabel()
-        cell_centroid.setText("("+str(self.ins_centroid[0])+", "+str(self.ins_centroid[1])+")")
+        cell_centroid.setText(
+            "("+str(self.ins_centroid[0])+", "+str(self.ins_centroid[1])+")")
         cell_centroid.adjustSize()
 
         cell_area_label = QLabel()
@@ -457,7 +465,8 @@ class CellAttributeWindow(QWidget):
         x = coords[1]-[self.ins_bbox[0]]*length
         y = coords[0]-[self.ins_bbox[1]]*length
 
-        sub_img = np.zeros((self.ins_bbox[3]-self.ins_bbox[1]+1, self.ins_bbox[2]-self.ins_bbox[0]+1, 3))
+        sub_img = np.zeros(
+            (self.ins_bbox[3]-self.ins_bbox[1]+1, self.ins_bbox[2]-self.ins_bbox[0]+1, 3))
         sub_img[y, x, 0] = self.ins_color[0]
         sub_img[y, x, 1] = self.ins_color[1]
         sub_img[y, x, 2] = self.ins_color[2]

@@ -27,7 +27,9 @@ class GrabCut:
         bgdModel = np.zeros((1, 65), np.float64)
         fgdModel = np.zeros((1, 65), np.float64)
         # Grabcut
-        cv2.grabCut(img, mask, rect, bgdModel, fgdModel, self.iteration, cv2.GC_INIT_WITH_RECT)
-        binary_mask = np.where((mask == 2) | (mask == 0), 0, obj_idx).astype('uint8')
+        cv2.grabCut(img, mask, rect, bgdModel, fgdModel,
+                    self.iteration, cv2.GC_INIT_WITH_RECT)
+        binary_mask = np.where((mask == 2) | (
+            mask == 0), 0, obj_idx).astype('uint8')
         binary_mask = np.expand_dims(binary_mask, axis=2)  # 0 and obj_idx
         return binary_mask

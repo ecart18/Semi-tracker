@@ -16,10 +16,12 @@ class BinaryThresholding:
 
     def __call__(self, img):
         gray = bgr_to_gray(img)
-        (_, binary_mask) = cv2.threshold(gray, self.threshold, 255, cv2.THRESH_BINARY)
+        (_, binary_mask) = cv2.threshold(
+            gray, self.threshold, 255, cv2.THRESH_BINARY)
         binary_mask = np.expand_dims(binary_mask, 2)
-        _, label_img, _, _ =  cv2.connectedComponentsWithStats(binary_mask, connectivity=4, ltype=cv2.CV_32S)
+        _, label_img, _, _ = cv2.connectedComponentsWithStats(
+            binary_mask, connectivity=4, ltype=cv2.CV_32S)
         label_img = np.expand_dims(label_img, axis=2)
-        label_img = instance_filtering(label_img, minimal_size=self._minimal_size)
+        label_img = instance_filtering(
+            label_img, minimal_size=self._minimal_size)
         return label_img
-    

@@ -16,4 +16,3 @@ class MinMax:
         max_value = np.max(img, axis=(0, 1))
         img = (img - min_value) / (max_value - min_value)
         return np.uint8(255 * img)
-

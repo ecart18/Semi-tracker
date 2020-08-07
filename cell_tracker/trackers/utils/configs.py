@@ -18,5 +18,5 @@ class TrackerHyperParams:
     minimal_tracklet_len = 2
     roi_verify_max_iteration = 2
     roi_verify_punish_rate = 0.6
-    max_frame_gap = 5 # association  
-    max_missed_frame = 5  # inter and filter   
+    max_frame_gap = 5  # association
+    max_missed_frame = 5  # inter and filter

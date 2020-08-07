@@ -11,7 +11,7 @@ from .frontend_property import instance_widget_stylesheet, slide_stylesheet, seg
 __all__ = [
     'mkdir',
     'get_icon',
-    'load_images', 
+    'load_images',
     'color_groups',
     'annotation_colors',
     'instance_widget_stylesheet',

@@ -10,6 +10,7 @@ import numpy as np
 class RandomFlip:
     def __init__(self, prob):
         self.prob = prob
+
     def __call__(self, img, label):
         if random.random() < self.prob:
             d = random.randint(-1, 1)
@@ -21,7 +22,7 @@ class RandomFlip:
 class RandomRotate:
     def __init__(self, prob):
         self.prob = prob
-    
+
     @staticmethod
     def _scaling_img(img, label, size):
         img = cv2.resize(img, size, interpolation=cv2.INTER_NEAREST)
@@ -44,7 +45,7 @@ class GaussianNoise:
         self.prob = prob
         self.mean = 0
         self.var = 0.1
-	
+
     def __call__(self, img, label):
         if random.random() < self.prob:
             img = img.astype(np.uint8)
@@ -61,7 +62,7 @@ class GaussianBlur:
         self.prob = prob
         self.max_filter_size = 5
         self.sigma = 0.1 ** 0.5
-	
+
     def __call__(self, img, label):
         if random.random() < self.prob:
             img = img.astype(np.uint8)
@@ -80,7 +81,8 @@ class Compose:
         try:
             assert img.shape[0:2] == label.shape[0:2]
         except:
-            raise ValueError('The size of source image is not equal to label image.')
+            raise ValueError(
+                'The size of source image is not equal to label image.')
         if len(self.transform) > 0:
             for tf in self.transform:
                 if tf:

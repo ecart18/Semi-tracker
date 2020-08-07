@@ -105,7 +105,7 @@ class AnnotationTools(QWidget):
         main_layout.setSpacing(15)
 
         self.load_button = load_button
-        self.set_button  = set_button
+        self.set_button = set_button
         self.result_path_show_lineedit = result_path_show_lineedit
         self.save_annotation_button = save_annotation_button
         self.finish_annotation_button = finish_annotation_button

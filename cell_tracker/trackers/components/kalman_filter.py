@@ -67,7 +67,8 @@ class KalmanFilter():
             bbox = bbox[None, :]
         x_cen = (bbox[:, 0] + bbox[:, 2]) / 2.0
         y_cen = (bbox[:, 1] + bbox[:, 3]) / 2.0
-        aspect_ratio = (bbox[:, 2]-bbox[:, 0]) / (bbox[:, 3]-bbox[:, 1])  # width/height
+        aspect_ratio = (bbox[:, 2]-bbox[:, 0]) / \
+            (bbox[:, 3]-bbox[:, 1])  # width/height
         height = bbox[:, 3] - bbox[:, 1]
         if ndim_recover:
             return np.squeeze(np.stack([x_cen, y_cen, aspect_ratio, height], axis=1).astype(np.float32))
@@ -107,14 +108,14 @@ class KalmanFilter():
         mean = np.r_[mean_pos, mean_vel]
 
         std = [
-          2 * self._std_weight_position * measurement[3],
-          2 * self._std_weight_position * measurement[3],
-          1e-2,
-          2 * self._std_weight_position * measurement[3],
-          10 * self._std_weight_velocity * measurement[3],
-          10 * self._std_weight_velocity * measurement[3],
-          1e-5,
-          10 * self._std_weight_velocity * measurement[3]]
+            2 * self._std_weight_position * measurement[3],
+            2 * self._std_weight_position * measurement[3],
+            1e-2,
+            2 * self._std_weight_position * measurement[3],
+            10 * self._std_weight_velocity * measurement[3],
+            10 * self._std_weight_velocity * measurement[3],
+            1e-5,
+            10 * self._std_weight_velocity * measurement[3]]
         covariance = np.diag(np.square(std))
         return mean, covariance
 
@@ -138,20 +139,20 @@ class KalmanFilter():
 
         """
         std_pos = [
-          self._std_weight_position * mean[3],
-          self._std_weight_position * mean[3],
-          1e-2,
-          self._std_weight_position * mean[3]]
+            self._std_weight_position * mean[3],
+            self._std_weight_position * mean[3],
+            1e-2,
+            self._std_weight_position * mean[3]]
         std_vel = [
-          self._std_weight_velocity * mean[3],
-          self._std_weight_velocity * mean[3],
-          1e-5,
-          self._std_weight_velocity * mean[3]]
+            self._std_weight_velocity * mean[3],
+            self._std_weight_velocity * mean[3],
+            1e-5,
+            self._std_weight_velocity * mean[3]]
         motion_cov = np.diag(np.square(np.r_[std_pos, std_vel]))
 
         mean = np.dot(self._motion_mat, mean)
         covariance = np.linalg.multi_dot((
-          self._motion_mat, covariance, self._motion_mat.T)) + motion_cov
+            self._motion_mat, covariance, self._motion_mat.T)) + motion_cov
 
         return mean, covariance
 
@@ -172,15 +173,15 @@ class KalmanFilter():
           estimate.
         """
         std = [
-          self._std_weight_position * mean[3],
-          self._std_weight_position * mean[3],
-          1e-1,
-          self._std_weight_position * mean[3]]
+            self._std_weight_position * mean[3],
+            self._std_weight_position * mean[3],
+            1e-1,
+            self._std_weight_position * mean[3]]
         innovation_cov = np.diag(np.square(std))
 
         mean = np.dot(self._update_mat, mean)
         covariance = np.linalg.multi_dot((
-          self._update_mat, covariance, self._update_mat.T))
+            self._update_mat, covariance, self._update_mat.T))
         return mean, covariance + innovation_cov
 
     def update(self, mean, covariance, measurement):
@@ -204,15 +205,15 @@ class KalmanFilter():
         projected_mean, projected_cov = self._project(mean, covariance)
 
         chol_factor, lower = scipy.linalg.cho_factor(
-          projected_cov, lower=True, check_finite=False)
+            projected_cov, lower=True, check_finite=False)
         kalman_gain = scipy.linalg.cho_solve(
-          (chol_factor, lower), np.dot(covariance, self._update_mat.T).T,
-          check_finite=False).T
+            (chol_factor, lower), np.dot(covariance, self._update_mat.T).T,
+            check_finite=False).T
         innovation = measurement - projected_mean
 
         new_mean = mean + np.dot(innovation, kalman_gain.T)
         new_covariance = covariance - np.linalg.multi_dot((
-          kalman_gain, projected_cov, kalman_gain.T))
+            kalman_gain, projected_cov, kalman_gain.T))
         return new_mean, new_covariance
 
     def gating_distance(self, mean, covariance, measurements,
@@ -247,8 +248,8 @@ class KalmanFilter():
         measurements = self._bbox2pos(measurements)
         mean, covariance = self._project(mean, covariance)
         if only_position:
-          mean, covariance = mean[:2], covariance[:2, :2]
-          measurements = measurements[:, :2]
+            mean, covariance = mean[:2], covariance[:2, :2]
+            measurements = measurements[:, :2]
 
         cholesky_factor = np.linalg.cholesky(covariance)
         d = measurements - mean

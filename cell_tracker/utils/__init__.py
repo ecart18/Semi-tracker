@@ -12,4 +12,3 @@ __all__ = [
     'mkdir',
     'format_out'
 ]
-
