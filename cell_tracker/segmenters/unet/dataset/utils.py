@@ -57,7 +57,7 @@ def image_norm(img):
     img = 255 * img.astype(np.float32) / np.max(img, axis = (0, 1))
     img = np.clip(img, 0, 255)
     img = img / 255.
-    return img
+    return img.astype(np.float32)
     
 
 def dataset_mean_std(image_path_list):
@@ -67,8 +67,8 @@ def dataset_mean_std(image_path_list):
         image = image_norm(image)
         images_array.append(image)
     images_array = np.stack(images_array, axis=0)
-    return np.mean(images_array, (0, 1, 2)).tolist(), \
-            np.std(images_array, (0, 1, 2)).tolist()
+    return np.mean(images_array, (0, 1, 2)).astype(np.float32).tolist(), \
+            np.std(images_array, (0, 1, 2)).astype(np.float32).tolist()
 
 
 if __name__ == "__main__":

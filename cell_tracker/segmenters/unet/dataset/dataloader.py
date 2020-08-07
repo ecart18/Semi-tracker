@@ -75,6 +75,7 @@ class Preprocessor(Augmentation):
         label = label.astype(np.float32)
         image = image_norm(image)
         image = (image - self.mean) / self.std
+        image = image.astype(np.float32)
 
         image = torch.from_numpy(image.copy())
         label = torch.from_numpy(label.copy())

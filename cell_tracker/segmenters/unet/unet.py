@@ -55,6 +55,7 @@ class Unet:
         img = self._scaling_img(img, scale_img=self._scale_img)
         img = image_norm(img)
         img = (img - self.mean) / self.std
+        img = img.astype(np.float32)
         img = torch.from_numpy(img.copy())
         return img.permute(2,0,1).unsqueeze(0)
 
