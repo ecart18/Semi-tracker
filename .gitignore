@@ -17,6 +17,6 @@ pretrainmodel/*
 checkpoint/*
 */__pycache__
 */*/__pycache__
-__pycache__                                                                                       1,1           All
+__pycache__                                                                                
 training_demo1/log
-training_demo2/log                                                                             1,1           All
+training_demo2/log
