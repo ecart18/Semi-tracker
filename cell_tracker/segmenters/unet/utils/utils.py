@@ -128,13 +128,13 @@ def load_params(model, pretrained_path):
         pretrained_dict = torch.load(
             pretrained_path,  map_location=torch.device('cpu'))
     if "state_dict" in pretrained_dict.keys():
-        pretrained_dict = remove_prefix(pretrained_dict['state_dict'],
+        pretrained_state= remove_prefix(pretrained_dict['state_dict'],
                                         'module.')
     else:
-        pretrained_dict = remove_prefix(pretrained_dict, 'module.')
+        pretrained_state = remove_prefix(pretrained_dict, 'module.')
     assert check_keys(
-        model, pretrained_dict), 'load NONE from pretrained checkpoint'
-    model.load_state_dict(pretrained_dict, strict=False)
+        model, pretrained_state), 'load NONE from pretrained checkpoint'
+    model.load_state_dict(pretrained_state, strict=False)
     if "dataset_info" in pretrained_dict.keys():
         dataset_info = pretrained_dict['dataset_info']
         return model, dataset_info
