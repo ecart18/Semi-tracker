@@ -41,7 +41,7 @@ class WeightedSoftDiceLoss(nn.Module):
         probs = F.sigmoid(y_pred)
         num = y_true.size(0)
         w = weights.view(num, -1)
-        w2 = w * w
+        w2 = w
         m1 = probs.view(num, -1)
         m2 = y_true.view(num, -1)
         intersection = (m1 * m2)

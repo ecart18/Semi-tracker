@@ -24,7 +24,7 @@ if __name__ == "__main__":
     workers = 4  # wait modify
     gpu_num = 2
     resume = False
-    epochs = 500
+    epochs = 5000
     lr = 0.001
     weight_decay = 0.0005
     loss_type = 'WeightedSoftDiceLoss'
