@@ -61,7 +61,7 @@ class TrainParameters:
         return aug_list
 
     def _check_weighted_type(self, weighted_type, loss_type):
-        if loss_type in ['WDiceLoss', 'WBCELoss']:
+        if loss_type in ['WeightedSoftDiceLoss', 'WBCELoss']:
             try:
                 assert weighted_type in ['edge_weighted', 'sample_balance']
             except:
