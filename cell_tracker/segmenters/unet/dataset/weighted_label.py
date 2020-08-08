@@ -31,7 +31,7 @@ def make_balance_weight_map(masks):
     w_map[masks.sum(0) == 1] = w_1 / w_map.size
     w_map[masks.sum(0) == 0] = w_0 / w_map.size
     w_map = np.expand_dims(w_map, axis=0)
-    return w_map.astype(np.float32)
+    return w_map.astype(np.float32), masks
 
 
 def make_weight_map_instance(masks, w0=10, sigma=5):
@@ -65,7 +65,8 @@ def make_weight_map_instance(masks, w0=10, sigma=5):
     d1 = maps[:, :, 0]
     d2 = maps[:, :, 1]
     dis = ((d1 + d2)**2) / (2 * sigma * sigma)
-    dw_map = w0*np.exp(-dis) * (masks == 0)
+    # dw_map = w0*np.exp(-dis) * (masks == 0)
+    dw_map = w0*np.exp(-dis)
 
     masks = 1 * (masks > 0)
     c_weights = np.zeros(2)
@@ -76,4 +77,4 @@ def make_weight_map_instance(masks, w0=10, sigma=5):
     clsw_map = np.where(masks == 0, c_weights[0], c_weights[1])
     w_map = clsw_map + dw_map
     w_map = np.expand_dims(w_map, axis=0)
-    return w_map.astype(np.float32)
+    return w_map.astype(np.float32), masks

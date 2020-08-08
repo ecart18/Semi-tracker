@@ -64,10 +64,10 @@ class Preprocessor(Augmentation):
         weight = 0
         # enlarge edges and added weight map
         if self.weighted_type == 'edge_weighted':
-            weight = make_weight_map_instance(label, w0=10, sigma=5)
+            weight, label = make_weight_map_instance(label, w0=10, sigma=5)
         # balance class
         if self.weighted_type == 'sample_balance':
-            weight = make_balance_weight_map(label)
+            weight, label = make_balance_weight_map(label)
 
         label[label > 0] = 1.0
         label = label.astype(np.float32)

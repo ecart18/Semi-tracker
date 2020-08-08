@@ -71,6 +71,7 @@ class Unet:
             binary_mask[binary_mask < self._threshold] = 0
             binary_mask[binary_mask >= self._threshold] = 1
             binary_mask = (255 * binary_mask).astype(np.uint8)
+            # binary_mask = cv2.dilate(binary_mask, np.ones((3, 3), np.uint8))
             binary_mask = np.expand_dims(binary_mask, 2)
             _, label_img, _, _ = cv2.connectedComponentsWithStats(
                 binary_mask, connectivity=4, ltype=cv2.CV_32S)
