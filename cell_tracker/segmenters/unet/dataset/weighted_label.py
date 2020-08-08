@@ -135,15 +135,18 @@ def label_reader(label_path):
         raise ValueError('Load label image {} failed.'.format(label_path))
 
 if __name__ == "__main__":
-    label_image = '../../../../training_demo2/label_img/annotation_000000.png'
-    label_image = label_reader(label_image)
+    label_image_path = '../../../../training_demo2/label_img/annotation_000000.png'
+    label_image = label_reader(label_image_path)
     weight1 = make_weight_map_instance(label_image)
     weight1 = 255 * (weight1 / weight1.max())
     weight1 = weight1.astype(np.uint8)
+    cv2.imwrite('./weight1.jpg', np.squeeze(weight1, 0))
+    
+    label_image_path = '../../../../training_demo2/label_img/annotation_000000.png'
+    label_image = label_reader(label_image_path)
     weight2 = make_weight_map_ins(label_image)
     weight2 = 255 * (weight2 / weight2.max())
     weight2 = weight2.astype(np.uint8)
-    cv2.imwrite('./weight1.jpg', weight1)
-    cv2.imwrite('./weight2.jpg', weight2)
+    cv2.imwrite('./weight2.jpg', np.squeeze(weight2, 0))
     import pdb
     pdb.set_trace()
