@@ -12,7 +12,6 @@ from torchvision.transforms import ToTensor
 from .backbone import get_backbone
 from .utils import mkdir
 from .utils import load_params
-from .utils import read_json
 from .dataset.utils import image_norm
 from ..utils import bgr_to_gray
 from ..utils import gray_to_bgr
@@ -40,14 +39,8 @@ class Unet:
         return model, dataset_info
 
     def _load_mean_std(self):
-        log_root = osp.dirname(self._model_path)
-        train_val_splits = read_json(
-            osp.join(log_root, 'train_val_splits.json'))
-        self.mean = train_val_splits['dataset_mean']
-        self.std = train_val_splits['dataset_std']
-        
-        # self.mean = self.dataset_info['dataset_mean']
-        # self.std = self.dataset_info['dataset_std']
+        self.mean = self.dataset_info['dataset_mean']
+        self.std = self.dataset_info['dataset_std']
 
     @staticmethod
     def _scaling_img(img, scale_img):
