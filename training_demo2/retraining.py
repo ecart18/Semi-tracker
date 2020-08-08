@@ -20,12 +20,12 @@ if __name__ == "__main__":
     scale_img = 0.5
     weighted_type = 'edge_weighted'  # 'edge_weighted'，'sample_balance' and 'None'
     aug_list = []
-    batch_size = 1
+    batch_size = 2
     workers = 4  # wait modify
-    gpu_num = 1
+    gpu_num = 2
     resume = False
     epochs = 500
-    lr = 0.2
+    lr = 0.001
     weight_decay = 0.0005
     loss_type = 'WeightedSoftDiceLoss'
 
