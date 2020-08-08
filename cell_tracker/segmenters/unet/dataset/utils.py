@@ -73,10 +73,3 @@ def dataset_mean_std(image_path_list):
     return np.mean(images_array, (0, 1, 2)).astype(np.float32).tolist(), \
         np.std(images_array, (0, 1, 2)).astype(np.float32).tolist()
 
-
-if __name__ == "__main__":
-    image_path_list = ['../../../../training_demo2/source_img/000000.jpg',
-                       '../../../../training_demo2/source_img/000001.jpg']
-    mean, std = dataset_mean_std(image_path_list)
-    import pdb
-    pdb.set_trace()
