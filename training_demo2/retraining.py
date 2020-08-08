@@ -17,15 +17,15 @@ if __name__ == "__main__":
     label_img_root = osp.join(ABS_DIR, 'label_img')
     log_root = osp.join(ABS_DIR, 'log')
     validation_ratio = 0.2
-    scale_img = 1.0
-    weighted_type = 'sample_balance'  # 'edge_weighted'，'sample_balance' and 'None'
+    scale_img = 0.5
+    weighted_type = 'edge_weighted'  # 'edge_weighted'，'sample_balance' and 'None'
     aug_list = []
     batch_size = 1
     workers = 4  # wait modify
     gpu_num = 1
     resume = False
     epochs = 500
-    lr = 0.001
+    lr = 0.2
     weight_decay = 0.0005
     loss_type = 'WeightedSoftDiceLoss'
 
