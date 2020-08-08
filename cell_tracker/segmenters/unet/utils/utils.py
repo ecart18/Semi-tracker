@@ -135,4 +135,7 @@ def load_params(model, pretrained_path):
     assert check_keys(
         model, pretrained_dict), 'load NONE from pretrained checkpoint'
     model.load_state_dict(pretrained_dict, strict=False)
-    return model
+    if "dataset_info" in pretrained_dict.keys():
+        dataset_info = pretrained_dict['dataset_info']
+        return model, dataset_info
+    return model, None

@@ -92,6 +92,11 @@ def build_dataloader(name, source_img_root, label_img_root, log_root, validation
     train_set = dataset.train
     val_set = dataset.val
 
+    dataset_info = {
+                    'dataset_mean': train_set.mean, 
+                    'dataset_std': train_set.std
+    }
+    
     train_loader = DataLoader(
         Preprocessor(dataset=train_set, mode='train',
                      source_img_root=source_img_root,
@@ -117,5 +122,5 @@ def build_dataloader(name, source_img_root, label_img_root, log_root, validation
         shuffle=False,
         pin_memory=True)
 
-    return train_loader, val_loader
+    return train_loader, val_loader, dataset_info
 

@@ -29,22 +29,25 @@ class Unet:
         self._model_path = model_path
         self._threshold = threshold
         self._minimal_size = minimal_size
-        self._model = self._load_model(device=self._device)
+        self._model, self.dataset_info = self._load_model(device=self._device)
         self._load_mean_std()
 
     def _load_model(self, device):
         # Create the model
         model = get_backbone(name='unet', n_channels=3,
                              n_classes=1).to(device).eval()
-        model = load_params(model, self._model_path)
-        return model
+        model, dataset_info = load_params(model, self._model_path)
+        return model, dataset_info
 
     def _load_mean_std(self):
         log_root = osp.dirname(self._model_path)
         train_val_splits = read_json(
             osp.join(log_root, 'train_val_splits.json'))
-        self.mean = train_val_splits['dataset_std']
+        self.mean = train_val_splits['dataset_mean']
         self.std = train_val_splits['dataset_std']
+        
+        # self.mean = self.dataset_info['dataset_mean']
+        # self.std = self.dataset_info['dataset_std']
 
     @staticmethod
     def _scaling_img(img, scale_img):

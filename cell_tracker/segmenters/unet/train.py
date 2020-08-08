@@ -35,7 +35,7 @@ class TrainerWrapper(object):
         # Redirect print to both console and log file
         self.train_log = Logger(
             osp.join(self.train_parameters.log_root, 'train.log'))
-        self.train_loader, self.val_loader = build_dataloader(
+        self.train_loader, self.val_loader, self.dataset_info = build_dataloader(
             name='cells', **self.train_parameters.dataloader_params)
         self.model = get_backbone(name='unet').to(self.train_parameters.device)
         if self.train_parameters.gpu_num > 1:
@@ -91,6 +91,7 @@ class TrainerWrapper(object):
             'state_dict': self.model.state_dict(),
             'epoch': epoch + 1,
             'best_loss': self.best_loss,
+            'dataset_info' : self.dataset_info,
         }, is_best, fpath=osp.join(self.train_parameters.log_root, 'checkpoint.pth.tar'))
 
         print('\n * Finished epoch {:3d}  train_loss: {:.3f}  val_loss: {:.3f}  best: {:.3f}{}\n'.

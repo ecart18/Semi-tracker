@@ -18,8 +18,8 @@ if __name__ == "__main__":
     log_root = osp.join(ABS_DIR, 'log')
     validation_ratio = 0.2
     scale_img = 1.0
-    weighted_type = 'edge_weighted'  # 'edge_weighted'，'sample_balance' and 'None'
-    aug_list = ['Flip', 'GaussianNoise', 'GaussianBlur']
+    weighted_type = 'sample_balance'  # 'edge_weighted'，'sample_balance' and 'None'
+    aug_list = []
     batch_size = 1
     workers = 4  # wait modify
     gpu_num = 1
