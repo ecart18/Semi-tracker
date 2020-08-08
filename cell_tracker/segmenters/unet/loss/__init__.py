@@ -18,7 +18,7 @@ __all__ = [
 
 __LOSS = {
     'DiceLoss': DiceLoss,
-    'WDiceLoss': WeightedSoftDiceLoss,
+    'WeightedSoftDiceLoss': WeightedSoftDiceLoss,
     'BCELoss': BCELoss,
     'WBCELoss': WBCELoss,
     'MSELoss': MSELoss,
