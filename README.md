@@ -1,4 +1,4 @@
-# CellTracker, a User-friendly Cell-automatic Software for Multiple Cell Segmentation and Tracking
+# CellTracker: An Automated Toolbox for Single-Cell Segmentation and Tracking in Microscopy Images
 
 By [Tao Hu](https://gitlab.com/ecart18) & [Shixiong Xu](https://gitlab.com/xsx1001).
 
@@ -133,8 +133,8 @@ CellTracker provides two methods to re-train deep CNN networks for your customiz
 **Pretrained models download:** 
 
 CellTracker provides two pretrained models for dataset of training_demo1 and training_demo2 respectively. Download them from the following link.
-- [demo1 pretrained model](https://drive.google.com/file/d/1OtQJvpT6yFeSRJPV_MAmrSJnsQpywwxC/view?usp=sharing)
-- [demo2 pretrained model]()
+- [demo1 pretrained model](https://drive.google.com/file/d/1wekBJbzG8m5EyeeyVqx56vhdz_TnIxab/view?usp=sharing)
+- [demo2 pretrained model](https://drive.google.com/file/d/1HyqStKlTPX_K94F6n2OHytSzs40zffU8/view?usp=sharing)
 
 
 ## Bibtex<a name="bibtex">
@@ -142,7 +142,7 @@ Please consider citing our paper in your publications if the project helps your 
 
 ```
 @article{,
-  title={Celltracker: An Automated Toolbox for Single-cell Segmentation and Tracking in Microscopy Images},
+  title={CellTracker: An Automated Toolbox for Single-Cell Segmentation and Tracking in Microscopy Images},
   author={Hu, Tao and Xu, Shixiong and Wang, Xiaowo},
   journal={},
   year={2020}

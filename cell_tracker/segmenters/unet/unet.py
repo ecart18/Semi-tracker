@@ -30,6 +30,7 @@ class Unet:
         self._minimal_size = minimal_size
         self._model, self.dataset_info = self._load_model(device=self._device)
         self._load_mean_std()
+        self.height, self.width = None, None
 
     def _load_model(self, device):
         # Create the model
@@ -42,13 +43,17 @@ class Unet:
         self.mean = self.dataset_info['dataset_mean']
         self.std = self.dataset_info['dataset_std']
 
-    @staticmethod
-    def _scaling_img(img, scale_img):
-        height, width = img.shape[0:2]
-        size = (int(width*scale_img), int(height*scale_img))
+    def _scaling_img(self, img, scale_img):
+        self.height, self.width = img.shape[0:2]
+        size = (int(self.width*scale_img), int(self.height*scale_img))
         img = cv2.resize(img, size, interpolation=cv2.INTER_NEAREST)
         return img
 
+    def _scaling_img_recover(self, img):
+        size = (self.width , self.height)
+        img = cv2.resize(img, size, interpolation=cv2.INTER_NEAREST)
+        return img
+        
     def _pre_process(self, img):
         img = self._scaling_img(img, scale_img=self._scale_img)
         img = image_norm(img)
@@ -65,12 +70,11 @@ class Unet:
                 dim=0).permute(dims=[1, 2, 0]).cpu().numpy()
             binary_mask = cv2.medianBlur(
                 (255 * binary_mask).astype(np.uint8), 3)
-            binary_mask = self._scaling_img(
-                binary_mask, scale_img=1.0 / self._scale_img)
             binary_mask = binary_mask.astype(np.float) / 255
             binary_mask[binary_mask < self._threshold] = 0
             binary_mask[binary_mask >= self._threshold] = 1
             binary_mask = (255 * binary_mask).astype(np.uint8)
+            binary_mask = self._scaling_img_recover(binary_mask)
             # binary_mask = cv2.dilate(binary_mask, np.ones((3, 3), np.uint8))
             binary_mask = np.expand_dims(binary_mask, 2)
             _, label_img, _, _ = cv2.connectedComponentsWithStats(
