@@ -21,8 +21,7 @@ This codebase provides:
 3. [Bibtex](#bibtex)
 
 ## Introduction <a name="introduction">
-CellTracker is a highly integrated graphical user interface software, for automated cell segmentation and tracking of time-lapse microscopy images. It covers essential steps in image analysis, including project management, image pre-processing, cell segmentation, cell tracking, manual correction, and statistical analysis such as the quantification of cell size and fluorescence intensity. Furthermore, CellTracker provides an auxiliary annotation tool and supports model training from scratch, thus providing a flexible and scalable solution for customized datasets.
-
+CellTracker is a highly integrated graphical user interface software, for automated cell segmentation and tracking of time-lapse microscopy images. It covers essential steps in image analysis including project management, image pre-processing, cell segmentation, cell tracking, manually correction, and statistical analysis such as the quantification of cell size and fluorescence intensity, etc. Furthermore, CellTracker provides an annotation tool and supports model training from scratch, thus proposing a flexible and scalable solution for customized dataset analysis.
 <div align='center'><img align="middle" src="imgs/interface.png" width="70%" /><br></div>
 
 
@@ -42,7 +41,10 @@ CellTracker is a highly integrated graphical user interface software, for automa
 
     ##### on macOS/Linux
     ```
-    pip install virtualenv  # or pip install -i https://pypi.tuna.tsinghua.edu.cn/simple virtualenv 
+    pip install virtualenv  
+    # or 
+    pip install -i https://pypi.tuna.tsinghua.edu.cn/simple virtualenv 
+
     virtualenv --python=python3 CellTrackerEnv
     cd CellTrackerEnv
     source ./bin/activate
@@ -52,7 +54,7 @@ CellTracker is a highly integrated graphical user interface software, for automa
     deactivate
     ```
 
-    ##### on Windows
+    ##### on Windows (open cmd with administrator's permission)
     ```
     pip install virtualenv  # or pip install -i https://pypi.tuna.tsinghua.edu.cn/simple virtualenv 
     virtualenv --python=python3 CellTrackerEnv 
@@ -64,15 +66,17 @@ CellTracker is a highly integrated graphical user interface software, for automa
     .\Scripts\deactivate.bat
     ```
 
-2. Download or clone the source codes with git. 
+2. Install [Git](https://git-scm.com/), this step is optional if you does not install CellTracker by git clone. 
+
+3. Download or clone the source codes with git. 
     ```
-    git clone https://gitlab.com/ecart18/cell-tracker.git
+    git clone https://github.com/WangLabTHU/CellTracker.git
     ```
     To boost download speeds, you could clone CellTracker from the source in the mainland of China.
     ```
     git clone https://gitee.com/ecart18/cell-tracker.git
     ```
-3. Extract files and put it in the virtual environment directory you defined. The directory of CellTracker should have the following structure:
+4. Extract files and put it in the virtual environment directory you defined. The directory of CellTracker should have the following structure:
     
     ```
     CellTrackerEnv
@@ -92,9 +96,9 @@ CellTracker is a highly integrated graphical user interface software, for automa
         |...
     ```
 
-4. After the extraction, download all dependencies with the following commend.
+5. After the extraction, download all dependencies with the following commend.
     ```
-    cd cell-tracker
+    cd CellTracker
     pip install -r requirements.txt
     ```
     To boost download speeds, you could setup pip mirror such as
@@ -111,7 +115,7 @@ CellTracker is a highly integrated graphical user interface software, for automa
     pip install torch==1.4.0 torchvision==0.5.0 -f https://download.pytorch.org/whl/torch_stable.html
     ```
 
-5. Run CelTracker with python and enjoy it. 
+6. Run CelTracker with python and enjoy it. 
     ```
     python main.py
     ```
@@ -143,7 +147,7 @@ Please consider citing our paper in your publications if the project helps your 
 ```
 @article{,
   title={CellTracker: An Automated Toolbox for Single-Cell Segmentation and Tracking in Microscopy Images},
-  author={Hu, Tao and Xu, Shixiong and Wang, Xiaowo},
+  author={Hu, Tao and Xu, Shixiong, Zhang, Xuegong and Wang, Xiaowo},
   journal={},
   year={2020}
 }
