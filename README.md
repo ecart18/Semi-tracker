@@ -55,7 +55,8 @@ CellTracker is a highly integrated graphical user interface software, for automa
     ##### on Windows (open cmd with administrator's permission)
     ```
     pip install virtualenv  
-    # or pip install -i https://pypi.tuna.tsinghua.edu.cn/simple virtualenv 
+    # or 
+    pip install -i https://pypi.tuna.tsinghua.edu.cn/simple virtualenv 
     virtualenv --python=python3 CellTrackerEnv 
     cd CellTrackerEnv
     .\Scripts\activate.bat
