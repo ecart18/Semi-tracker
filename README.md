@@ -1,7 +1,5 @@
 # CellTracker: An Automated Toolbox for Single-Cell Segmentation and Tracking in Microscopy Images
 
-By [Tao Hu](https://gitlab.com/ecart18) & [Shixiong Xu](https://gitlab.com/xsx1001).
-
 The code for the official implementation of **CellTracker**. You can find the [Tutorial](doc/CellTrackerTutorial.pdf) in doc folder.
 
 This codebase provides: 
@@ -56,7 +54,8 @@ CellTracker is a highly integrated graphical user interface software, for automa
 
     ##### on Windows (open cmd with administrator's permission)
     ```
-    pip install virtualenv  # or pip install -i https://pypi.tuna.tsinghua.edu.cn/simple virtualenv 
+    pip install virtualenv  
+    # or pip install -i https://pypi.tuna.tsinghua.edu.cn/simple virtualenv 
     virtualenv --python=python3 CellTrackerEnv 
     cd CellTrackerEnv
     .\Scripts\activate.bat
@@ -66,9 +65,7 @@ CellTracker is a highly integrated graphical user interface software, for automa
     .\Scripts\deactivate.bat
     ```
 
-2. Install [Git](https://git-scm.com/), this step is optional if you does not install CellTracker by git clone. 
-
-3. Download or clone the source codes with git. 
+2. Install [Git](https://git-scm.com/), this step is optional if you does not install CellTracker by git clone. Clone the source codes with git. 
     ```
     git clone https://github.com/WangLabTHU/CellTracker.git
     ```
@@ -76,7 +73,9 @@ CellTracker is a highly integrated graphical user interface software, for automa
     ```
     git clone https://gitee.com/ecart18/cell-tracker.git
     ```
-4. Extract files and put it in the virtual environment directory you defined. The directory of CellTracker should have the following structure:
+3. or, download the source codes and extract files and put it in the virtual environment directory you defined. 
+
+4. after 2/3, the directory of CellTracker should have the following structure:
     
     ```
     CellTrackerEnv
@@ -130,7 +129,8 @@ CellTracker provides two methods to re-train deep CNN networks for your customiz
 
 1. re-training with Python API in terminal.  CellTracker provides two demo datasets and codes to help you get familiar with this feature, such as: 
     ```
-    cd training_demo1  # or cd training_demo2
+    cd training_demo1  
+    # or cd training_demo2
     python retraining.py
     ```
 
