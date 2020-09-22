@@ -98,7 +98,7 @@ CellTracker is a highly integrated graphical user interface software, for automa
 
 5. After the extraction, download all dependencies with the following commend.
     ```
-    cd CellTracker
+    cd cell-tracker
     pip install -r requirements.txt
     ```
     To boost download speeds, you could setup pip mirror such as
