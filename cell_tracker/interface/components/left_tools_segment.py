@@ -266,7 +266,7 @@ class SegmentTools(QWidget):
                                           "font-family: Verdana;")
 
         device_label = QLabel()
-        device_label.setText("GPU number:")
+        device_label.setText("GPU or CPU:")
         device_label.setStyleSheet("font-family: Verdana;"
                                    "color: white;")
 

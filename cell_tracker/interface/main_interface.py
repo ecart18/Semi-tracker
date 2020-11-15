@@ -121,11 +121,15 @@ class MainWindow(QMainWindow):
         self.result_dir_path = ""
         self.origin_dir_path = ""
 
+        self.params_dict = {}
+
         self.sld_stylesheet = slide_stylesheet
         self.general_qss = general_qss
         self.setStyleSheet(self.general_qss)
 
         self.setup_ui()
+        self.update_params()
+
 
     def setup_ui(self):
 
@@ -281,6 +285,8 @@ class MainWindow(QMainWindow):
             lambda: self.segment('grab_cut',
                                  iteration=self.tools.segment.iteration_sld.value()))
 
+        self.tools.segment.thresh_segment_butto5.clicked.connect(self.revoke_operation)
+
         # normalization
         self.tools.normlize.equalize_hist_button.clicked.connect(
             lambda: self.normalize('equalize_hist'))
@@ -359,6 +365,140 @@ class MainWindow(QMainWindow):
         # Initialize status bar
         self.status = StatusBar()
         self.status_bar = self.status.status_bar
+
+    def revoke_operation(self):
+        self.open_path              = self.params_dict["open_path"]
+        self.project_path           = self.params_dict["project_path"]
+        self.unet_model_path        = self.params_dict["unet_model_path"]
+        self.last_index             = self.params_dict["last_index"]
+        self.frames_num             = self.params_dict["frames_num"]
+        self.frames                 = self.params_dict["frames"]
+        self.show_flag              = self.params_dict["show_flag"]
+        self.segment_flag           = self.params_dict["segment_flag"]
+        self.segmenter_name         = self.params_dict["segmenter_name"]
+        self.tracker_name           = self.params_dict["tracker_name"]
+        self.normalizer_name        = self.params_dict["normalizer_name"]
+        self.previous_frame         = self.params_dict["previous_frame"]
+        self.previous_algorithm     = self.params_dict["previous_algorithm"]
+        self.brush_flag             = self.params_dict["brush_flag"]
+        self.grabcut_pos_begin      = self.params_dict["grabcut_pos_begin"]
+        self.grabcut_pos_finish     = self.params_dict["grabcut_pos_finish"]
+        self.grabcut_roi            = self.params_dict["grabcut_roi"]
+        self.grabcut_rect           = self.params_dict["grabcut_rect"]
+        self.annotation_flag        = self.params_dict["annotation_flag"]
+        self.widget_list            = self.params_dict["widget_list"]
+        self.changed_instances      = self.params_dict["changed_instances"]
+        self.bboxroi                = self.params_dict["bboxroi"]
+        self.drag_flag              = self.params_dict["drag_flag"]
+        self.source_img_root        = self.params_dict["source_img_root"]
+        self.label_img_root         = self.params_dict["label_img_root"]
+        self.log_root               = self.params_dict["log_root"]
+        self.validation_ratio       = self.params_dict["validation_ratio"]
+        self.scale_img              = self.params_dict["scale_img"]
+        self.weighted_type          = self.params_dict["weighted_type"]
+        self.batch_size             = self.params_dict["batch_size"]
+        self.workers                = self.params_dict["workers"]
+        self.gpu_num                = self.params_dict["gpu_num"]
+        self.lr                     = self.params_dict["lr"]
+        self.epochs                 = self.params_dict["epochs"]
+        self.weight_decay           = self.params_dict["weight_decay"]
+        self.loss_type              = self.params_dict["loss_type"]
+        self.loss_type_list         = self.params_dict["loss_type_list"]
+        self.result_dir_path        = self.params_dict["result_dir_path"]
+        self.origin_dir_path        = self.params_dict["origin_dir_path"]
+
+        # params
+        self.tools.segment.thresh_sld1.setValue(self.params_dict["segment_thresh_sld1"])
+        self.tools.segment.thresh_textline1.setText(self.params_dict["segment_thresh_text1"])
+        self.tools.segment.thresh_min_size_editor.setText(self.params_dict["segment_thresh_min_size"])
+        self.tools.segment.model_path_label.setText(self.params_dict["segment_model_path"])
+        self.tools.segment.scale_img_select.setCurrentIndex(self.params_dict["segment_scale_img"])
+        self.tools.segment.thresh_sld2.setValue(self.params_dict["segment_thresh_sld2"])
+        self.tools.segment.thresh_textline2.setText(self.params_dict["segment_thresh_text2"])
+        self.tools.segment.unet_min_size_editor.setText(self.params_dict["segment_unet_min_size"])
+        self.tools.segment.device_select.setCurrentIndex(self.params_dict["GPU_CPU"])
+        self.tools.segment.noise_sld.setValue(self.params_dict["segment_noise_sld"])
+        self.tools.segment.noise_textline.setText(self.params_dict["segment_noise_text"])
+        self.tools.segment.dist_thresh_sld.setValue(self.params_dict["segment_dist_sld"])
+        self.tools.segment.dist_thresh_textline.setText(self.params_dict["segment_dist_text"])
+        self.tools.segment.watershed_min_size_editor.setText(self.params_dict["segment_water_min_size"])
+        self.tools.segment.iteration_sld.setValue(self.params_dict["segment_it_sld"])
+        self.tools.segment.iteration_textline.setText(self.params_dict["segment_it_text"])
+        self.tools.track.tracker_select.setCurrentIndex(self.params_dict["track_index"])
+
+        # update main_frame and list widget
+        self.visualize.main_sld.setValue(0)
+        self.visualize.main_sld.setMaximum(self.frames_num - 1)
+        self.status.frame_info_label.setText(
+            " Current frame: " + str(1))
+        self.status.total_frame_label.setText(
+            " Total frames: " + str(self.frames_num))
+        self.main_sld_fnc()
+        self.instance_widget_update_fnc()
+
+    def update_params(self):
+        self.params_dict["open_path"]           = self.open_path
+        self.params_dict["project_path"]        = self.project_path
+        self.params_dict["unet_model_path"]     = self.unet_model_path
+        self.params_dict["last_index"]          = self.last_index
+        self.params_dict["frames_num"]          = self.frames_num
+        self.params_dict["frames"]              = self.frames
+        self.params_dict["show_flag"]           = self.show_flag
+        self.params_dict["segment_flag"]        = self.segment_flag
+        self.params_dict["segmenter_name"]      = self.segmenter_name
+        self.params_dict["tracker_name"]        = self.tracker_name
+        self.params_dict["normalizer_name"]     = self.normalizer_name
+        self.params_dict["previous_frame"]      = self.previous_frame
+        self.params_dict["previous_algorithm"]  = self.previous_algorithm
+        self.params_dict["brush_flag"]          = self.brush_flag
+        self.params_dict["grabcut_pos_begin"]   = self.grabcut_pos_begin
+        self.params_dict["grabcut_pos_finish"]  = self.grabcut_pos_finish
+        self.params_dict["grabcut_roi"]         = self.grabcut_roi
+        self.params_dict["grabcut_rect"]        = self.grabcut_rect
+        self.params_dict["annotation_flag"]     = self.annotation_flag
+        self.params_dict["widget_list"]         = self.widget_list
+        self.params_dict["changed_instances"]   = self.changed_instances
+        self.params_dict["bboxroi"]             = self.bboxroi
+        self.params_dict["drag_flag"]           = self.drag_flag
+        self.params_dict["source_img_root"]     = self.source_img_root
+        self.params_dict["label_img_root"]      = self.label_img_root
+        self.params_dict["log_root"]            = self.log_root
+        self.params_dict["validation_ratio"]    = self.validation_ratio
+        self.params_dict["scale_img"]           = self.scale_img
+        self.params_dict["weighted_type"]       = self.weighted_type
+        self.params_dict["batch_size"]          = self.batch_size
+        self.params_dict["workers"]             = self.workers
+        self.params_dict["gpu_num"]             = self.gpu_num
+        self.params_dict["lr"]                  = self.lr
+        self.params_dict["epochs"]              = self.epochs
+        self.params_dict["weight_decay"]        = self.weight_decay
+        self.params_dict["loss_type"]           = self.loss_type
+        self.params_dict["loss_type_list"]      = self.loss_type_list
+        self.params_dict["result_dir_path"]     = self.result_dir_path
+        self.params_dict["origin_dir_path"]     = self.origin_dir_path
+
+        # segmenter
+        self.params_dict["segment_thresh_sld1"]         = self.tools.segment.thresh_sld1.value()
+        self.params_dict["segment_thresh_text1"]        = self.tools.segment.thresh_textline1.text()
+        self.params_dict["segment_thresh_min_size"]     = self.tools.segment.thresh_min_size_editor.text()
+
+        self.params_dict["segment_model_path"]          = self.tools.segment.model_path_label.text()
+        self.params_dict["segment_scale_img"]           = self.tools.segment.scale_img_select.currentIndex()
+        self.params_dict["segment_thresh_sld2"]         = self.tools.segment.thresh_sld2.value()
+        self.params_dict["segment_thresh_text2"]        = self.tools.segment.thresh_textline2.text()
+        self.params_dict["segment_unet_min_size"]       = self.tools.segment.unet_min_size_editor.text()
+        self.params_dict["GPU_CPU"]                     = self.tools.segment.device_select.currentIndex()
+
+        self.params_dict["segment_noise_sld"]           = self.tools.segment.noise_sld.value()
+        self.params_dict["segment_noise_text"]          = self.tools.segment.noise_textline.text()
+        self.params_dict["segment_dist_sld"]            = self.tools.segment.dist_thresh_sld.value()
+        self.params_dict["segment_dist_text"]           = self.tools.segment.dist_thresh_textline.text()
+        self.params_dict["segment_water_min_size"]      = self.tools.segment.watershed_min_size_editor.text()
+
+        self.params_dict["segment_it_sld"]              = self.tools.segment.iteration_sld.value()
+        self.params_dict["segment_it_text"]             = self.tools.segment.iteration_textline.text()
+
+        self.params_dict["track_index"]                 = self.tools.track.tracker_select.currentIndex()
 
     def open_tutorial(self):
         if os.path.exists(self.tutorial_path):
@@ -570,7 +710,7 @@ class MainWindow(QMainWindow):
     def main_sld_fnc(self):
         if not len(self.frames) == 0:
             main_sld_val = self.visualize.main_sld.value()
-            main_sld_val_label = " Current frame: " + str(main_sld_val)
+            main_sld_val_label = " Current frame: " + str(main_sld_val+1)
             self.status.frame_info_label.setText(main_sld_val_label)
             if not np.shape(len(self.frames)) == 0:
 
@@ -1221,9 +1361,15 @@ class MainWindow(QMainWindow):
             self.visualize.main_frame.addItem(self.bboxroi)
 
     def instances_widget_fnc_double(self):
-        self.cell_window = CellAttributeWindow(self.frames[self.visualize.main_sld.value()].instances[
-            self.widget_list[self.correction.instances_widget.currentRow()]])
-        self.cell_window.show()
+        ins = self.frames[self.visualize.main_sld.value()].instances[
+            self.widget_list[self.correction.instances_widget.currentRow()]]
+        if ins.coords is None:
+            self.coords_instance_message_box = InformationMessageBox(
+                "There is no cell area yet!")
+            self.coords_instance_message_box.show()
+        else:
+            self.cell_window = CellAttributeWindow(ins)
+            self.cell_window.show()
 
     def instance_delete_fnc(self):
         current_row = self.correction.instances_widget.currentRow()
@@ -1344,6 +1490,7 @@ class MainWindow(QMainWindow):
             self.normalize_message_box.show()
 
     def segment(self, name, **kwargs):
+
         self.segmenter_name = name
         if (not len(self.frames) == 0 and self.segment_flag == 0) or \
                 self.segmenter_name == 'grab_cut':
@@ -1360,6 +1507,7 @@ class MainWindow(QMainWindow):
             self.segment_message_box2 = InformationMessageBox(
                 "Please load images first!")
             self.segment_message_box2.show()
+        self.update_params()
 
     def segment_message_box1_fnc(self, name, close_flag=0, **kwargs):
 
