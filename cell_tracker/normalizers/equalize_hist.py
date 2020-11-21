@@ -11,11 +11,11 @@ class EqualizeHist:
         pass
 
     def __call__(self, img):
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2YUV)
+        img = cv2.cvtColor(img, cv2.COLOR_RGB2YUV)
         # equalize the histogram of the Y channel
         img[:, :, 0] = cv2.equalizeHist(img[:, :, 0])
         # convert the YUV image back to RGB format
-        img = cv2.cvtColor(img, cv2.COLOR_YUV2BGR)
+        img = cv2.cvtColor(img, cv2.COLOR_YUV2RGB)
         return img
 
 
@@ -27,12 +27,12 @@ class CLAHE:
     
     def __call__(self, img):
         # Converting image to LAB Color model
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
+        img = cv2.cvtColor(img, cv2.COLOR_RGB2LAB)
         # Splitting the LAB image to different channels
         l, a, b = cv2.split(img)
         # Applying CLAHE to L-channel
         cl = self.clahe.apply(l)
         limg = cv2.merge((cl, a, b))
         # Converting image from LAB Color model to RGB model
-        img = cv2.cvtColor(limg, cv2.COLOR_LAB2BGR)
+        img = cv2.cvtColor(limg, cv2.COLOR_LAB2RGB)
         return img
