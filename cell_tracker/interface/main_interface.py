@@ -67,14 +67,14 @@ class MainWindow(QMainWindow):
         self.frames_num = 0             # num of frames
         self.frames = collections.OrderedDict()
         self.show_flag = 1    # 1:raw raw 2.mask raw 3.color+raw raw 4.annotation: raw label_img
-        self.segmenter_dict = {0: 'binary_thresholding', 1: 'unet',
-                               2: 'water_shed', 3: 'grab_cut', 4: 'User-defined'}
+        self.segmenter_dict = {0: 'binary_thresholding', 1: 'otsu_thresholding',  2: 'unet',
+                               3: 'water_shed', 4: 'grab_cut', 5: 'User-defined'}
         self.segmenter_name = 'binary_thresholding'
         self.segment_flag = 0    # which segmenter
         self.tracker_dict = {0: 'none', 1: 'bipartite_tracker'}
         self.tracker_name = 'bipartite_tracker'
-        self.normalizer_dict = {0: 'equalize_hist', 1: 'min_max',
-                                2: 'retinex_MSRCP', 3: 'retinex_MSRCR', 4: 'reset'}
+        self.normalizer_dict = {0: 'equalize_hist', 1: 'CLAHE', 2: 'min_max',
+                                3: 'retinex_MSRCP', 4: 'retinex_MSRCR', 5: 'reset'}
         self.normalizer_name = 'equalize_hist'
         self.previous_frame = 0
         self.previous_algorithm = 4
@@ -259,6 +259,12 @@ class MainWindow(QMainWindow):
                                  threshold=self.tools.segment.thresh_sld1.value(),
                                  minimal_size=int(self.tools.segment.thresh_min_size_editor.text())))
 
+        # seg alg11
+        self.tools.segment.thresh_segment_button11.clicked.connect(
+            lambda: self.segment('otsu_thresholding',
+                                 threshold=self.tools.segment.thresh_sld11.value(),
+                                 minimal_size=int(self.tools.segment.thresh_min_size_editor11.text())))
+
         # seg alg2
         self.tools.segment.model_browse_button.clicked.connect(
             self.model_select_fnc)
@@ -290,6 +296,11 @@ class MainWindow(QMainWindow):
         # normalization
         self.tools.normlize.equalize_hist_button.clicked.connect(
             lambda: self.normalize('equalize_hist'))
+        self.tools.normlize.clahe_button.clicked.connect(
+            lambda: self.normalize('CLAHE',
+                                   clip_limit=self.tools.normlize.clip_limit_sld.value(),
+                                   grid_width=self.tools.normlize.grid_width_sld.value(),
+                                   grid_height=self.tools.normlize.grid_width_sld.value()))
         self.tools.normlize.min_max_button.clicked.connect(
             lambda: self.normalize('min_max'))
         self.tools.normlize.retinex_MSRCP_button.clicked.connect(
@@ -411,6 +422,9 @@ class MainWindow(QMainWindow):
         self.tools.segment.thresh_sld1.setValue(self.params_dict["segment_thresh_sld1"])
         self.tools.segment.thresh_textline1.setText(self.params_dict["segment_thresh_text1"])
         self.tools.segment.thresh_min_size_editor.setText(self.params_dict["segment_thresh_min_size"])
+        self.tools.segment.thresh_sld11.setValue(self.params_dict["segment_thresh_sld11"])
+        self.tools.segment.thresh_textline11.setText(self.params_dict["segment_thresh_text11"])
+        self.tools.segment.thresh_min_size_editor11.setText(self.params_dict["segment_thresh_min_size11"])
         self.tools.segment.model_path_label.setText(self.params_dict["segment_model_path"])
         self.tools.segment.scale_img_select.setCurrentIndex(self.params_dict["segment_scale_img"])
         self.tools.segment.thresh_sld2.setValue(self.params_dict["segment_thresh_sld2"])
@@ -424,6 +438,12 @@ class MainWindow(QMainWindow):
         self.tools.segment.watershed_min_size_editor.setText(self.params_dict["segment_water_min_size"])
         self.tools.segment.iteration_sld.setValue(self.params_dict["segment_it_sld"])
         self.tools.segment.iteration_textline.setText(self.params_dict["segment_it_text"])
+        self.tools.normlize.clip_limit_sld.setValue(self.params_dict["normlize_clip_limit_sld"])
+        self.tools.normlize.clip_limit_textline.setText(self.params_dict["normlize_clip_limit_textline"])
+        self.tools.normlize.grid_width_sld.setValue(self.params_dict["normlize_grid_width_sld"])
+        self.tools.normlize.grid_width_textline.setText(self.params_dict["normlize_grid_width_textline"])
+        self.tools.normlize.grid_height_sld.setValue(self.params_dict["normlize_grid_height_sld"])
+        self.tools.normlize.grid_height_textline.setText(self.params_dict["normlize_grid_height_textline"])
         self.tools.track.tracker_select.setCurrentIndex(self.params_dict["track_index"])
 
         # update main_frame and list widget
@@ -477,10 +497,15 @@ class MainWindow(QMainWindow):
         self.params_dict["result_dir_path"]     = self.result_dir_path
         self.params_dict["origin_dir_path"]     = self.origin_dir_path
 
+
         # segmenter
         self.params_dict["segment_thresh_sld1"]         = self.tools.segment.thresh_sld1.value()
         self.params_dict["segment_thresh_text1"]        = self.tools.segment.thresh_textline1.text()
         self.params_dict["segment_thresh_min_size"]     = self.tools.segment.thresh_min_size_editor.text()
+
+        self.params_dict["segment_thresh_sld11"] = self.tools.segment.thresh_sld11.value()
+        self.params_dict["segment_thresh_text11"] = self.tools.segment.thresh_textline11.text()
+        self.params_dict["segment_thresh_min_size11"] = self.tools.segment.thresh_min_size_editor11.text()
 
         self.params_dict["segment_model_path"]          = self.tools.segment.model_path_label.text()
         self.params_dict["segment_scale_img"]           = self.tools.segment.scale_img_select.currentIndex()
@@ -499,6 +524,16 @@ class MainWindow(QMainWindow):
         self.params_dict["segment_it_text"]             = self.tools.segment.iteration_textline.text()
 
         self.params_dict["track_index"]                 = self.tools.track.tracker_select.currentIndex()
+
+        # normalize
+        self.params_dict["normlize_clip_limit_sld"] = self.tools.normlize.clip_limit_sld.value()
+        self.params_dict["normlize_clip_limit_textline"] = self.tools.normlize.clip_limit_textline.text()
+
+        self.params_dict["normlize_grid_width_sld"] = self.tools.normlize.grid_width_sld.value()
+        self.params_dict["normlize_grid_width_textline"] = self.tools.normlize.grid_width_textline.text()
+
+        self.params_dict["normlize_grid_height_sld"] = self.tools.normlize.grid_height_sld.value()
+        self.params_dict["normlize_grid_height_textline"] = self.tools.normlize.grid_height_textline.text()
 
     def open_tutorial(self):
         if os.path.exists(self.tutorial_path):
@@ -1459,7 +1494,7 @@ class MainWindow(QMainWindow):
             self.last_index = self.left_navigation.currentRow()
 
     # algorithm API
-    def normalize(self, name):
+    def normalize(self, name, **kwargs):
         self.normalizer_name = name
 
         if not len(self.frames) == 0:
@@ -1469,7 +1504,7 @@ class MainWindow(QMainWindow):
             QApplication.processEvents()
             self.status.progressbar.setVisible(True)
             QApplication.processEvents()
-            normalizer = get_normalizer(name=name)
+            normalizer = get_normalizer(name=name, **kwargs)
             t = 1
             for key in self.frames.keys():
                 self.frames[key].norm_img = normalizer(

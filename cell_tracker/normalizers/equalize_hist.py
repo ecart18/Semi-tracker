@@ -21,10 +21,10 @@ class EqualizeHist:
 
 # Contrast limited adaptive histogram equalization
 class CLAHE:
-    def __init__(self, clip_limit=2.0, grid_size=8):
-        self.clahe = cv2.createCLAHE(clipLimit=3.0, 
-                                    tileGridSize=(int(grid_size), int(grid_size))) 
-    
+    def __init__(self, clip_limit=2.0, grid_width=8, grid_height=8):
+        self.clahe = cv2.createCLAHE(clipLimit=clip_limit,
+                                     tileGridSize=(int(grid_height), int(grid_width)))
+
     def __call__(self, img):
         # Converting image to LAB Color model
         img = cv2.cvtColor(img, cv2.COLOR_RGB2LAB)
