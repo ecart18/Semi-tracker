@@ -335,8 +335,8 @@ class SegmentTools(QWidget):
         segment_algorithm11_layout3.addWidget(thresh_segment_button11)
         segment_algorithm11_layout3.setAlignment(Qt.AlignRight)
 
-        segment_algorithm11_layout.addLayout(segment_algorithm11_layout1)
-        segment_algorithm11_layout.addLayout(segment_algorithm11_layout2)
+        # segment_algorithm11_layout.addLayout(segment_algorithm11_layout1)
+        # segment_algorithm11_layout.addLayout(segment_algorithm11_layout2)
         segment_algorithm11_layout.addLayout(thresh_min_size_layout11)
         segment_algorithm11_layout.addLayout(segment_algorithm11_layout3)
         segment_algorithm11_layout.setAlignment(Qt.AlignTop)

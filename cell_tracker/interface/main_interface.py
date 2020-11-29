@@ -262,7 +262,6 @@ class MainWindow(QMainWindow):
         # seg alg11
         self.tools.segment.thresh_segment_button11.clicked.connect(
             lambda: self.segment('otsu_thresholding',
-                                 threshold=self.tools.segment.thresh_sld11.value(),
                                  minimal_size=int(self.tools.segment.thresh_min_size_editor11.text())))
 
         # seg alg2
