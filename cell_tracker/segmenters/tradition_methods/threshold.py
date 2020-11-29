@@ -28,8 +28,8 @@ class BinaryThresholding:
 
 
 class OtsuThresholding:
-    def __init__(self, threshold=0, minimal_size=0):
-        self.threshold = threshold
+    def __init__(self, minimal_size=0):
+        self.threshold = 0.0
         self._minimal_size = minimal_size
 
     def __call__(self, img):
